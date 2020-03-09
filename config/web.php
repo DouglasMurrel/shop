@@ -2,7 +2,9 @@
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
-$db = require __DIR__ . '/mail.php';
+if(file_exists(__DIR__ . '/db_local.php'))$db = require __DIR__ . '/db_local.php';
+$mail = require __DIR__ . '/mail.php';
+if(file_exists(__DIR__ . '/mail_local.php'))$db = require __DIR__ . '/mail_local.php';
 
 $config = [
     'id' => 'basic',

@@ -32,5 +32,8 @@ tests/_support/_generated
 #vagrant folder
 /.vagrant
 
-config/db.php
-config/mail.php
+config/db_local.php
+config/mail_local.php
+
+php.bat
+composer.bat
