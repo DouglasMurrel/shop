@@ -30,7 +30,7 @@ class RegisterForm extends Model
             ['email', 'required', 'message'=>'EMail не может быть пустым'],
             ['password', 'required', 'message'=>'Пароль не может быть пустым'],
             ['password2', 'required', 'message'=>'Пароль не может быть пустым'],
-            ['email', 'email'],
+            ['email', 'email', 'message'=>'Некорректный email'],
             ['rememberMe', 'boolean'],
             ['email', 'unique', 'targetClass' => User::className(),  'message' => "Пользователь с таким email уже существует.\n Возможно, вы уже входили через сетевой аккаунт, связанный с этим email?"],
             ['password2', 'validatePassword'],

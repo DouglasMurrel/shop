@@ -14,7 +14,6 @@ class m200309_230854_user extends Migration
     public function safeUp()
     {
         $this->createTable('user', [
-//            'id' => Schema::TYPE_PK,
             'id' => $this->primaryKey(),
             'email' => $this->string(180)->notNull()->unique(),
             'password' => $this->string(),

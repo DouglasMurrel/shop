@@ -23,7 +23,7 @@ class RecoverForm extends Model
     public function rules()
     {
         return [
-            ['email', 'email'],
+            ['email', 'email', 'message'=>'Некорректный email'],
             ['email', 'exist', 'targetClass' => User::className(),  'message' => 'Пользователь с таким email не существует'],
         ];
     }
