@@ -3,6 +3,8 @@
 namespace app\models\DB;
 
 use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "category".
@@ -63,5 +65,23 @@ class Category extends \yii\db\ActiveRecord
     public function getProducts()
     {
         return $this->hasMany(Product::className(), ['category_id' => 'id'])->inverseOf('category');
+    }
+
+    /**
+     * Возвращает родительскую категорию
+     * @return ActiveQuery
+     */
+    public function getParent() {
+        // связь таблицы БД `category` с таблицей `category`
+        return $this->hasOne(self::class, ['id' => 'parent_id']);
+    }
+
+    /**
+     * Возвращает дочерние категории
+     * @return ActiveQuery
+     */
+    public function getChildren() {
+        // связь таблицы БД `category` с таблицей `category`
+        return $this->hasMany(self::class, ['parent_id' => 'id']);
     }
 }
