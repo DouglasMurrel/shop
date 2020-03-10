@@ -24,9 +24,12 @@ class ContactForm extends Model
     {
         return [
             // name, email, subject and body are required
-            [['name', 'email', 'subject', 'body'], 'required'],
+            ['name', 'required', 'message'=>'Имя не может быть пустым'],
+            ['email', 'required', 'message'=>'EMail не может быть пустым'],
+            ['subject', 'required', 'message'=>'Тема не может быть пустой'],
+            ['body', 'required', 'message'=>'Сообщение не может быть пустым'],
             // email has to be a valid email address
-            ['email', 'email'],
+            ['email', 'email', 'message'=>'Некорректный email'],
             // verifyCode needs to be entered correctly
             ['verifyCode', 'captcha'],
         ];
