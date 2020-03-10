@@ -40,14 +40,19 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'about' => 'site/about',
+                'contact' => 'site/contact',
+                'login' => 'site/login',
+                'logout' => 'site/logout',
+                'register' => 'site/register',
+                'recover' => 'site/recover',
+                'reset/<hash>/<email>' => 'site/reset',
             ],
         ],
-        */
     ],
     'params' => $params,
 ];
