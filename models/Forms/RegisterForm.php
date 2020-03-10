@@ -63,7 +63,7 @@ class RegisterForm extends Model
             $user = new User();
             $user->email = $this->email;
             $user->password = Yii::$app->security->generatePasswordHash($this->password);
-            $user->roles = 'user';
+            $user->roles = json_encode(['user']);
             if($user->save()) {
                 return Yii::$app->user->login($user, 3600 * 24 * 30);
             }

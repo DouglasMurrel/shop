@@ -34,6 +34,7 @@ tests/_support/_generated
 
 config/db_local.php
 config/mail_local.php
+config/params_local.php
 
 php.bat
 composer.bat
