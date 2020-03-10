@@ -57,7 +57,7 @@ class ResetForm extends Model
             $user->password = Yii::$app->security->generatePasswordHash($this->password);
             $user->passwordHash = '';
             if($user->save()) {
-                return "Пароль успешно изменен!<br>Теперь вы можете войти на сайт <a href='/' data-pjax='0'>здесь</a>";
+                return "Пароль успешно изменен!<br>Теперь вы можете войти на сайт <a href='/login' data-pjax='0'>здесь</a>";
             }
         }
         return false;

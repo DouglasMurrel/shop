@@ -9,6 +9,7 @@ if(file_exists(__DIR__ . '/mail_local.php'))$mail = require __DIR__ . '/mail_loc
 
 $config = [
     'id' => 'basic',
+    'language' => 'ru-RU',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [

@@ -1,47 +1,90 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $form yii\bootstrap\ActiveForm */
-/* @var $model app\models\LoginForm */
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\widgets\Pjax;
 
-$this->title = 'Login';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'My Yii Application';
 ?>
-<div class="site-login">
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="site-index">
 
-    <p>Please fill out the following fields to login:</p>
-
-    <?php $form = ActiveForm::begin([
-        'id' => 'login-form',
-        'layout' => 'horizontal',
-        'fieldConfig' => [
-            'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
-            'labelOptions' => ['class' => 'col-lg-1 control-label'],
-        ],
-    ]); ?>
-
-        <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
-
-        <?= $form->field($model, 'password')->passwordInput() ?>
-
-        <?= $form->field($model, 'rememberMe')->checkbox([
-            'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
-        ]) ?>
-
-        <div class="form-group">
-            <div class="col-lg-offset-1 col-lg-11">
-                <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+    <div class="body-content">
+        <? if(Yii::$app->user->isGuest) {?>
+            <div class="row justify-content-center mt-3 mb-3 ml-1">
+                <ul class="nav nav-tabs col-lg-12" role="tablist">
+                    <? Yii::info($active);?>
+                    <li class="nav-item pr-4<?if($active=='login'){?> active<?}?>"><a class="nav-link<?if($active=='login'){?> active<?}?>" href="#login" aria-controls="login" role="tab" data-toggle="tab">Логин</a></li>
+                    <li class="nav-item pr-4<?if($active=='register'){?> active<?}?>"><a class="nav-link<?if($active=='register'){?> active<?}?>" href="#register" aria-controls="register" role="tab" data-toggle="tab">Регистрация</a></li>
+                    <li class="nav-item pr-4<?if($active=='recover'){?> active<?}?>"><a class="nav-link<?if($active=='recover'){?> active<?}?>" href="#recover" aria-controls="recover" role="tab" data-toggle="tab">Вспомнить пароль</a></li>
+                </ul>
             </div>
-        </div>
+            <div class="row justify-content-center ml-1">
+                <div class="col-lg-12 tab-content">
+                    <div role="tabpanel" class="tab-pane<?if($active=='login'){?> active<?}?>" id="login">
+                        <?php
+                        $form = ActiveForm::begin(['id' => 'login-form','action'=>'login']);
+                        ?>
 
-    <?php ActiveForm::end(); ?>
+                        <?= $form->field($modelLogin, 'email')->input('email')->label('EMail'); ?>
+                        <?= $form->field($modelLogin, 'password', ['inputOptions' => ['autocomplete' => 'new-password']])->passwordInput()->label('Пароль') ?>
 
-    <div class="col-lg-offset-1" style="color:#999;">
-        You may login with <strong>admin/admin</strong> or <strong>demo/demo</strong>.<br>
-        To modify the username/password, please check out the code <code>app\models\User::$users</code>.
+                        <div class="form-group">
+                            <?= Html::submitButton('Войти', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                        </div>
+
+                        <?php
+                        ActiveForm::end();
+                        ?>
+                    </div>
+                    <div role="tabpanel" class="tab-pane<?if($active=='register'){?> active<?}?>" id="register">
+                        <?php
+                        $form = ActiveForm::begin(['id' => 'register-form','action'=>'register']);
+                        ?>
+
+                        <?= $form->field($modelRegister, 'email')->input('email')->label('EMail'); ?>
+                        <?= $form->field($modelRegister, 'password', ['inputOptions' => ['autocomplete' => 'new-password']])->passwordInput()->label('Введите пароль') ?>
+                        <?= $form->field($modelRegister, 'password2', ['inputOptions' => ['autocomplete' => 'new-password']])->passwordInput()->label('Повторите пароль') ?>
+
+                        <div class="form-group">
+                            <?= Html::submitButton('Зарегистрироваться', ['class' => 'btn btn-primary', 'name' => 'register-button']) ?>
+                        </div>
+
+                        <?php
+                        ActiveForm::end();
+                        ?>
+                    </div>
+                    <div role="tabpanel" class="tab-pane<?if($active=='recover'){?> active<?}?>" id="recover">
+                        <?php
+                        Pjax::begin([]);
+                        $form = ActiveForm::begin(['id' => 'recover-form','action'=>'recover','options' => ['data' => ['pjax' => true]]]);
+                        ?>
+
+                        <?= $form->field($modelRecover, 'email', ['enableAjaxValidation' => true])->input('email')->label('EMail'); ?>
+                        <div class="form-group">
+                            <?= Html::submitButton('Сбросить пароль', ['class' => 'btn btn-primary', 'name' => 'recover-button']) ?>
+                        </div>
+                        <div id="progress" style="display: none">Минуту...</div>
+
+                        <?php
+                        ActiveForm::end();
+                        Pjax::end();
+                        ?>
+                        <script>
+                            $(function () {
+                                $(document).on('pjax:send', function() {
+                                    $(document).css('cursor','wait');
+                                    $('#progress').show();
+                                }).on('pjax:complete', function() {
+                                    $(document).css('cursor','default');
+                                    $('#progress').hide();
+                                })
+                            })
+                        </script>
+                    </div>
+                </div>
+            </div>
+        <? } ?>
     </div>
 </div>

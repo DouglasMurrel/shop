@@ -69,7 +69,7 @@ class SiteController extends Controller
         $modelLogin = new LoginForm();
         $modelRegister = new RegisterForm();
         $modelRecover = new RecoverForm();
-        return $this->render('index',['modelLogin' => $modelLogin,'modelRegister' => $modelRegister,'modelRecover' => $modelRecover,'active' => 'login']);
+        return $this->render('index');
     }
 
     /**
@@ -91,7 +91,7 @@ class SiteController extends Controller
         }
 
         $modelLogin->password = '';
-        return $this->render('index', [
+        return $this->render('login', [
             'modelLogin' => $modelLogin,
             'modelRegister' => $modelRegister,
             'modelRecover' => $modelRecover,
