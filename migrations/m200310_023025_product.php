@@ -14,6 +14,7 @@ class m200310_023025_product extends Migration
     {
         $this->createTable('product', [
             'id' => $this->primaryKey()->comment('id'),
+            'slug' => $this->string()->notNull()->comment('Машинное имя')->unique(),
             'category_id' => $this->integer()->defaultValue(0)->comment('Категория'),
             'brand_id' => $this->integer()->notNull()->defaultValue(0)->comment('Бренд'),
             'name' => $this->string()->notNull()->comment('Имя'),

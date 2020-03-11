@@ -3,11 +3,13 @@
 namespace app\models\DB;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "product".
  *
  * @property int $id id
+ * @property string $slug Машинное имя
  * @property int|null $category_id Категория
  * @property int $brand_id Бренд
  * @property string $name Имя
@@ -38,10 +40,11 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['slug', 'name'], 'required'],
             [['category_id', 'brand_id', 'hit', 'new', 'sale'], 'integer'],
-            [['name'], 'required'],
             [['price'], 'number'],
-            [['name', 'content', 'keywords', 'description', 'image'], 'string', 'max' => 255],
+            [['slug', 'name', 'content', 'keywords', 'description', 'image'], 'string', 'max' => 255],
+            [['slug'], 'unique'],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
         ];
     }
@@ -53,6 +56,7 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'id',
+            'slug' => 'Машинное имя',
             'category_id' => 'Категория',
             'brand_id' => 'Бренд',
             'name' => 'Имя',
@@ -75,5 +79,13 @@ class Product extends \yii\db\ActiveRecord
     public function getCategory()
     {
         return $this->hasOne(Category::className(), ['id' => 'category_id']);
+    }
+
+    /**
+     * @param string $slug
+     * @return ActiveRecord
+     */
+    public static function get($slug){
+        return Product::find()->where(['slug'=>$slug])->one();
     }
 }

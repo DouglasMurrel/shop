@@ -21,8 +21,14 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site.css',
+        'css/accordion.css',
+        '//stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css',
+        'css/cssfix.css',
     ];
     public $js = [
+        'js/accordion.js',
+        '//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js',
+        '//stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js'
     ];
     public $jsOptions = [
         'position' => \yii\web\View::POS_HEAD

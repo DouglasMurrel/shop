@@ -2,6 +2,7 @@
 
 /* @var $this yii\web\View */
 
+use app\components\TreeWidget;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\widgets\Pjax;
@@ -17,7 +18,7 @@ $this->title = 'My Yii Application';
                     <div class="col-sm-3">
                         <h2>Каталог</h2>
                         <div class="category-products">
-                            <!-- Меню каталога -->
+                            <?= TreeWidget::widget(); ?>
                         </div>
 
                         <h2>Бренды</h2>

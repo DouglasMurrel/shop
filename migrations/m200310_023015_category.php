@@ -14,6 +14,7 @@ class m200310_023015_category extends Migration
     {
         $this->createTable('category', [
             'id' => $this->primaryKey()->comment('id'),
+            'slug' => $this->string()->notNull()->comment('Машинное имя')->unique(),
             'parent_id' => $this->integer()->notNull()->defaultValue(0)->comment('Родительская категория'),
             'name' => $this->string()->notNull()->comment('Имя'),
             'content' => $this->string()->comment('Описание'),

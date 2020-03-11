@@ -53,6 +53,7 @@ $config = [
                 'register' => 'site/register',
                 'recover' => 'site/recover',
                 'reset/<hash>/<email>' => 'site/reset',
+                'category/<slug>' => 'catalog/category'
             ],
         ],
     ],
