@@ -59,10 +59,11 @@ class Image extends \yii\db\ActiveRecord
     }
 
     public static function getFirst($entity_id,$entity_type){
-        return Image::find()
+        $imageArray = Image::find()
             ->where(['entity_id'=>$entity_id,'entity_type'=>$entity_type])
             ->orderBy('sort ASC')
             ->asArray()
             ->one();
+        return $imageArray['image'];
     }
 }

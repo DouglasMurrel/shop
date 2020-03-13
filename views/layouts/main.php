@@ -9,8 +9,6 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
-use app\components\TreeWidget;
-use app\components\BrandWidget;
 
 AppAsset::register($this);
 ?>
@@ -43,7 +41,7 @@ AppAsset::register($this);
             ['label' => 'О нас', 'url' => ['/about']],
             ['label' => 'Обратная связь', 'url' => ['/contact']],
             Yii::$app->user->isGuest ? (
-                ['label' => 'Вход', 'url' => ['login']]
+                ['label' => 'Вход', 'url' => ['/login']]
             ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
@@ -67,17 +65,6 @@ AppAsset::register($this);
         <div class="site-index">
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-3">
-                        <h2>Каталог</h2>
-                        <div class="category-products">
-                            <?= TreeWidget::widget(); ?>
-                        </div>
-
-                        <h2>Бренды</h2>
-                        <div class="brand-products">
-                            <?= BrandWidget::widget(); ?>
-                        </div>
-                    </div>
                     <?=$content?>
                 </div>
             </div>
@@ -97,3 +84,5 @@ AppAsset::register($this);
 </body>
 </html>
 <?php $this->endPage() ?>
+
+

@@ -91,15 +91,30 @@ class Product extends \yii\db\ActiveRecord
     }
 
     public static function hitProducts(){
-        return Product::find()->where(['hit' => 1])->limit(3)->asArray()->all();
+        $arrResult = Product::find()->where(['hit' => 1])->limit(3)->asArray()->all();
+        foreach($arrResult as $k=>$item){
+            $item['image'] = Image::getFirst($item['id'],'product');
+            $arrResult[$k] = $item;
+        }
+        return $arrResult;
     }
 
     public static function newPoducts(){
-        return Product::find()->where(['new' => 1])->limit(3)->asArray()->all();
+        $arrResult = Product::find()->where(['new' => 1])->limit(3)->asArray()->all();
+        foreach($arrResult as $k=>$item){
+            $item['image'] = Image::getFirst($item['id'],'product');
+            $arrResult[$k] = $item;
+        }
+        return $arrResult;
     }
 
     public static function saleProducts(){
-        return Product::find()->where(['sale' => 1])->limit(3)->asArray()->all();
+        $arrResult = Product::find()->where(['sale' => 1])->limit(3)->asArray()->all();
+        foreach($arrResult as $k=>$item){
+            $item['image'] = Image::getFirst($item['id'],'product');
+            $arrResult[$k] = $item;
+        }
+        return $arrResult;
     }
 
     public function firstImage(){

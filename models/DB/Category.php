@@ -89,4 +89,58 @@ class Category extends \yii\db\ActiveRecord
     public static function get($slug){
         return Category::find()->where(['slug' => $slug])->one();
     }
+
+    /**
+     * Возвращает первое изображение
+     */
+    public function getFirstImage(){
+        return Image::getFirst($this->id,'category');
+    }
+
+    /**
+     * Возвращает массив товаров в категории и во
+     * всех ее потомках, т.е. в дочерних, дочерних-дочерних и так далее
+     */
+    public function getCategoryProducts() {
+        // получаем массив идентификаторов всех потомков категории
+        $ids = $this->getAllChildrenIds($this->id);
+        $ids[] = $this->id;
+        $arrResult = Product::find()->where(['in', 'category_id', $ids])->all();
+        foreach($arrResult as $k=>$item){
+            $item = $item->toArray();
+            $item['image'] = Image::getFirst($item['id'],'product');
+            $arrResult[$k] = $item;
+        }
+        return $arrResult;
+    }
+
+    /**
+     * Возвращает массив идентификаторов всех потомков категории $id,
+     * т.е. дочерние, дочерние дочерних и так далее
+     */
+    protected function getAllChildrenIds($id) {
+        $children = [];
+        $ids = $this->getChildrenIds($id);
+        foreach ($ids as $item) {
+            $children[] = $item;
+            $c = $this->getAllChildrenIds($item);
+            foreach ($c as $v) {
+                $children[] = $v;
+            }
+        }
+        return $children;
+    }
+
+    /**
+     * Возвращает массив идентификаторов дочерних категорий (прямых
+     * потомков) категории с уникальным идентификатором $id
+     */
+    protected function getChildrenIds($id) {
+        $children = self::find()->where(['parent_id' => $id])->asArray()->all();
+        $ids = [];
+        foreach ($children as $child) {
+            $ids[] = $child['id'];
+        }
+        return $ids;
+    }
 }

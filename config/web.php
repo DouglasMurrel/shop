@@ -12,6 +12,7 @@ $config = [
     'language' => 'ru-RU',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'defaultRoute' => 'catalog/index',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -56,6 +57,7 @@ $config = [
                 'category/<slug>' => 'catalog/category',
                 'product/<slug>' => 'catalog/product',
                 'brand/<slug>' => 'catalog/brand',
+                'brands' => 'catalog/brands',
             ],
         ],
     ],

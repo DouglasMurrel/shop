@@ -10,28 +10,52 @@ use yii\web\Controller;
 
 class CatalogController extends Controller{
 
+    public function beforeAction($event)
+    {
+        Yii::$app->view->title = Yii::$app->params['defaultTitle'];
+        Yii::$app->view->registerMetaTag(['name' => 'description','content' => Yii::$app->params['defaultDescription']],'description');
+        Yii::$app->view->registerMetaTag(['name' => 'keywords','content' => Yii::$app->params['defaultKeywords']],'keywords');
+        return parent::beforeAction($event);
+    }
+
+    /**
+     * Displays homepage.
+     *
+     * @return string
+     */
+    public function actionIndex()
+    {
+        // получаем лидеров продаж
+        $hitProducts = Product::hitProducts();
+        // получаем новые товары
+        $newProducts = Product::newPoducts();
+        // получаем товары распродажи
+        $saleProducts = Product::saleProducts();
+        return $this->render('index',[
+            'hitProducts'=>$hitProducts,
+            'newProducts'=>$newProducts,
+            'saleProducts'=>$saleProducts,
+        ]);
+    }
+
     /**
      * Категория каталога товаров
      */
     public function actionCategory($slug) {
         $category = Category::get($slug);
-        $products = $category->products;
+        $products = $category->getCategoryProducts();
         // товары категории
-//        list($products, $pages) = $temp->getCategoryProducts($id);
-        // данные о категории
-        // устанавливаем мета-теги для страницы
-        /*
-        $this->setMetaTags(
-            $category->name . ' | ' . Yii::$app->params['shopName'],
-            $category->keywords,
-            $category->description
-        );
         return $this->render(
             'category',
-            compact('category', 'products', 'pages')
+            [
+                'products'=>$products,
+                'name'=>$category->name,
+                'content'=>$category->content,
+                'description'=>$category->description,
+                'keywords'=>$category->keywords,
+                'image'=>$category->getFirstImage(),
+            ]
         );
-        */
-        return print_r($products,1);
     }
 
     /**
@@ -41,7 +65,9 @@ class CatalogController extends Controller{
         $brands = Brand::getAllBrands();
         return $this->render(
             'brands',
-            compact('brands')
+            [
+                'brands' => $brands,
+            ]
         );
     }
 
@@ -50,14 +76,18 @@ class CatalogController extends Controller{
      */
     public function actionBrand($slug) {
         $brand = Brand::get($slug);
-        $products = $brand->products;
-        /*
+        $products = $brand->getBrandProducts();
         return $this->render(
             'brand',
-            compact('brand')
+            [
+                'products'=>$products,
+                'name'=>$brand->name,
+                'content'=>$brand->content,
+                'description'=>$brand->description,
+                'keywords'=>$brand->keywords,
+                'image'=>$brand->getFirstImage(),
+            ]
         );
-        */
-        return print_r($products,1);
     }
 
     public function actionProduct($slug){

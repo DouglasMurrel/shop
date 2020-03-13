@@ -64,6 +64,19 @@ class Brand extends \yii\db\ActiveRecord
     }
 
     /**
+     * Возвращает массив товаров бренда
+     */
+    public function getBrandProducts() {
+        $arrResult = $this->products;
+        foreach($arrResult as $k=>$item){
+            $item = $item->toArray();
+            $item['image'] = Image::getFirst($item['id'],'product');
+            $arrResult[$k] = $item;
+        }
+        return $arrResult;
+    }
+
+    /**
      * Возвращает массив всех брендов каталога и
      * количество товаров для каждого бренда
      */
@@ -75,7 +88,6 @@ class Brand extends \yii\db\ActiveRecord
                 'name' => 'brand.name',
                 'slug' => 'brand.slug',
                 'content' => 'brand.content',
-                'image' => 'brand.image',
                 'count' => 'COUNT(*)'
             ])
             ->innerJoin(
@@ -83,7 +95,7 @@ class Brand extends \yii\db\ActiveRecord
                 'product.brand_id = brand.id'
             )
             ->groupBy([
-                'brand.id', 'brand.name', 'brand.content', 'brand.image'
+                'brand.id', 'brand.name', 'brand.content'
             ])
             ->orderBy(['name' => SORT_ASC])
             ->asArray()
@@ -128,5 +140,12 @@ class Brand extends \yii\db\ActiveRecord
      */
     public static function get($slug){
         return Brand::find()->where(['slug' => $slug])->one();
+    }
+
+    /**
+     * Возвращает первое изображение
+     */
+    public function getFirstImage(){
+        return Image::getFirst($this->id,'brand');
     }
 }

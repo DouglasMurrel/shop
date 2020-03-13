@@ -61,24 +61,12 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
-    public function actionIndex()
+    public function beforeAction($event)
     {
-        // получаем лидеров продаж
-        $hitProducts = Product::hitProducts();
-        // получаем новые товары
-        $newProducts = Product::newPoducts();
-        // получаем товары распродажи
-        $saleProducts = Product::saleProducts();
-        return $this->render('index',[
-            'hitProducts'=>$hitProducts,
-            'newProducts'=>$newProducts,
-            'saleProducts'=>$saleProducts,
-        ]);
+        Yii::$app->view->title = Yii::$app->params['defaultTitle'];
+        Yii::$app->view->registerMetaTag(['name' => 'description','content' => Yii::$app->params['defaultDescription']],'description');
+        Yii::$app->view->registerMetaTag(['name' => 'keywords','content' => Yii::$app->params['defaultKeywords']],'keywords');
+        return parent::beforeAction($event);
     }
 
     /**

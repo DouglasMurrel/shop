@@ -21,10 +21,8 @@ class TreeWidget extends Widget
     protected $tree;
 
     public function run() {
-        // пробуем извлечь данные из кеша
-        $html = Yii::$app->cache->get('catalog-menu');
-        if ($html === false) {
-            // данных нет в кеше, получаем их заново
+        // сохраняем полученные данные в кеше
+        $html = Yii::$app->cache->getOrSet('catalog-menu', function(){
             $this->data = Category::find()->indexBy('id')->asArray()->all();
             $this->makeTree();
             if ( ! empty($this->tree)) {
@@ -32,9 +30,8 @@ class TreeWidget extends Widget
             } else {
                 $html = '';
             }
-            // сохраняем полученные данные в кеше
-            Yii::$app->cache->set('catalog-menu', $html, 60);
-        }
+            return $html;
+        }, 60);
         return $html;
     }
 
