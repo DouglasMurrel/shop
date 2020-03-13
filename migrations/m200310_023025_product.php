@@ -35,6 +35,7 @@ class m200310_023025_product extends Migration
      */
     public function safeDown()
     {
+        $this->dropForeignKey('category_fk','product');
         $this->dropTable('product');
     }
 

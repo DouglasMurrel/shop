@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\DB\Brand;
+use app\models\DB\Product;
 use app\models\DB\User;
 use app\models\Forms\RecoverForm;
 use app\models\Forms\RegisterForm;
@@ -66,10 +68,17 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $modelLogin = new LoginForm();
-        $modelRegister = new RegisterForm();
-        $modelRecover = new RecoverForm();
-        return $this->render('index');
+        // получаем лидеров продаж
+        $hitProducts = Product::hitProducts();
+        // получаем новые товары
+        $newProducts = Product::newPoducts();
+        // получаем товары распродажи
+        $saleProducts = Product::saleProducts();
+        return $this->render('index',[
+            'hitProducts'=>$hitProducts,
+            'newProducts'=>$newProducts,
+            'saleProducts'=>$saleProducts,
+        ]);
     }
 
     /**

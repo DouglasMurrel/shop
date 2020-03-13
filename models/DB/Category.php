@@ -3,7 +3,6 @@
 namespace app\models\DB;
 
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "category".
@@ -15,7 +14,6 @@ use yii\db\ActiveRecord;
  * @property string|null $content Описание
  * @property string|null $keywords Мета-тег keywords
  * @property string|null $description Мета-тег description
- * @property string|null $image Картинка
  *
  * @property Product[] $products
  */
@@ -37,7 +35,7 @@ class Category extends \yii\db\ActiveRecord
         return [
             [['slug', 'name'], 'required'],
             [['parent_id'], 'integer'],
-            [['slug', 'name', 'content', 'keywords', 'description', 'image'], 'string', 'max' => 255],
+            [['slug', 'name', 'content', 'keywords', 'description'], 'string', 'max' => 255],
             [['slug'], 'unique'],
         ];
     }
@@ -55,7 +53,6 @@ class Category extends \yii\db\ActiveRecord
             'content' => 'Описание',
             'keywords' => 'Мета-тег keywords',
             'description' => 'Мета-тег description',
-            'image' => 'Картинка',
         ];
     }
 
@@ -66,14 +63,30 @@ class Category extends \yii\db\ActiveRecord
      */
     public function getProducts()
     {
-        return $this->hasMany(Product::className(), ['category_id' => 'id']);
+        return $this->hasMany(Product::className(), ['category_id' => 'id'])->inverseOf('category');
     }
 
     /**
+     * Возвращает родительскую категорию
+     */
+    public function getParent() {
+        // связь таблицы БД `category` с таблицей `category`
+        return $this->hasOne(self::class, ['id' => 'parent_id']);
+    }
+
+    /**
+     * Возвращает дочерние категории
+     */
+    public function getChildren() {
+        // связь таблицы БД `category` с таблицей `category`
+        return $this->hasMany(self::class, ['parent_id' => 'id']);
+    }
+
+    /**
+     * Возвращает содержимое по слагу
      * @param string $slug
-     * @return ActiveRecord
      */
     public static function get($slug){
-        return Category::find()->where(['slug'=>$slug])->one();
+        return Category::find()->where(['slug' => $slug])->one();
     }
 }

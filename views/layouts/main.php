@@ -9,6 +9,8 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use app\components\TreeWidget;
+use app\components\BrandWidget;
 
 AppAsset::register($this);
 ?>
@@ -62,7 +64,24 @@ AppAsset::register($this);
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= Alert::widget() ?>
-        <?= $content ?>
+        <div class="site-index">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h2>Каталог</h2>
+                        <div class="category-products">
+                            <?= TreeWidget::widget(); ?>
+                        </div>
+
+                        <h2>Бренды</h2>
+                        <div class="brand-products">
+                            <?= BrandWidget::widget(); ?>
+                        </div>
+                    </div>
+                    <?=$content?>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
