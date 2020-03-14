@@ -8,6 +8,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\Pagination;
 
+
 class SearchForm extends Model{
     public $query;
     public $page;
@@ -42,7 +43,7 @@ class SearchForm extends Model{
             // пробуем извлечь данные из кеша
 
             $data = Yii::$app->cache->getOrSet(['search','search'=>$search,'page'=>$page], function() use($search) {
-                $query = Product::find()->where(['like', 'name', $search]);
+                $query = $this->getFromDB($search);
                 // постраничная навигация
                 $pages = new Pagination([
                     'totalCount' => $query->count(),
@@ -67,5 +68,31 @@ class SearchForm extends Model{
             return $data;
         }
         return '';
+    }
+
+    /**
+     * @param $search
+     * @return \yii\db\ActiveQuery
+     */
+    private function getFromDB($search){
+        $words = explode(' ', $search);
+        // рассчитываем релевантность для каждого товара
+        $relevance = "IF (`name` LIKE '%" . $words[0] . "%', 2, 0)";
+        $relevance .= " + IF (`content` LIKE '%" . $words[0] . "%', 1, 0)";
+        for ($i = 1; $i < count($words); $i++) {
+            $relevance .= " + IF (`name` LIKE '%" . $words[$i] . "%', 2, 0)";
+            $relevance .= " + IF (`content` LIKE '%" . $words[$i] . "%', 1, 0)";
+        }
+        $query = Product::find()
+            ->select(['*', 'relevance' => $relevance])
+            ->where(['like', 'name', $words[0]])
+            ->orWhere(['like', 'content', $words[0]]);
+        for ($i = 1; $i < count($words); $i++) {
+            $query = $query->orWhere(['like', 'name', $words[$i]]);
+            $query = $query->orWhere(['like', 'content', $words[$i]]);
+        }
+        // сортируем разультаты по убыванию релевантности
+        $query = $query->orderBy(['relevance' => SORT_DESC]);
+        return $query;
     }
 }

@@ -10,6 +10,8 @@ use app\components\BrandWidget;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
+
+$this->params['breadcrumbs'] = [['label'=>'']];
 ?>
 
 <section>
