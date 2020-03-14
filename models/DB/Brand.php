@@ -4,6 +4,7 @@ namespace app\models\DB;
 
 use Yii;
 use yii\data\Pagination;
+use yii\web\HttpException;
 
 /**
  * This is the model class for table "brand".
@@ -90,25 +91,28 @@ class Brand extends \yii\db\ActiveRecord
      * количество товаров для каждого бренда
      */
     public static function getAllBrands() {
-        $query = self::find();
-        $brands = $query
-            ->select([
-                'id' => 'brand.id',
-                'name' => 'brand.name',
-                'slug' => 'brand.slug',
-                'content' => 'brand.content',
-                'count' => 'COUNT(*)'
-            ])
-            ->innerJoin(
-                'product',
-                'product.brand_id = brand.id'
-            )
-            ->groupBy([
-                'brand.id', 'brand.name', 'brand.content'
-            ])
-            ->orderBy(['name' => SORT_ASC])
-            ->asArray()
-            ->all();
+        $brands = Yii::$app->cache->getOrSet('brands', function() {
+            $query = self::find();
+            $brands = $query
+                ->select([
+                    'id' => 'brand.id',
+                    'name' => 'brand.name',
+                    'slug' => 'brand.slug',
+                    'content' => 'brand.content',
+                    'count' => 'COUNT(*)'
+                ])
+                ->innerJoin(
+                    'product',
+                    'product.brand_id = brand.id'
+                )
+                ->groupBy([
+                    'brand.id', 'brand.name', 'brand.content'
+                ])
+                ->orderBy(['name' => SORT_ASC])
+                ->asArray()
+                ->all();
+            return $brands;
+        },60);
         return $brands;
     }
 
@@ -133,7 +137,7 @@ class Brand extends \yii\db\ActiveRecord
                 'brand.id', 'brand.name'
             ])
             ->orderBy(['count' => SORT_DESC])
-            ->limit(10)
+            ->limit(Yii::$app->params['pageSize'])
             ->asArray()
             // для дальнейшей сортировки
             ->indexBy('name')
@@ -164,5 +168,19 @@ class Brand extends \yii\db\ActiveRecord
      */
     public function getFirstImage(){
         return Image::getFirst($this->id,'brand');
+    }
+
+    public static function getBrandFullData($slug){
+        $data = Yii::$app->cache->getOrSet(['brandProducts','slug'=>$slug,'page'=>Yii::$app->request->get('page')], function() use ($slug) {
+            $brand = Brand::get($slug);
+            if($brand===null) {
+                throw new HttpException(
+                    404,
+                    'Запрошенная страница не найдена'
+                );
+            }
+            return [$brand,$brand->getBrandProducts()];
+        },60);
+        return $data;
     }
 }

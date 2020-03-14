@@ -3,6 +3,7 @@
 namespace app\models\DB;
 
 use Yii;
+use yii\web\HttpException;
 
 /**
  * This is the model class for table "product".
@@ -90,66 +91,114 @@ class Product extends \yii\db\ActiveRecord
         return $this->hasOne(Category::className(), ['id' => 'category_id']);
     }
 
-    public static function hitProducts(){
-        $arrResult = Product::find()->where(['hit' => 1])->limit(3)->asArray()->all();
-        foreach($arrResult as $k=>$item){
-            $item['image'] = Image::getFirst($item['id'],'product');
-            $arrResult[$k] = $item;
-        }
+    public static function hitProducts()
+    {
+        $arrResult = Yii::$app->cache->getOrSet('hitProducts', function() {
+            $arrResult = Product::find()->where(['hit' => 1])->limit(3)->asArray()->all();
+            foreach ($arrResult as $k => $item) {
+                $item['image'] = Image::getFirst($item['id'], 'product');
+                $arrResult[$k] = $item;
+            }
+            return $arrResult;
+        });
         return $arrResult;
     }
 
-    public static function newProducts(){
-        $arrResult = Product::find()->where(['new' => 1])->limit(3)->asArray()->all();
-        foreach($arrResult as $k=>$item){
-            $item['image'] = Image::getFirst($item['id'],'product');
-            $arrResult[$k] = $item;
-        }
+    public static function newProducts()
+    {
+        $arrResult = Yii::$app->cache->getOrSet('newProducts', function() {
+            $arrResult = Product::find()->where(['new' => 1])->limit(3)->asArray()->all();
+            foreach ($arrResult as $k => $item) {
+                $item['image'] = Image::getFirst($item['id'], 'product');
+                $arrResult[$k] = $item;
+            }
+            return $arrResult;
+        });
         return $arrResult;
     }
 
-    public static function saleProducts(){
-        $arrResult = Product::find()->where(['sale' => 1])->limit(3)->asArray()->all();
-        foreach($arrResult as $k=>$item){
-            $item['image'] = Image::getFirst($item['id'],'product');
-            $arrResult[$k] = $item;
-        }
+    public static function saleProducts()
+    {
+        $arrResult = Yii::$app->cache->getOrSet('saleProducts', function() {
+            $arrResult = Product::find()->where(['sale' => 1])->limit(3)->asArray()->all();
+            foreach ($arrResult as $k => $item) {
+                $item['image'] = Image::getFirst($item['id'], 'product');
+                $arrResult[$k] = $item;
+            }
+            return $arrResult;
+        });
         return $arrResult;
     }
 
-    public function firstImage(){
-        return Image::getFirst($this->id,'product');
+    public function firstImage()
+    {
+        return Image::getFirst($this->id, 'product');
     }
 
-    public function images(){
-        return Image::get($this->id,'product');
+    public function images()
+    {
+        return Image::get($this->id, 'product');
     }
 
     /**
      * Возвращает содержимое по слагу
      * @param string $slug
      */
-    public static function get($slug){
+    public static function get($slug)
+    {
         return Product::find()->where(['slug' => $slug])->one();
     }
 
     /**
      * Возвращаем похожие товары (из той же категории того же бренда)
      */
-    public function getSimilar(){
-        $arrResult = Product::find()
-            ->where([
-                'category_id' => $this->category_id,
-                'brand_id' => $this->brand_id
-            ])
-            ->andWhere(['NOT IN', 'id', $this->id])
-            ->limit(3)
-            ->asArray()
-            ->all();
-        foreach($arrResult as $k=>$item){
-            $item['image'] = Image::getFirst($item['id'],'product');
-            $arrResult[$k] = $item;
-        }
-        return $arrResult;
+    public function getSimilar()
+    {
+        $slug = $this->slug;
+        $category_id = $this->category_id;
+        $brand_id = $this->brand_id;
+        $id = $this->id;
+        $similar = Yii::$app->cache->getOrSet(['similar','slug'=>$slug], function() use ($category_id,$brand_id,$id) {
+            $arrResult = Product::find()
+                ->where([
+                    'category_id' => $category_id,
+                    'brand_id' => $brand_id
+                ])
+                ->andWhere(['NOT IN', 'id', $id])
+                ->limit(3)
+                ->asArray()
+                ->all();
+            foreach ($arrResult as $k => $item) {
+                $item['image'] = Image::getFirst($item['id'], 'product');
+                $arrResult[$k] = $item;
+            }
+            return $arrResult;
+        },60);
+        return $similar;
+    }
+
+    public static function getProductFullData($slug){
+        $data = Yii::$app->cache->getOrSet(['product','slug'=>$slug], function() use ($slug) {
+            $product = Product::get($slug);
+            if($product===null) {
+                throw new HttpException(
+                    404,
+                    'Запрошенная страница не найдена'
+                );
+            }
+            $brand = Brand::getById($product->brand_id);
+            $category = Category::getById($product->category_id);
+            $parents = $category->getParents();
+            $links = [];
+            foreach ($parents as $parent){
+                $link = ['label'=>$parent->name,'url'=>['catalog/category','slug'=>$parent->slug]];
+                $links[] = $link;
+            }
+            $link = ['label'=>$product->name,'url'=>['catalog/product','slug'=>$slug]];
+            $links[] = $link;
+            $images = $product->images();
+            return [$product, $brand, $images, $links];
+        },60);
+        return $data;
     }
 }

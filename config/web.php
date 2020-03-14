@@ -60,6 +60,8 @@ $config = [
                 'brand/<slug>/<page:\d+>' => 'catalog/brand',
                 'brand/<slug>' => 'catalog/brand',
                 'brands' => 'catalog/brands',
+                'search/<page:\d+>' => 'catalog/search',
+                'search' => 'catalog/search',
             ],
         ],
     ],

@@ -5,9 +5,11 @@ namespace app\controllers;
 use app\models\DB\Brand;
 use app\models\DB\Category;
 use app\models\DB\Product;
+use app\models\Forms\SearchForm;
 use Yii;
 use yii\helpers\Url;
 use yii\web\Controller;
+use yii\web\HttpException;
 
 class CatalogController extends Controller{
 
@@ -27,17 +29,11 @@ class CatalogController extends Controller{
     public function actionIndex()
     {
         // получаем лидеров продаж
-        $hitProducts = Yii::$app->cache->getOrSet('hitProducts', function() {
-            return Product::hitProducts();
-        },60);
+        $hitProducts = Product::hitProducts();
         // получаем новые товары
-        $newProducts = Yii::$app->cache->getOrSet('newProducts', function() {
-            return Product::newProducts();
-        },60);
+        $newProducts = Product::newProducts();
         // получаем товары распродажи
-        $saleProducts = Yii::$app->cache->getOrSet('saleProducts', function() {
-            return Product::saleProducts();
-        },60);
+        $saleProducts = Product::saleProducts();
         return $this->render('index',[
             'hitProducts'=>$hitProducts,
             'newProducts'=>$newProducts,
@@ -49,18 +45,8 @@ class CatalogController extends Controller{
      * Категория каталога товаров
      */
     public function actionCategory($slug) {
-        $category = Category::get($slug);
-        $data = Yii::$app->cache->getOrSet(['categoryProducts','slug'=>$slug,'page'=>Yii::$app->request->get('page')], function() use ($category) {
-            $products = $category->getCategoryProducts();
-            $parents = $category->getParents();
-            $links = [];
-            foreach ($parents as $parent){
-                $link = ['label'=>$parent->name,'url'=>['catalog/category','slug'=>$parent->slug]];
-                $links[] = $link;
-            }
-            return [$products,$links];
-        },60);
-        list($products,$links) = $data;
+        $data = Category::getCategoryFullData($slug);
+        list($category,$products,$links) = $data;
         // товары категории
         return $this->render(
             'category',
@@ -81,9 +67,7 @@ class CatalogController extends Controller{
      * Список всех брендов каталога товаров
      */
     public function actionBrands() {
-        $brands = Yii::$app->cache->getOrSet('brands', function(){
-            return Brand::getAllBrands();
-        },60);
+        $brands = Brand::getAllBrands();
         return $this->render(
             'brands',
             [
@@ -97,10 +81,8 @@ class CatalogController extends Controller{
      * Список товаров бренда с идентификатором $slug
      */
     public function actionBrand($slug) {
-        $brand = Brand::get($slug);
-        $products = Yii::$app->cache->getOrSet(['brandProducts','slug'=>$slug,'page'=>Yii::$app->request->get('page')], function() use ($brand) {
-            return $brand->getBrandProducts();
-        },60);
+        $data = Brand::getBrandFullData($slug);
+        list($brand,$products) = $data;
         return $this->render(
             'brand',
             [
@@ -120,27 +102,10 @@ class CatalogController extends Controller{
      * Страница товара с идентификатором $slug
      */
     public function actionProduct($slug) {
-        // пробуем извлечь данные из кеша
-        $data = Yii::$app->cache->getOrSet(['product','slug'=>$slug], function() use ($slug) {
-            $product = Product::get($slug);
-            $brand = Brand::getById($product->brand_id);
-            $category = Category::getById($product->category_id);
-            $parents = $category->getParents();
-            $links = [];
-            foreach ($parents as $parent){
-                $link = ['label'=>$parent->name,'url'=>['catalog/category','slug'=>$parent->slug]];
-                $links[] = $link;
-            }
-            $link = ['label'=>$product->name,'url'=>['catalog/product','slug'=>$slug]];
-            $links[] = $link;
-            $images = $product->images();
-            return [$product, $brand, $images, $links];
-        },60);
+        $data = Product::getProductFullData($slug);
         list($product, $brand, $images, $links) = $data;
         // получаем товары, похожие на текущий
-        $similar = Yii::$app->cache->getOrSet(['similar','slug'=>$slug], function() use ($product) {
-            return $product->getSimilar();
-        },60);
+        $similar = $product->getSimilar($slug);
         return $this->render(
             'product',
             [
@@ -151,5 +116,24 @@ class CatalogController extends Controller{
                 'links'=>$links,
             ]
         );
+    }
+
+    /**
+     * Поиск
+     */
+    public function actionSearch(){
+        $modelSearch = new SearchForm();
+        if($modelSearch->load(['SearchForm'=>Yii::$app->request->get()])) {
+            $data = $modelSearch->search();
+            list($products, $pages) = $data;
+            return $this->render(
+                'search',
+                [
+                    'products'=>$products,
+                    'pages'=>$pages,
+                ]
+            );
+        }
+        return $this->redirect(['/']);
     }
 }

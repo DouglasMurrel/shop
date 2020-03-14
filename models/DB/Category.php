@@ -4,6 +4,7 @@ namespace app\models\DB;
 
 use Yii;
 use yii\data\Pagination;
+use yii\web\HttpException;
 
 /**
  * This is the model class for table "category".
@@ -133,7 +134,7 @@ class Category extends \yii\db\ActiveRecord
         $query = Product::find()->where(['in', 'category_id', $ids]);
         $pages = new Pagination([
             'totalCount' => $query->count(),
-            'pageSize' => 10, // кол-во товаров на странице
+            'pageSize' => Yii::$app->params['pageSize'], // кол-во товаров на странице
             'forcePageParam' => false,
             'pageSizeParam' => false,
         ]);
@@ -176,5 +177,26 @@ class Category extends \yii\db\ActiveRecord
             $ids[] = $child['id'];
         }
         return $ids;
+    }
+
+    public static function getCategoryFullData($slug){
+        $data = Yii::$app->cache->getOrSet(['categoryProducts','slug'=>$slug,'page'=>Yii::$app->request->get('page')], function() use ($slug) {
+            $category = Category::get($slug);
+            if($category===null) {
+                throw new HttpException(
+                    404,
+                    'Запрошенная страница не найдена'
+                );
+            }
+            $products = $category->getCategoryProducts();
+            $parents = $category->getParents();
+            $links = [];
+            foreach ($parents as $parent){
+                $link = ['label'=>$parent->name,'url'=>['catalog/category','slug'=>$parent->slug]];
+                $links[] = $link;
+            }
+            return [$category,$products,$links];
+        },60);
+        return $data;
     }
 }

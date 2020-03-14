@@ -2,9 +2,11 @@
 
 use app\components\BrandWidget;
 use app\components\ProductWidget;
+use app\components\SearchWidget;
 use app\components\TreeWidget;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 use yii\widgets\LinkPager;
 
 $this->params['breadcrumbs'] = $links;
@@ -13,6 +15,7 @@ if($name!='')$this->title = $name;
 if($description!='')$this->registerMetaTag(['name' => 'description','content' => $description],'description');
 if($keywords!='')$this->registerMetaTag(['name' => 'keywords','content' => $keywords],'keywords');
 ?>
+<?= SearchWidget::widget(); ?>
 <div class="col-sm-3">
     <h2>Каталог</h2>
     <div class="category-products">

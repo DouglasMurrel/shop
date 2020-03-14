@@ -5,15 +5,17 @@
 
 use app\components\TreeWidget;
 use app\components\BrandWidget;
+use app\components\SearchWidget;
 use yii\helpers\Url;
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 $this->params['breadcrumbs'] = $links;
 ?>
-
 <section>
     <div class="container">
         <div class="row">
+            <?= SearchWidget::widget(); ?>
             <div class="col-sm-3">
                 <h2>Каталог</h2>
                 <div class="category-products">
