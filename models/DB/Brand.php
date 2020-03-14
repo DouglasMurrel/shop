@@ -152,6 +152,14 @@ class Brand extends \yii\db\ActiveRecord
     }
 
     /**
+     * Возвращает содержимое по id
+     * @param int $id
+     */
+    public static function getById($id){
+        return Brand::findOne($id);
+    }
+
+    /**
      * Возвращает первое изображение
      */
     public function getFirstImage(){

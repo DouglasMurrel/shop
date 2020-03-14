@@ -76,6 +76,21 @@ class Category extends \yii\db\ActiveRecord
     }
 
     /**
+     * Возвращает родительские категории до корня
+     */
+    public function getParents(){
+        $parents = [];
+        $id = $this->id;
+        $parent = $this;
+        while($id!=0){
+            $parents[] = $parent;
+            $parent = Category::findOne($parent->parent_id);
+            $id = $parent->id;
+        }
+        return $parents;
+    }
+
+    /**
      * Возвращает дочерние категории
      */
     public function getChildren() {
@@ -89,6 +104,14 @@ class Category extends \yii\db\ActiveRecord
      */
     public static function get($slug){
         return Category::find()->where(['slug' => $slug])->one();
+    }
+
+    /**
+     * Возвращает содержимое по id
+     * @param int $id
+     */
+    public static function getById($id){
+        return Category::findOne($id);
     }
 
     /**

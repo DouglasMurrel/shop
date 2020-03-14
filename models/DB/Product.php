@@ -99,7 +99,7 @@ class Product extends \yii\db\ActiveRecord
         return $arrResult;
     }
 
-    public static function newPoducts(){
+    public static function newProducts(){
         $arrResult = Product::find()->where(['new' => 1])->limit(3)->asArray()->all();
         foreach($arrResult as $k=>$item){
             $item['image'] = Image::getFirst($item['id'],'product');
@@ -121,11 +121,35 @@ class Product extends \yii\db\ActiveRecord
         return Image::getFirst($this->id,'product');
     }
 
+    public function images(){
+        return Image::get($this->id,'product');
+    }
+
     /**
      * Возвращает содержимое по слагу
      * @param string $slug
      */
     public static function get($slug){
         return Product::find()->where(['slug' => $slug])->one();
+    }
+
+    /**
+     * Возвращаем похожие товары (из той же категории того же бренда)
+     */
+    public function getSimilar(){
+        $arrResult = Product::find()
+            ->where([
+                'category_id' => $this->category_id,
+                'brand_id' => $this->brand_id
+            ])
+            ->andWhere(['NOT IN', 'id', $this->id])
+            ->limit(3)
+            ->asArray()
+            ->all();
+        foreach($arrResult as $k=>$item){
+            $item['image'] = Image::getFirst($item['id'],'product');
+            $arrResult[$k] = $item;
+        }
+        return $arrResult;
     }
 }

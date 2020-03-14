@@ -31,7 +31,7 @@ if($keywords!='')$this->registerMetaTag(['name' => 'keywords','content' => $keyw
                     <div class="thumbnail">
                         <div class="caption">
                             <h2>
-                                <a href="<?= Url::to(['catalog/brand', 'id' => $brand['id']]); ?>">
+                                <a href="<?= Url::to(['catalog/brand', 'slug' => $brand['slug']]); ?>">
                                     <?= Html::encode($brand['name']); ?>
                                 </a>
                             </h2>
