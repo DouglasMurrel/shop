@@ -50,14 +50,23 @@ class CatalogController extends Controller{
      */
     public function actionCategory($slug) {
         $category = Category::get($slug);
-        $products = Yii::$app->cache->getOrSet(['categoryProducts','slug'=>$slug,'page'=>Yii::$app->request->get('page')], function() use ($category) {
-            return $category->getCategoryProducts();
+        $data = Yii::$app->cache->getOrSet(['categoryProducts','slug'=>$slug,'page'=>Yii::$app->request->get('page')], function() use ($category) {
+            $products = $category->getCategoryProducts();
+            $parents = $category->getParents();
+            $links = [];
+            foreach ($parents as $parent){
+                $link = ['label'=>$parent->name,'url'=>['catalog/category','slug'=>$parent->slug]];
+                $links[] = $link;
+            }
+            return [$products,$links];
         },60);
+        list($products,$links) = $data;
         // товары категории
         return $this->render(
             'category',
             [
                 'products'=>$products['products'],
+                'links'=>$links,
                 'pages'=>$products['pages'],
                 'name'=>$category->name,
                 'content'=>$category->content,
@@ -79,6 +88,7 @@ class CatalogController extends Controller{
             'brands',
             [
                 'brands' => $brands,
+                'links'=>[['label'=>'Все бренды','url'=>['catalog/brands']]],
             ]
         );
     }
@@ -101,6 +111,7 @@ class CatalogController extends Controller{
                 'description'=>$brand->description,
                 'keywords'=>$brand->keywords,
                 'image'=>$brand->getFirstImage(),
+                'links'=>[['label'=>$brand->name,'url'=>['catalog/brand','slug'=>$slug]]],
             ]
         );
     }

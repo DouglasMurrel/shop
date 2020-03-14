@@ -87,6 +87,7 @@ class Category extends \yii\db\ActiveRecord
             $parent = Category::findOne($parent->parent_id);
             $id = $parent->id;
         }
+        $parents = array_reverse($parents);
         return $parents;
     }
 

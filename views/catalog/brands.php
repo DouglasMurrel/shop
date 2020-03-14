@@ -5,6 +5,8 @@ use app\components\TreeWidget;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
+$this->params['breadcrumbs'] = $links;
+
 if($name!='')$this->title = $name;
 if($description!='')$this->registerMetaTag(['name' => 'description','content' => $description],'description');
 if($keywords!='')$this->registerMetaTag(['name' => 'keywords','content' => $keywords],'keywords');

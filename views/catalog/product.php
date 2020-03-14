@@ -5,7 +5,6 @@
 
 use app\components\TreeWidget;
 use app\components\BrandWidget;
-//use app\components\ChainWidget;
 use yii\helpers\Url;
 use yii\helpers\Html;
 
