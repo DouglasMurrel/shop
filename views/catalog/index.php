@@ -20,7 +20,7 @@ if($keywords!='')$this->registerMetaTag(['name' => 'keywords','content' => $keyw
         <?= TreeWidget::widget(); ?>
     </div>
 
-    <h2>Бренды</h2>
+    <h2><a href="<?= Url::to(['catalog/brands']); ?>" class='text-nowrap'>Бренды</a></h2>
     <div class="brand-products">
         <?= BrandWidget::widget(); ?>
     </div>

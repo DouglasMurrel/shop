@@ -4,6 +4,8 @@ use app\components\BrandWidget;
 use app\components\ProductWidget;
 use app\components\TreeWidget;
 use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\widgets\LinkPager;
 
 if($name!='')$this->title = $name;
 if($description!='')$this->registerMetaTag(['name' => 'description','content' => $description],'description');
@@ -15,7 +17,7 @@ if($keywords!='')$this->registerMetaTag(['name' => 'keywords','content' => $keyw
         <?= TreeWidget::widget(); ?>
     </div>
 
-    <h2>Бренды</h2>
+    <h2><a href="<?= Url::to(['catalog/brands']); ?>" class='text-nowrap'>Бренды</a></h2>
     <div class="brand-products">
         <?= BrandWidget::widget(); ?>
     </div>
@@ -32,7 +34,7 @@ if($keywords!='')$this->registerMetaTag(['name' => 'keywords','content' => $keyw
     <?php
     if (!empty($products)) {
         ?>
-        <div>
+        <div class="container">
             <?
             foreach ($products as $product) {
                 ?>
@@ -42,6 +44,9 @@ if($keywords!='')$this->registerMetaTag(['name' => 'keywords','content' => $keyw
                 <?php
             }
             ?>
+        </div>
+        <div>
+            <?= LinkPager::widget(['pagination' => $pages]); /* постраничная навигация */ ?>
         </div>
         <?php
     } else {

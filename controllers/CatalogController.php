@@ -48,7 +48,8 @@ class CatalogController extends Controller{
         return $this->render(
             'category',
             [
-                'products'=>$products,
+                'products'=>$products['products'],
+                'pages'=>$products['pages'],
                 'name'=>$category->name,
                 'content'=>$category->content,
                 'description'=>$category->description,
@@ -80,7 +81,8 @@ class CatalogController extends Controller{
         return $this->render(
             'brand',
             [
-                'products'=>$products,
+                'products'=>$products['products'],
+                'pages'=>$products['pages'],
                 'name'=>$brand->name,
                 'content'=>$brand->content,
                 'description'=>$brand->description,

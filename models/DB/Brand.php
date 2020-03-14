@@ -3,6 +3,7 @@
 namespace app\models\DB;
 
 use Yii;
+use yii\data\Pagination;
 
 /**
  * This is the model class for table "brand".
@@ -68,12 +69,20 @@ class Brand extends \yii\db\ActiveRecord
      */
     public function getBrandProducts() {
         $arrResult = $this->products;
+        $cnt = count($arrResult);
+        $pages = new Pagination([
+            'totalCount' => $cnt,
+            'pageSize' => 10, // кол-во товаров на странице
+            'forcePageParam' => false,
+            'pageSizeParam' => false,
+        ]);
+        $arrResult = array_slice($arrResult,$pages->offset,$pages->limit);
         foreach($arrResult as $k=>$item){
             $item = $item->toArray();
             $item['image'] = Image::getFirst($item['id'],'product');
             $arrResult[$k] = $item;
         }
-        return $arrResult;
+        return ['products'=>$arrResult,'pages'=>$pages];
     }
 
     /**

@@ -7,6 +7,7 @@
 
 namespace app\commands;
 
+use app\models\DB\Product;
 use yii\console\Controller;
 use yii\console\ExitCode;
 
@@ -29,6 +30,26 @@ class HelloController extends Controller
     {
         echo $message . "\n";
 
+        return ExitCode::OK;
+    }
+
+    public function actionAddproducts(){
+        for ($i=0;$i<100;$i++){
+            echo "$i\n";
+            $product = new Product();
+            $product->name = "Товар $i";
+            $product->slug = "tovar$i";
+            $product->category_id = 2;
+            $product->brand_id = 1;
+            $product->content = "Описание $i";
+            $product->price = $i;
+            $product->keywords = "keyword$i";
+            $product->description = "description$i";
+            $product->hit = 1;
+            $product->new = 1;
+            $product->sale = 1;
+            $product->save();
+        }
         return ExitCode::OK;
     }
 }
