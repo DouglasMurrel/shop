@@ -33,12 +33,13 @@ AppAsset::register($this);
         'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar-fixed-top bg-light border-bottom border-dark',
         ],
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
+            ['label' => 'Корзина', 'url' => ['/basket']],
             ['label' => 'О нас', 'url' => ['/about']],
             ['label' => 'Обратная связь', 'url' => ['/contact']],
             Yii::$app->user->isGuest ? (

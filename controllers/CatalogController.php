@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\DB\Brand;
 use app\models\DB\Category;
 use app\models\DB\Product;
+use app\models\Basket;
 use app\models\Forms\SearchForm;
 use Yii;
 use yii\helpers\Url;
@@ -106,6 +107,7 @@ class CatalogController extends Controller{
         list($product, $brand, $images, $links) = $data;
         // получаем товары, похожие на текущий
         $similar = $product->getSimilar($slug);
+        $basketForm = new Basket();
         return $this->render(
             'product',
             [
@@ -114,6 +116,7 @@ class CatalogController extends Controller{
                 'images'=>$images,
                 'similar'=>$similar,
                 'links'=>$links,
+                'basketForm'=>$basketForm,
             ]
         );
     }

@@ -4,6 +4,8 @@
  */
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\ActiveForm;
+
 ?>
 <div class="product-wrapper text-center">
     <?=
@@ -18,8 +20,9 @@ use yii\helpers\Url;
             <?= Html::encode($product['name']); ?>
         </a>
     </p>
-    <a href="#" class="btn btn-warning">
-        <i class="fa fa-shopping-cart"></i>
-        Добавить в корзину
-    </a>
+    <?php $form = ActiveForm::begin(['action'=>Url::to(['basket/add'])]); ?>
+    <?= $form->field($basketForm, 'id')->hiddenInput(['value'=>$product['id']])->label(false) ?>
+    <?= $form->field($basketForm, 'count',['options'=>['class'=>'w-25 d-inline-block']])->textInput(['value'=>1])->label(false) ?>
+    <?= Html::submitButton('Добавить в корзину', ['class' => 'btn btn-warning']) ?>
+    <?php ActiveForm::end(); ?>
 </div>

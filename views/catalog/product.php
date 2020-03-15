@@ -11,6 +11,10 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 $this->params['breadcrumbs'] = $links;
+
+if($product['name']!='')$this->title = $product['name'];
+if($product['description']!='')$this->registerMetaTag(['name' => 'description','content' => $product['description']],'description');
+if($product['keywords']!='')$this->registerMetaTag(['name' => 'keywords','content' => $product['keywords']],'keywords');
 ?>
 <section>
     <div class="container">
@@ -36,7 +40,7 @@ $this->params['breadcrumbs'] = $links;
                         <div class="product-image">
                             <?=
                             Html::img(
-                                '@web/images/product/'.$image,
+                                '@web/images/product/'.$image['image'],
                                 ['alt' => $product['name'], 'class' => 'img-responsive']
                             );
                             ?>
@@ -48,17 +52,14 @@ $this->params['breadcrumbs'] = $links;
                             <p class="product-price">
                                 Цена: <span><?= $product['price']; ?></span> руб.
                             </p>
-                            <form>
-                                <label>Количество</label>
-                                <input name="count" type="text" value="1" />
-                                <button type="button" class="btn btn-warning">
-                                    <i class="fa fa-shopping-cart"></i>
-                                    Добавить в корзину
-                                </button>
-                            </form>
+                            <?php $form = ActiveForm::begin(['action'=>Url::to(['basket/add'])]); ?>
+                            <?= $form->field($basketForm, 'count',['options'=>['class'=>'w-25 d-inline-block']])->textInput(['value'=>1])->label(false) ?>
+                            <?= $form->field($basketForm, 'id')->hiddenInput(['value'=>$product['id']])->label(false) ?>
+                            <?= Html::submitButton('Добавить в корзину', ['class' => 'btn btn-warning']) ?>
+                            <?php ActiveForm::end(); ?>
                             <p>
                                 Бренд:
-                                <a href="<?= Url::to(['catalog/brand', 'id' => $brand['id']]); ?>">
+                                <a href="<?= Url::to(['catalog/brand', 'slug' => $brand['slug']]); ?>">
                                     <?= Html::encode($brand['name']); ?>
                                 </a>
                             </p>
