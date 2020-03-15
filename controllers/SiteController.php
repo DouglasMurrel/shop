@@ -99,7 +99,7 @@ class SiteController extends Controller
     /**
      * Register action.
      *
-     * @return Response|string
+     * @return Response|string|array
      */
     public function actionRegister()
     {
@@ -110,13 +110,19 @@ class SiteController extends Controller
         $modelLogin = new LoginForm();
         $modelRegister = new RegisterForm();
         $modelRecover = new RecoverForm();
+
+        if (Yii::$app->request->isAjax && $modelRegister->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($modelRegister);
+        }
+
         if ($modelRegister->load(Yii::$app->request->post()) && $modelRegister->register()) {
             return $this->goBack();
         }
 
         $modelRegister->password = '';
         $modelRegister->password2 = '';
-        return $this->render('index', [
+        return $this->render('login', [
             'modelLogin' => $modelLogin,
             'modelRegister' => $modelRegister,
             'modelRecover' => $modelRecover,
@@ -151,7 +157,7 @@ class SiteController extends Controller
         }
 
         $modelLogin->password = '';
-        return $this->render('index', [
+        return $this->render('login', [
             'modelLogin' => $modelLogin,
             'modelRegister' => $modelRegister,
             'modelRecover' => $modelRecover,

@@ -14,9 +14,9 @@ $this->title = 'My Yii Application';
         <? if(Yii::$app->user->isGuest) {?>
             <div class="row justify-content-center mt-3 mb-3 ml-1">
                 <ul class="nav nav-tabs col-lg-12" role="tablist">
-                    <li class="nav-item pr-4<?if($active=='login'){?> active<?}?>"><a class="nav-link<?if($active=='login'){?> active<?}?>" href="#login" aria-controls="login" role="tab" data-toggle="tab">Логин</a></li>
-                    <li class="nav-item pr-4<?if($active=='register'){?> active<?}?>"><a class="nav-link<?if($active=='register'){?> active<?}?>" href="#register" aria-controls="register" role="tab" data-toggle="tab">Регистрация</a></li>
-                    <li class="nav-item pr-4<?if($active=='recover'){?> active<?}?>"><a class="nav-link<?if($active=='recover'){?> active<?}?>" href="#recover" aria-controls="recover" role="tab" data-toggle="tab">Вспомнить пароль</a></li>
+                    <li class="nav-item pr-4"><a class="nav-link<?if($active=='login'){?> active<?}?>" href="#login" aria-controls="login" role="tab" data-toggle="tab">Логин</a></li>
+                    <li class="nav-item pr-4"><a class="nav-link<?if($active=='register'){?> active<?}?>" href="#register" aria-controls="register" role="tab" data-toggle="tab">Регистрация</a></li>
+                    <li class="nav-item pr-4"><a class="nav-link<?if($active=='recover'){?> active<?}?>" href="#recover" aria-controls="recover" role="tab" data-toggle="tab">Вспомнить пароль</a></li>
                 </ul>
             </div>
             <div class="row justify-content-center ml-1">
@@ -39,7 +39,7 @@ $this->title = 'My Yii Application';
                     </div>
                     <div role="tabpanel" class="tab-pane<?if($active=='register'){?> active<?}?>" id="register">
                         <?php
-                        $form = ActiveForm::begin(['id' => 'register-form','action'=>'register']);
+                        $form = ActiveForm::begin(['id' => 'register-form','action'=>'register','enableAjaxValidation' => true]);
                         ?>
 
                         <?= $form->field($modelRegister, 'email')->input('email')->label('EMail'); ?>

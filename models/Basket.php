@@ -54,6 +54,7 @@ class Basket extends Model
             }
             $basket['amount'] = $amount;
             $session->set('basket', $basket);
+            Yii::$app->view->params['basketTitle'] = '$amount';
         }
     }
 

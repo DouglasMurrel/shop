@@ -3,7 +3,18 @@
 namespace app\models\DB;
 
 use yii\db\ActiveRecord;
+use yii\helpers\Json;
 
+/**
+ * This is the model class for table "product".
+ *
+ * @property int $id id
+ * @property string $email
+ * @property string $password
+ * @property string $passwordHash
+ * @property json $roles
+ * @property string $basket
+ */
 class User extends ActiveRecord implements \yii\web\IdentityInterface
 {
     public $authKey;

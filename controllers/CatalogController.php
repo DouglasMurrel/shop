@@ -19,8 +19,6 @@ class CatalogController extends Controller{
         Yii::$app->view->title = Yii::$app->params['defaultTitle'];
         Yii::$app->view->registerMetaTag(['name' => 'description','content' => Yii::$app->params['defaultDescription']],'description');
         Yii::$app->view->registerMetaTag(['name' => 'keywords','content' => Yii::$app->params['defaultKeywords']],'keywords');
-        Yii::$app->view->params['basketTitle'] = '';
-        Yii::$app->session->setFlash('success', "Data1 saved!");
         return parent::beforeAction($event);
     }
 

@@ -39,7 +39,7 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Корзина', 'url' => ['/basket'], 'linkOptions'=>['title'=>isset($this->params['basketTitle']) ? $this->params['basketTitle'] : 'Корзина пуста']],
+            ['label' => 'Корзина', 'url' => ['/basket'], 'linkOptions'=>['title'=>isset(Yii::$app->session['basketTitle']) ? Yii::$app->session['basketTitle'] : 'Корзина пуста']],
             ['label' => 'О нас', 'url' => ['/about']],
             ['label' => 'Обратная связь', 'url' => ['/contact']],
             Yii::$app->user->isGuest ? (
@@ -59,16 +59,20 @@ AppAsset::register($this);
     NavBar::end();
     ?>
     <?php if (Yii::$app->session->hasFlash('success')): ?>
-        <div class="alert alert-success alert-dismissable" style="padding-top:70px;">
-            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-            <?= Yii::$app->session->getFlash('success') ?>
+        <div class="alert alert-success alert-dismissable" style="padding-top:60px;">
+            <div class="container">
+                <button aria-hidden="true" data-dismiss="alert" class="close pr-3" type="button">×</button>
+                <?= Yii::$app->session->getFlash('success') ?>
+            </div>
         </div>
     <?php endif; ?>
 
     <?php if (Yii::$app->session->hasFlash('error')): ?>
-        <div class="alert alert-danger alert-dismissable">
-            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-            <?= Yii::$app->session->getFlash('error') ?>
+        <div class="alert alert-danger alert-dismissable" style="padding-top:60px;">
+            <div class="container">
+                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                <?= Yii::$app->session->getFlash('error') ?>
+            </div>
         </div>
     <?php endif; ?>
 
