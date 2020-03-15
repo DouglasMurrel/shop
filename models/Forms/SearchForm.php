@@ -4,6 +4,7 @@ namespace app\models\Forms;
 
 use app\models\DB\Image;
 use app\models\DB\Product;
+use Stem\LinguaStemRu;
 use Yii;
 use yii\base\Model;
 use yii\data\Pagination;
@@ -75,24 +76,58 @@ class SearchForm extends Model{
      * @return \yii\db\ActiveQuery
      */
     private function getFromDB($search){
-        $words = explode(' ', $search);
+        $temp = explode(' ', $search);
+        $words = [];
+        $stemmer = new LinguaStemRu();
+        foreach ($temp as $item) {
+            if (iconv_strlen($item) > 3) {
+                // получаем корень слова
+                $words[] = $stemmer->stem_word($item);
+            } else {
+                $words[] = $item;
+            }
+        }
         // рассчитываем релевантность для каждого товара
-        $relevance = "IF (`name` LIKE '%" . $words[0] . "%', 2, 0)";
-        $relevance .= " + IF (`content` LIKE '%" . $words[0] . "%', 1, 0)";
+        $relevance = "IF (`product`.`name` LIKE '%" . $words[0] . "%', 3, 0)";
+        $relevance .= " + IF (`product`.`keywords` LIKE '%" . $words[0] . "%', 2, 0)";
+        $relevance .= " + IF (`category`.`name` LIKE '%" . $words[0] . "%', 1, 0)";
+        $relevance .= " + IF (`brand`.`name` LIKE '%" . $words[0] . "%', 1, 0)";
         for ($i = 1; $i < count($words); $i++) {
-            $relevance .= " + IF (`name` LIKE '%" . $words[$i] . "%', 2, 0)";
-            $relevance .= " + IF (`content` LIKE '%" . $words[$i] . "%', 1, 0)";
+            $relevance .= " + IF (`product`.`name` LIKE '%" . $words[$i] . "%', 3, 0)";
+            $relevance .= " + IF (`product`.`keywords` LIKE '%" . $words[$i] . "%', 2, 0)";
+            $relevance .= " + IF (`category`.`name` LIKE '%" . $words[$i] . "%', 1, 0)";
+            $relevance .= " + IF (`brand`.`name` LIKE '%" . $words[$i] . "%', 1, 0)";
         }
         $query = Product::find()
-            ->select(['*', 'relevance' => $relevance])
-            ->where(['like', 'name', $words[0]])
-            ->orWhere(['like', 'content', $words[0]]);
+            ->select([
+                'id' => 'product.id',
+                'name' => 'product.name',
+                'slug' => 'product.slug',
+                'price' => 'product.price',
+                'hit' => 'product.hit',
+                'new' => 'product.new',
+                'sale' => 'product.sale',
+                'relevance' => $relevance
+            ])
+            ->from('product')
+            ->join('INNER JOIN', 'category', 'category.id = product.category_id')
+            ->join('INNER JOIN', 'brand', 'brand.id = product.brand_id')
+            ->where(['like', 'product.name', $words[0]])
+            ->orWhere(['like', 'product.content', $words[0]])
+            ->orWhere(['like', 'product.keywords', $words[0]])
+            ->orWhere(['like', 'category.name', $words[0]])
+            ->orWhere(['like', 'brand.name', $words[0]]);
         for ($i = 1; $i < count($words); $i++) {
-            $query = $query->orWhere(['like', 'name', $words[$i]]);
-            $query = $query->orWhere(['like', 'content', $words[$i]]);
+            $query = $query->orWhere(['like', 'product.name', $words[$i]]);
+            $query = $query->orWhere(['like', 'product.content', $words[$i]]);
+            $query = $query->orWhere(['like', 'product.keywords', $words[$i]]);
+            $query = $query->orWhere(['like', 'category.name', $words[$i]]);
+            $query = $query->orWhere(['like', 'brand.name', $words[$i]]);
         }
-        // сортируем разультаты по убыванию релевантности
         $query = $query->orderBy(['relevance' => SORT_DESC]);
+
+        // посмотрим, какой SQL-запрос был сформирован
+        // print_r($query->createCommand()->getRawSql());
         return $query;
     }
 }

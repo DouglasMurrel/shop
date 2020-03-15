@@ -2,7 +2,7 @@
 
 use yii\db\Migration;
 
-class m200313_224058_03_create_table_image extends Migration
+class m200314_230722_03_create_table_image extends Migration
 {
     public function up()
     {

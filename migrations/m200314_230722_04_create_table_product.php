@@ -2,7 +2,7 @@
 
 use yii\db\Migration;
 
-class m200313_224058_04_create_table_product extends Migration
+class m200314_230722_04_create_table_product extends Migration
 {
     public function up()
     {
@@ -17,7 +17,7 @@ class m200313_224058_04_create_table_product extends Migration
             'category_id' => $this->integer()->defaultValue('0')->comment('Категория'),
             'brand_id' => $this->integer()->defaultValue('0')->comment('Бренд'),
             'name' => $this->string()->notNull()->comment('Имя'),
-            'content' => $this->string()->comment('Описание'),
+            'content' => $this->text()->comment('Описание'),
             'price' => $this->float()->notNull()->defaultValue('0')->comment('Цена'),
             'keywords' => $this->string()->comment('Мета-тег keywords'),
             'description' => $this->string()->comment('Мета-тег description'),

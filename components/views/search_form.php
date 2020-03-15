@@ -7,7 +7,7 @@ $form = ActiveForm::begin(['id' => 'search-form', 'options'=>['class'=>'pull-lef
 ?>
 <div class="col-sm-12">
     <div class="input-group">
-        <?= $form->field($modelSearch, 'query')->textInput(['placeholder'=>'Поиск по каталогу','name'=>'query'])->label(false) ?>
+        <?= $form->field($modelSearch, 'query')->textInput(['placeholder'=>'Поиск по каталогу','name'=>'query','value'=>$query])->label(false) ?>
         <div class="input-group-btn">
             <button class="btn btn-default" type="submit">
                 <span class="glyphicon glyphicon-search"></span>

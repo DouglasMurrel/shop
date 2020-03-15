@@ -41,7 +41,7 @@ $this->params['breadcrumbs'] = [['label'=>'']];
                             foreach ($products as $product) {
                                 ?>
                                 <div class="col-sm-4">
-                                    <?= ProductWidget::widget(['product'=>$product]); ?>
+                                   <?= ProductWidget::widget(['product'=>$product]); ?>
                                 </div>
                                 <?php
                             }
