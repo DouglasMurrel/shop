@@ -5,19 +5,20 @@ namespace app\controllers;
 
 
 use app\models\Basket;
+use app\models\Forms\BasketForm;
 use Yii;
 use yii\web\Controller;
 
 class BasketController extends Controller{
 
     public function actionIndex() {
-        $basket = (new Basket())->getBasket();
+        $basket = Basket::getBasket();
         return $this->render('index', ['basket' => $basket]);
     }
 
     public function actionAdd() {
 
-        $basket = new Basket();
+        $basket = new BasketForm();
 
         /*
          * Данные должны приходить методом POST; если это не
@@ -32,7 +33,8 @@ class BasketController extends Controller{
             // добавляем товар в корзину и перенаправляем покупателя
             // на страницу корзины
             $basket->addToBasket();
+            Yii::$app->session->addFlash('success','Товар успешно добавлен в корзину');
         }
-        return $this->redirect(['basket/index']);
+        return $this->redirect(Yii::$app->request->referrer);
     }
 }

@@ -28,6 +28,12 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\DB\User',
             'enableAutoLogin' => true,
+            'on afterLogin' => function ($event) {
+                \app\models\Basket::getBasketFromUser();
+            },
+            'on afterLogout' => function ($event) {
+                \app\models\Basket::clearBasket();
+            },
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',

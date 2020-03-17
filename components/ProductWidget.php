@@ -1,7 +1,7 @@
 <?php
 namespace app\components;
 
-use app\models\Basket;
+use app\models\Forms\BasketForm;
 use Yii;
 use yii\base\Widget;
 
@@ -13,7 +13,7 @@ class ProductWidget extends Widget {
     public $product;
 
     public function run() {
-        $basketForm = new Basket();
+        $basketForm = new BasketForm();
         // сохраняем полученные данные в кеше
         $html = Yii::$app->cache->getOrSet('widget-product'.$this->product['slug'], function() use ($basketForm) {
             return $this->render('product', ['product' => $this->product, 'basketForm'=>$basketForm]);

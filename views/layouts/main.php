@@ -59,12 +59,14 @@ AppAsset::register($this);
     NavBar::end();
     ?>
     <?php if (Yii::$app->session->hasFlash('success')): ?>
-        <div class="alert alert-success alert-dismissable" style="padding-top:60px;">
+    <? foreach (Yii::$app->session->getFlash('success') as $flash){?>}
+        <div class="alert alert-success alert-dismissable" style="padding-top:40px;">
             <div class="container">
                 <button aria-hidden="true" data-dismiss="alert" class="close pr-3" type="button">×</button>
-                <?= Yii::$app->session->getFlash('success') ?>
+                <?= $flash ?>
             </div>
         </div>
+    <? } ?>
     <?php endif; ?>
 
     <?php if (Yii::$app->session->hasFlash('error')): ?>

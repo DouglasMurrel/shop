@@ -2,7 +2,7 @@
 
 use yii\db\Migration;
 
-class m200314_230723_05_create_table_user extends Migration
+class m200315_230802_05_create_table_user extends Migration
 {
     public function up()
     {
@@ -17,6 +17,7 @@ class m200314_230723_05_create_table_user extends Migration
             'password' => $this->string(),
             'passwordHash' => $this->string(),
             'roles' => $this->json(),
+            'basket' => $this->binary(),
         ], $tableOptions);
 
         $this->createIndex('email', '{{%user}}', 'email', true);

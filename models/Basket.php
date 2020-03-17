@@ -5,63 +5,38 @@ namespace app\models;
 
 
 use app\models\DB\Product;
+use app\models\DB\User;
 use Yii;
 use yii\base\Model;
+use yii\base\Event;
 
 class Basket extends Model
 {
 
-    public $count;
-    public $id;
-
-    /**
-     * @return array the validation rules.
-     */
-    public function rules()
-    {
-        return [
-            ['count','integer'],
-            ['id','integer'],
-            ['id', 'exist', 'targetClass' => Product::className()],
-        ];
-    }
-
     /**
      * Метод добавляет товар в корзину
      */
-    public function addToBasket() {
-        if($this->validate()) {
-            $session = Yii::$app->session;
-            $session->open();
-            if (!$session->has('basket')) {
-                $session->set('basket', []);
-                $basket = [];
-            } else {
-                $basket = $session->get('basket');
-            }
-            $product = Product::findOne($this->id);
-            if (isset($basket['products'][$product->id])) { // такой товар уже есть?
-                $count = $basket['products'][$product->id]['count'] + $this->count;
-                $basket['products'][$product->id]['count'] = $count;
-            } else { // такого товара еще нет
-                $basket['products'][$product->id]['name'] = $product->name;
-                $basket['products'][$product->id]['price'] = $product->price;
-                $basket['products'][$product->id]['count'] = $this->count;
-            }
-            $amount = 0.0;
-            foreach ($basket['products'] as $item) {
-                $amount = $amount + $item['price'] * $item['count'];
-            }
-            $basket['amount'] = $amount;
-            $session->set('basket', $basket);
-            Yii::$app->view->params['basketTitle'] = '$amount';
+    public static function addToBasket($id, $count)
+    {
+        $session = Yii::$app->session;
+        $session->open();
+        $basket = Basket::getBasket();
+        $product = Product::findOne($id);
+        if (isset($basket['products'][$product->id])) { // такой товар уже есть?
+            $count_current = $basket['products'][$product->id]['count'] + $count;
+            $basket['products'][$product->id]['count'] = $count_current;
+        } else { // такого товара еще нет
+            $basket['products'][$product->id]['name'] = $product->name;
+            $basket['products'][$product->id]['price'] = $product->price;
+            $basket['products'][$product->id]['count'] = $count;
         }
+        Basket::setBasket($basket);
     }
 
     /**
      * Метод удаляет товар из корзины
      */
-    public function removeFromBasket($id) {
+    public static function removeFromBasket($id) {
         $id = abs((int)$id);
         $session = Yii::$app->session;
         $session->open();
@@ -73,27 +48,17 @@ class Basket extends Model
             return;
         }
         unset($basket['products'][$id]);
-        if (count($basket['products']) == 0) {
-            $session->set('basket', []);
-            return;
-        }
-        $amount = 0.0;
-        foreach ($basket['products'] as $item) {
-            $amount = $amount + $item['price'] * $item['count'];
-        }
-        $basket['amount'] = $amount;
-
-        $session->set('basket', $basket);
+        Basket::setBasket($basket);
     }
 
     /**
      * Метод возвращает содержимое корзины
      */
-    public function getBasket() {
+    public static function getBasket() {
         $session = Yii::$app->session;
         $session->open();
         if (!$session->has('basket')) {
-            $session->set('basket', []);
+            Basket::setBasket(['products'=>[]]);
             return [];
         } else {
             return $session->get('basket');
@@ -103,9 +68,69 @@ class Basket extends Model
     /**
      * Метод удаляет все товары из корзины
      */
-    public function clearBasket() {
+    public static function clearBasket() {
+        Basket::setBasket(['products'=>[]]);
+    }
+
+    /*
+     * Записываем кормзину из массвива, и заодно ее пишем пользователю
+     */
+    private static function setBasket($basket){
         $session = Yii::$app->session;
         $session->open();
-        $session->set('basket', []);
+        $price = 0.0;
+        $amount = 0;
+        foreach ($basket['products'] as $item) {
+            $price = $price + $item['price'] * $item['count'];
+            $amount += 1;
+        }
+        $basket['amount'] = $amount;
+        $basket['price'] = $price;
+        $session->set('basket', $basket);
+        if($amount>0) $session->set('basketTitle', "Товаров в корзине: $amount, цена: $price руб.");
+        Basket::setBasketToUser();
+    }
+
+     /**
+     * Здесь записываем корзину в пользователя
+     * @return bool
+     */
+    private static function setBasketToUser(){
+        if (Yii::$app->user->isGuest) {
+            return false;
+        }
+        $basket = Basket::getBasket();
+        $products = $basket['products'];
+        $user = User::findOne(Yii::$app->user->identity->getId());
+        $user->basket = serialize($products);
+        $user->save();
+        return true;
+    }
+
+    /**
+     * Как поймаем логин - тянем корзину из пользователя, если она там есть
+     * @return bool
+     */
+    public static function getBasketFromUser(){
+        if (Yii::$app->user->isGuest) {
+            return false;
+        }
+        $user = User::findOne(Yii::$app->user->identity->getId());
+        if($basket = unserialize($user->basket)) {
+            if(!is_array($basket)){
+                Basket::setBasket(['products' => []]);
+                return false;
+            }
+            foreach ($basket as $k=>$v){
+                $product = Product::findOne($k);
+                if(!$product){
+                    unset($basket[$k]);
+                }
+            }
+            Basket::setBasket(['products' => $basket]);
+            return true;
+        }
+        Basket::setBasket(['products' => []]);
+        return false;
     }
 }

@@ -2,7 +2,7 @@
 
 use yii\db\Migration;
 
-class m200314_230722_04_create_table_product extends Migration
+class m200315_230802_04_create_table_product extends Migration
 {
     public function up()
     {

@@ -5,12 +5,10 @@ namespace app\controllers;
 use app\models\DB\Brand;
 use app\models\DB\Category;
 use app\models\DB\Product;
-use app\models\Basket;
+use app\models\Forms\BasketForm;
 use app\models\Forms\SearchForm;
 use Yii;
-use yii\helpers\Url;
 use yii\web\Controller;
-use yii\web\HttpException;
 
 class CatalogController extends Controller{
 
@@ -107,7 +105,7 @@ class CatalogController extends Controller{
         list($product, $brand, $images, $links) = $data;
         // получаем товары, похожие на текущий
         $similar = $product->getSimilar($slug);
-        $basketForm = new Basket();
+        $basketForm = new BasketForm();
         return $this->render(
             'product',
             [
