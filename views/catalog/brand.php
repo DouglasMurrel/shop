@@ -11,9 +11,9 @@ use yii\widgets\LinkPager;
 
 $this->params['breadcrumbs'] = $links;
 
-if($name!='')$this->title = $name;
-if($description!='')$this->registerMetaTag(['name' => 'description','content' => $description],'description');
-if($keywords!='')$this->registerMetaTag(['name' => 'keywords','content' => $keywords],'keywords');
+if(isset($name) && $name!='')$this->title = $name;
+if(isset($description) && $description!='')$this->registerMetaTag(['name' => 'description','content' => $description],'description');
+if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords','content' => $keywords],'keywords');
 ?>
 <?= SearchWidget::widget(); ?>
 <div class="col-sm-3">

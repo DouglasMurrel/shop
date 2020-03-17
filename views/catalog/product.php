@@ -12,9 +12,9 @@ use yii\widgets\ActiveForm;
 
 $this->params['breadcrumbs'] = $links;
 
-if($product['name']!='')$this->title = $product['name'];
-if($product['description']!='')$this->registerMetaTag(['name' => 'description','content' => $product['description']],'description');
-if($product['keywords']!='')$this->registerMetaTag(['name' => 'keywords','content' => $product['keywords']],'keywords');
+if(isset($name) && $name!='')$this->title = $name;
+if(isset($description) && $description!='')$this->registerMetaTag(['name' => 'description','content' => $description],'description');
+if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords','content' => $keywords],'keywords');
 ?>
 <section>
     <div class="container">
