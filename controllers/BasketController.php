@@ -7,13 +7,25 @@ namespace app\controllers;
 use app\models\Basket;
 use app\models\Forms\BasketForm;
 use Yii;
+use yii\helpers\Url;
 use yii\web\Controller;
 
 class BasketController extends Controller{
 
     public function actionIndex() {
         $basket = Basket::getBasket();
-        return $this->render('index', ['basket' => $basket]);
+        $basketForms = [];
+        $cnt = count($basket['products']);
+        for($i=0;$i<$cnt;$i++)$basketForms[] = new BasketForm();
+
+        if(BasketForm::loadMultiple($basketForms, Yii::$app->request->post()) && BasketForm::validateMultiple($basketForms)) {
+            $products = [];
+            foreach($basketForms as $basketForm)$products[] = [$basketForm->id => $basketForm->count];
+            Basket::resetBasket($products);
+            return $this->redirect(Url::to(['index']));
+        }
+
+        return $this->render('index', ['basket' => $basket,'basketForms'=>$basketForms]);
     }
 
     public function actionAdd() {
@@ -28,13 +40,23 @@ class BasketController extends Controller{
             return $this->redirect(['basket/index']);
         }
 
-        if($basket->load(Yii::$app->request->post())){
+        if($basket->load(Yii::$app->request->post()) && $basket->validate()){
 
             // добавляем товар в корзину и перенаправляем покупателя
             // на страницу корзины
-            $basket->addToBasket();
+            Basket::addToBasket($basket->id,$basket->count);
             Yii::$app->session->addFlash('success','Товар успешно добавлен в корзину');
         }
         return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function actionClear() {
+        Basket::clearBasket();
+        return $this->redirect(['basket/index']);
+    }
+
+    public function actionRemove($slug){
+        Basket::removeFromBasket($slug);
+        return $this->redirect(['basket/index']);
     }
 }

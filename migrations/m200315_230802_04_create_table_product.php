@@ -27,6 +27,7 @@ class m200315_230802_04_create_table_product extends Migration
         ], $tableOptions);
 
         $this->createIndex('slug', '{{%product}}', 'slug', true);
+        $this->createIndex('name', '{{%product}}', 'name', true);
         $this->addForeignKey('brand_fk', '{{%product}}', 'brand_id', '{{%brand}}', 'id', 'SET NULL', 'CASCADE');
         $this->addForeignKey('category_fk', '{{%product}}', 'category_id', '{{%category}}', 'id', 'SET NULL', 'CASCADE');
     }

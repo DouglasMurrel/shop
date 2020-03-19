@@ -69,6 +69,7 @@ $config = [
                 'search/<page:\d+>' => 'catalog/search',
                 'search' => 'catalog/search',
                 'basket' => 'basket/index',
+                'basket/remove/<slug>' => 'basket/remove',
             ],
         ],
     ],

@@ -18,14 +18,13 @@ class Basket extends Model
      */
     public static function addToBasket($id, $count)
     {
-        $session = Yii::$app->session;
-        $session->open();
         $basket = Basket::getBasket();
         $product = Product::findOne($id);
         if (isset($basket['products'][$product->id])) { // такой товар уже есть?
             $count_current = $basket['products'][$product->id]['count'] + $count;
             $basket['products'][$product->id]['count'] = $count_current;
         } else { // такого товара еще нет
+            $basket['products'][$product->id]['slug'] = $product->slug;
             $basket['products'][$product->id]['name'] = $product->name;
             $basket['products'][$product->id]['price'] = $product->price;
             $basket['products'][$product->id]['count'] = $count;
@@ -36,18 +35,33 @@ class Basket extends Model
     /**
      * Метод удаляет товар из корзины
      */
-    public static function removeFromBasket($id) {
-        $id = abs((int)$id);
-        $session = Yii::$app->session;
-        $session->open();
-        if (!$session->has('basket')) {
-            return;
-        }
-        $basket = $session->get('basket');
-        if (!isset($basket['products'][$id])) {
-            return;
-        }
+    public static function removeFromBasket($slug){
+        $id = Product::get($slug)->id;
+        $basket = Basket::getBasket();
         unset($basket['products'][$id]);
+        Basket::setBasket($basket);
+    }
+
+    /**
+     * Метод удаляет все товары из корзины
+     */
+    public static function clearBasket() {
+        Basket::setBasket(['products' => []]);
+    }
+
+    /**
+     * Метод пересчитывает кооличество товаров в корзине
+     * @param $products
+     */
+    public static function resetBasket($products){
+        $basket = Basket::getBasket();
+        foreach ($products as $product){
+            foreach($product as $id=>$count) {
+                if (isset($basket['products'][$id])) {
+                    $basket['products'][$id]['count'] = $count;
+                }
+            }
+        }
         Basket::setBasket($basket);
     }
 
@@ -58,24 +72,17 @@ class Basket extends Model
         $session = Yii::$app->session;
         $session->open();
         if (!$session->has('basket')) {
-            Basket::setBasket(['products'=>[]]);
+            Basket::setBasket(['products' => []]);
             return [];
         } else {
             return $session->get('basket');
         }
     }
 
-    /**
-     * Метод удаляет все товары из корзины
-     */
-    public static function clearBasket() {
-        Basket::setBasket(['products'=>[]]);
-    }
-
     /*
      * Записываем кормзину из массвива, и заодно ее пишем пользователю
      */
-    private static function setBasket($basket){
+    public static function setBasket($basket){
         $session = Yii::$app->session;
         $session->open();
         $price = 0.0;
@@ -88,6 +95,7 @@ class Basket extends Model
         $basket['price'] = $price;
         $session->set('basket', $basket);
         if($amount>0) $session->set('basketTitle', "Товаров в корзине: $amount, цена: $price руб.");
+        else $session->remove('basketTitle');
         Basket::setBasketToUser();
     }
 

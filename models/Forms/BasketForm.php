@@ -21,21 +21,9 @@ class BasketForm extends Model
     public function rules()
     {
         return [
-            ['count', 'integer'],
-            ['id', 'integer'],
-            ['id', 'exist', 'targetClass' => Product::className()],
+            ['count', 'integer', 'message'=>'Некорректное значение'],
+            ['id', 'integer', 'message'=>'Некорректный товар'],
+            ['id', 'exist', 'targetClass' => Product::className(), 'message'=>'Некорректный товар'],
         ];
-    }
-
-    /**
-     * Метод добавляет товар в корзину
-     */
-    public function addToBasket()
-    {
-        if ($this->validate()) {
-            Yii::info($this->id);
-            Yii::info($this->count);
-            Basket::addToBasket($this->id,$this->count);
-        }
     }
 }
