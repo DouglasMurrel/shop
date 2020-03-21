@@ -33,7 +33,7 @@ function show_branch($item, $openCategories){
         ?>
         <li>
         <span style="white-space:nowrap;">
-             <a style="color:#000; text-decoration:none;" data-toggle="<?= $show_flag?'':'collapse'?>" href="#<?=$item['slug']?>" aria-expanded="<?= $show_flag?'true':'false'?>" aria-controls="<?=$item['slug']?>">
+             <a style="color:#000; text-decoration:none;" data-toggle="collapse" href="#<?=$item['slug']?>" aria-expanded="<?= $show_flag?'true':'false'?>" aria-controls="<?=$item['slug']?>">
                   <i class="collapsed">
                       <i class="fas fa-folder"></i>
                   </i>
