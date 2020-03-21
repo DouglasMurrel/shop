@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
 <?= SearchWidget::widget(); ?>
 <div class="col-sm-3">
     <h2>Каталог</h2>
-    <div class="category-products">
+    <div class="category-products container pl-0">
         <?= TreeWidget::widget(); ?>
     </div>
 

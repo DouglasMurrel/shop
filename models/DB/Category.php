@@ -4,7 +4,10 @@ namespace app\models\DB;
 
 use Yii;
 use yii\data\Pagination;
+use yii\helpers\Url;
 use yii\web\HttpException;
+use creocoder\nestedsets\NestedSetsBehavior;
+use app\models\CategoryQuery;
 
 /**
  * This is the model class for table "category".
@@ -27,6 +30,30 @@ class Category extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'category';
+    }
+
+    public function behaviors() {
+        return [
+            'tree' => [
+                'class' => NestedSetsBehavior::className(),
+                // 'treeAttribute' => 'tree',
+                // 'leftAttribute' => 'lft',
+                // 'rightAttribute' => 'rgt',
+                // 'depthAttribute' => 'depth',
+            ],
+        ];
+    }
+
+    public function transactions()
+    {
+        return [
+            self::SCENARIO_DEFAULT => self::OP_ALL,
+        ];
+    }
+
+    public static function find()
+    {
+        return new CategoryQuery(get_called_class());
     }
 
     /**
@@ -73,21 +100,17 @@ class Category extends \yii\db\ActiveRecord
      */
     public function getParent() {
         // связь таблицы БД `category` с таблицей `category`
-        return $this->hasOne(self::class, ['id' => 'parent_id']);
+        return $this->parents(1)->one();
     }
 
     /**
      * Возвращает родительские категории до корня
      */
     public function getParents(){
+        $parentNodes = $this->parents()->all();
         $parents = [];
-        $id = $this->id;
-        $parent = $this;
-        while($id!=0){
-            $parents[] = $parent;
-            $parent = Category::findOne($parent->parent_id);
-            if($parent)$id = $parent->id;else $id=0;
-        }
+        $parents[] = $this;
+        foreach ($parentNodes as $parent)$parents[] = $parent;
         $parents = array_reverse($parents);
         return $parents;
     }
@@ -97,7 +120,7 @@ class Category extends \yii\db\ActiveRecord
      */
     public function getChildren() {
         // связь таблицы БД `category` с таблицей `category`
-        return $this->hasMany(self::class, ['parent_id' => 'id']);
+        return $this->children(1)->all();
     }
 
     /**
@@ -154,29 +177,12 @@ class Category extends \yii\db\ActiveRecord
      * т.е. дочерние, дочерние дочерних и так далее
      */
     protected function getAllChildrenIds($id) {
-        $children = [];
-        $ids = $this->getChildrenIds($id);
-        foreach ($ids as $item) {
-            $children[] = $item;
-            $c = $this->getAllChildrenIds($item);
-            foreach ($c as $v) {
-                $children[] = $v;
-            }
+        $nodes = $this->children()->asArray()->all();
+        $result = [];
+        foreach ($nodes as $node){
+            $result[] = $node['id'];
         }
-        return $children;
-    }
-
-    /**
-     * Возвращает массив идентификаторов дочерних категорий (прямых
-     * потомков) категории с уникальным идентификатором $id
-     */
-    protected function getChildrenIds($id) {
-        $children = self::find()->where(['parent_id' => $id])->asArray()->all();
-        $ids = [];
-        foreach ($children as $child) {
-            $ids[] = $child['id'];
-        }
-        return $ids;
+        return $result;
     }
 
     public static function getCategoryFullData($slug){
@@ -192,8 +198,10 @@ class Category extends \yii\db\ActiveRecord
             $parents = $category->getParents();
             $links = [];
             foreach ($parents as $parent){
-                $link = ['label'=>$parent->name,'url'=>['catalog/category','slug'=>$parent->slug]];
-                $links[] = $link;
+                if($parent->slug!='root') {
+                    $link = ['label' => $parent->name, 'url' => ['catalog/category', 'slug' => $parent->slug]];
+                    $links[] = $link;
+                }
             }
             return [$category,$products,$links];
         },60);

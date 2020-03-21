@@ -21,7 +21,7 @@ $this->params['breadcrumbs'] = [['label'=>'']];
             <div class="col-sm-3">
                 <div class="left-sidebar">
                     <h2>Каталог</h2>
-                    <div class="category-products">
+                    <div class="category-products container pl-0">
                         <?= TreeWidget::widget(); ?>
                     </div>
 

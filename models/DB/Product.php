@@ -191,8 +191,10 @@ class Product extends \yii\db\ActiveRecord
             $parents = $category->getParents();
             $links = [];
             foreach ($parents as $parent){
-                $link = ['label'=>$parent->name,'url'=>['catalog/category','slug'=>$parent->slug]];
-                $links[] = $link;
+                if($parent->slug!='root') {
+                    $link = ['label' => $parent->name, 'url' => ['catalog/category', 'slug' => $parent->slug]];
+                    $links[] = $link;
+                }
             }
             $link = ['label'=>$product->name,'url'=>['catalog/product','slug'=>$slug]];
             $links[] = $link;

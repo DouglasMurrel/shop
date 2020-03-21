@@ -6,27 +6,31 @@ namespace app\components;
 use yii\base\Widget;
 use app\models\DB\Category;
 use Yii;
+use yii\helpers\Url;
 
 class TreeWidget extends Widget
 {
-
-    /**
-     * Выборка категорий каталога из базы данных
-     */
-    protected $data;
-
-    /**
-     * Массив категорий каталога в виде дерева
-     */
-    protected $tree;
-
     public function run() {
-        // сохраняем полученные данные в кеше
-        $html = Yii::$app->cache->getOrSet('catalog-menu', function(){
-            $this->data = Category::find()->indexBy('id')->asArray()->all();
-            $this->makeTree();
-            if ( ! empty($this->tree)) {
-                $html = $this->render('menu', ['tree' => $this->tree]);
+        $slug = '';
+        if(Yii::$app->requestedRoute == 'catalog/category' && Yii::$app->request->get('slug')!=''){
+            $slug = Yii::$app->request->get('slug');
+        }
+        $html = Yii::$app->cache->getOrSet(['catalog-menu', $slug], function() use ($slug){
+            $openCategories = [];
+            if($slug!='') {
+                $currentCategory = Category::get($slug);
+                if ($currentCategory) {
+                    $openParents = $currentCategory->getParents();
+                    foreach ($openParents as $parent) {
+                        if ($parent->id != $currentCategory->id) $openCategories[] = $parent->id;
+                    }
+                }
+            }
+            $root = Category::find()->where(['id'=>1])->asArray()->one();
+            $root = $this->makeTree($root);
+            $tree = $root['nodes'];
+            if ( ! empty($tree)) {
+                $html = $this->render('menu', ['tree' => $tree, 'openCategories'=>$openCategories]);
             } else {
                 $html = '';
             }
@@ -35,20 +39,16 @@ class TreeWidget extends Widget
         return $html;
     }
 
-    /**
-     * Функция принимает на вход линейный массив элеменов, связанных
-     * отношениями parent-child, и возвращает массив в виде дерева
-     */
-    protected function makeTree() {
-        if (empty($this->data)) {
-            return;
-        }
-        foreach ($this->data as $id => &$node) {
-            if ( ! $node['parent_id']) {
-                $this->tree[$id] = &$node;
-            } else {
-                $this->data[$node['parent_id']]['children'][$id] = &$node;
+    private function makeTree($node){
+        $nodeObj = Category::findOne($node['id']);
+        $nodes = $nodeObj->children(1)->asArray()->all();
+        if(count($nodes)>0) {
+            $nodes_array = [];
+            foreach ($nodes as $newNode) {
+                $nodes_array[] = $this->makeTree($newNode);
             }
+            $node['nodes'] = $nodes_array;
         }
+        return $node;
     }
 }
