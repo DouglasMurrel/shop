@@ -69,6 +69,7 @@ use yii\widgets\ActiveForm;
                 <td class="text-right"><a href='' onclick="$('form#mainform').submit();return false;">Пересчитать</a></td>
             </tr>
         </table>
+    <a href="/checkout" class="float-right">Оформить заказ</a>
     <?
     ActiveForm::end();
     ?>

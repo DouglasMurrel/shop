@@ -85,4 +85,14 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     {
         return \Yii::$app->security->validatePassword($password, $this->password);
     }
+
+    /**
+     * Gets query for [[Orders]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrders()
+    {
+        return $this->hasMany(Order::className(), ['user_id' => 'id'])->inverseOf('user');
+    }
 }

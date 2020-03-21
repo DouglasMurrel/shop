@@ -36,33 +36,42 @@ if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords
                 <h1><?= Html::encode($product['name']); ?></h1>
                 <div class="row">
                     <div class="col-sm-5">
-                        <?foreach($images as $image){?>
-                        <div class="product-image">
-                            <?=
-                            Html::img(
-                                '@web/images/product/'.$image['image'],
-                                ['alt' => $product['name'], 'class' => 'img-responsive']
-                            );
+                        <?
+                        if(count($images)>0) {
+                            foreach ($images as $image) {
+                                ?>
+                                <div class="product-image">
+                                    <?
+                                    $img = '/images/product/' . $image['image'];
+                                    $file = Yii::getAlias('@webroot') . $img;
+                                    if (!file_exists($file) || $image['image'] == '') $img = '/images/noimage.jpg';
+                                    ?>
+                                    <div style="background-image:url('<?=$img?>');background-size:contain;background-repeat: no-repeat;height:200px;"></div>
+                                </div>
+                            <?
+                            }
+                        }else{
                             ?>
-                        </div>
-                        <?}?>
+                            <div style="background-image:url('/images/noimage.jpg');background-size:contain;background-repeat: no-repeat;height:200px;"></div>
+                        <?
+                        }?>
                     </div>
                     <div class="col-sm-7">
                         <div class="product-info">
                             <p class="product-price">
                                 Цена: <span><?= $product['price']; ?></span> руб.
                             </p>
-                            <?php $form = ActiveForm::begin(['action'=>Url::to(['basket/add'])]); ?>
-                            <?= $form->field($basketForm, 'count',['options'=>['class'=>'w-25 d-inline-block']])->textInput(['value'=>1])->label(false) ?>
-                            <?= $form->field($basketForm, 'id')->hiddenInput(['value'=>$product['id']])->label(false) ?>
-                            <?= Html::submitButton('Добавить в корзину', ['class' => 'btn btn-warning']) ?>
-                            <?php ActiveForm::end(); ?>
                             <p>
                                 Бренд:
                                 <a href="<?= Url::to(['catalog/brand', 'slug' => $brand['slug']]); ?>">
                                     <?= Html::encode($brand['name']); ?>
                                 </a>
                             </p>
+                            <?php $form = ActiveForm::begin(['action'=>Url::to(['basket/add']),'options'=>['id'=>'product'.$product['id']]]); ?>
+                            <?= $form->field($basketForm, 'count',['options'=>['class'=>'w-25 d-inline-block']])->textInput(['value'=>1])->label(false) ?>
+                            <?= $form->field($basketForm, 'id')->hiddenInput(['value'=>$product['id']])->label(false) ?>
+                            <a href='' onclick="$('form#product<?=$product['id']?>').submit();return false;" style="white-space:nowrap;">Добавить в корзину</a>
+                            <?php ActiveForm::end(); ?>
 
                         </div>
                     </div>
@@ -76,22 +85,18 @@ if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords
                         <?php foreach ($similar as $item): ?>
                             <div class="col-sm-4">
                                 <div class="product-wrapper text-center">
-                                    <?=
-                                    Html::img(
-                                        '@web/images/product/'.$item['image'],
-                                        ['alt' => $item['name'], 'class' => 'img-responsive']
-                                    );
+                                    <?
+                                    $img = '/images/product/'.$item['image'];
+                                    $file = Yii::getAlias('@webroot').$img;
+                                    if(!file_exists($file) || $item['image']=='')$img = '/images/noimage.jpg';
                                     ?>
+                                    <div style="background-image:url('<?=$img?>');background-size:contain;background-repeat: no-repeat;height:100px;"></div>
                                     <h2><?= $item['price']; ?> руб.</h2>
                                     <p>
                                         <a href="<?= Url::to(['catalog/product', 'slug' => $item['slug']]); ?>">
                                             <?= Html::encode($item['name']); ?>
                                         </a>
                                     </p>
-                                    <a href="#" class="btn btn-warning">
-                                        <i class="fa fa-shopping-cart"></i>
-                                        Добавить в корзину
-                                    </a>
                                     <?php
                                     if ($product['new']) { // новинка?
                                         echo Html::tag(

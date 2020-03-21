@@ -2,7 +2,7 @@
 
 use yii\db\Migration;
 
-class m200315_230802_04_create_table_product extends Migration
+class m200320_172419_04_create_table_product extends Migration
 {
     public function up()
     {
@@ -26,8 +26,8 @@ class m200315_230802_04_create_table_product extends Migration
             'sale' => $this->tinyInteger(1)->notNull()->defaultValue('0')->comment('Распродажа'),
         ], $tableOptions);
 
-        $this->createIndex('slug', '{{%product}}', 'slug', true);
         $this->createIndex('name', '{{%product}}', 'name', true);
+        $this->createIndex('slug', '{{%product}}', 'slug', true);
         $this->addForeignKey('brand_fk', '{{%product}}', 'brand_id', '{{%brand}}', 'id', 'SET NULL', 'CASCADE');
         $this->addForeignKey('category_fk', '{{%product}}', 'category_id', '{{%category}}', 'id', 'SET NULL', 'CASCADE');
     }

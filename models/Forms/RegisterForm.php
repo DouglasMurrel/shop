@@ -60,17 +60,24 @@ class RegisterForm extends Model
     public function register()
     {
         if ($this->validate()) {
-            Yii::info(777);
-            $user = new User();
-            $user->email = $this->email;
-            $user->password = Yii::$app->security->generatePasswordHash($this->password);
-            $user->roles = json_encode(['user']);
-            $user->basket = '';
-            if($user->save()) {
+            if($user = $this->register_user($this->email,$this->password)) {
                 return Yii::$app->user->login($user, 3600 * 24 * 30);
             }
         }
-        Yii::info(5555);
         return false;
+    }
+
+    /**
+     * Регистрируем пользователя и возвращаем его
+     * @return User|bool
+     * @throws \yii\base\Exception
+     */
+    public function register_user($email,$password){
+        $user = new User();
+        $user->email = $email;
+        $user->password = Yii::$app->security->generatePasswordHash($password);
+        $user->roles = json_encode(['user']);
+        $user->basket = '';
+        if($user->save())return $user;else return false;
     }
 }
