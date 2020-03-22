@@ -7,7 +7,7 @@ use app\components\TreeWidget;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-use yii\widgets\LinkPager;
+use yii\bootstrap4\LinkPager;
 
 $this->params['breadcrumbs'] = $links;
 
@@ -39,7 +39,7 @@ if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords
     <?php
     if (!empty($products)) {
         ?>
-        <div class="container">
+        <div class="row">
             <?
             foreach ($products as $product) {
                 ?>

@@ -5,12 +5,15 @@
 
 use app\widgets\Alert;
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
+use yii\bootstrap4\Nav;
+use yii\bootstrap4\NavBar;
 use yii\helpers\Url;
-use yii\widgets\Breadcrumbs;
+use yii\bootstrap4\Breadcrumbs;
 use app\assets\AppAsset;
+use \app\components\MyNavBar;
 
+Yii::$app->assetManager->bundles['yii\bootstrap\BootstrapAsset'] = false;
+Yii::$app->assetManager->bundles['yii\bootstrap\BootstrapPluginAsset'] = false;
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -29,24 +32,29 @@ AppAsset::register($this);
 
 <div class="wrap">
     <?php
-    NavBar::begin([
+    $basketTitle = isset(Yii::$app->session['basketTitle']) ? Yii::$app->session['basketTitle'] : 'Корзина пуста';
+    $beforeCollapse = '<a class="nav-link" href="'.Url::to(['basket/index']).'" title="'.$basketTitle.'">Корзина</a>';
+    MyNavBar::begin([
         'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-fixed-top bg-light border-bottom border-dark',
+            'class' => 'fixed-top navbar-light bg-light border-bottom border-dark navbar-expand-lg',
         ],
+        'collapseOptions' => [
+            'class' => 'collapse navbar-collapse justify-content-end',
+        ],
+        'beforeCollapse' => $beforeCollapse,
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Корзина', 'url' => ['/basket'], 'linkOptions'=>['title'=>isset(Yii::$app->session['basketTitle']) ? Yii::$app->session['basketTitle'] : 'Корзина пуста']],
-            ['label' => 'О нас', 'url' => ['/about']],
-            ['label' => 'Обратная связь', 'url' => ['/contact']],
+            '<a class="nav-link my-auto text-primary" href="'.Url::to(["site/about"]).'">О нас</a>',
+            '<a class="nav-link my-auto text-primary" href="'.Url::to(["site/contact"]).'">Обратная связь</a>',
             Yii::$app->user->isGuest ? (
-                ['label' => 'Вход', 'url' => ['/login']]
+            '<a class="nav-link my-auto text-primary" href="'.Url::to(["site/login"]).'">Вход</a>'
             ) : (
                 '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
+                . Html::beginForm(['/site/logout'], 'post',['class'=>'mt-n1 my-auto'])
                 . Html::submitButton(
                     'Выход (' . Yii::$app->user->identity->email . ')',
                     ['class' => 'btn btn-link logout']
@@ -56,7 +64,7 @@ AppAsset::register($this);
             )
         ],
     ]);
-    NavBar::end();
+    MyNavBar::end();
     ?>
     <?php if (Yii::$app->session->hasFlash('success')): ?>
     <? foreach (Yii::$app->session->getFlash('success') as $flash){?>}
@@ -81,6 +89,7 @@ AppAsset::register($this);
     <div class="container">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            'navOptions' => ['style'=>'padding-top:10px;'],
         ]) ?>
         <?= Alert::widget() ?>
         <div class="site-index">
