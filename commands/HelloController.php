@@ -34,8 +34,8 @@ class HelloController extends Controller
     }
 
     public function actionAddproducts(){
-        for ($i=0;$i<100;$i++){
-            echo "$i\n";
+        for ($i=100;$i<1000;$i++){
+//            echo "$i\n";
             $product = new Product();
             $product->name = "Товар $i";
             $product->slug = "tovar$i";

@@ -30,72 +30,57 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<div class="wrap">
-    <?php
-    $basketTitle = isset(Yii::$app->session['basketTitle']) ? Yii::$app->session['basketTitle'] : 'Корзина пуста';
-    $beforeCollapse = '<a class="nav-link" href="'.Url::to(['basket/index']).'" title="'.$basketTitle.'">Корзина</a>';
-    MyNavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'fixed-top navbar-light bg-light border-bottom border-dark navbar-expand-lg',
-        ],
-        'collapseOptions' => [
-            'class' => 'collapse navbar-collapse justify-content-end',
-        ],
-        'beforeCollapse' => $beforeCollapse,
-    ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            '<a class="nav-link my-auto text-primary" href="'.Url::to(["site/about"]).'">О нас</a>',
-            '<a class="nav-link my-auto text-primary" href="'.Url::to(["site/contact"]).'">Обратная связь</a>',
-            Yii::$app->user->isGuest ? (
-            '<a class="nav-link my-auto text-primary" href="'.Url::to(["site/login"]).'">Вход</a>'
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post',['class'=>'mt-n1 my-auto'])
-                . Html::submitButton(
-                    'Выход (' . Yii::$app->user->identity->email . ')',
-                    ['class' => 'btn btn-link logout']
+<div class="container wrap">
+    <div class="container fixed-top bg-light border-bottom border-dark">
+        <div class="row">
+            <div class="col-2 dont-show-lg" id="top">
+                <button class="btn btn-white mt-1 dont-show-lg has_tooltip collapsed" type="button" data-toggle="collapse" data-target="#left-panel" aria-expanded="false" aria-controls="left-panel" title="Меню" data-placement="right">
+                    <div class="gamb-line"></div>
+                    <div class="gamb-line"></div>
+                    <div class="gamb-line"></div>
+                </button>
+            </div>
+            <div class="col-5">
+                <a class="navbar-brand" href="<?=Yii::$app->homeUrl ?>"><?=Yii::$app->name ?></a>
+            </div>
+            <div class="col-5 clearfix">
+                <?php
+                $basketTitle = isset(Yii::$app->session['basketTitle']) ? Yii::$app->session['basketTitle'] : 'Корзина пуста';
+                ?>
+                <a class="nav-link float-right" href="<?=Url::to(['basket/index'])?>" title="<?=$basketTitle?>">Корзина</a>
+            </div>
+        </div>
+    </div>
+    <div class="row main-row">
+        <div class="col-6 col-lg-2 bg-light dont-collapse-lg collapse" id="left-panel" style="">
+            <div class="d-flex flex-column pt-3">
+                <?
+                print Yii::$app->user->isGuest ? (
+                    '<a class="nav-link my-auto text-primary" href="' . Url::to(["site/login"]) . '">Вход</a>'
+                ) : (
+                    Html::beginForm(['/site/logout'], 'post', ['class' => 'mt-n1 my-auto'])
+                    . Html::submitButton(
+                        'Выход (' . Yii::$app->user->identity->email . ')',
+                        ['class' => 'btn btn-link logout']
+                    )
+                    . Html::endForm()
                 )
-                . Html::endForm()
-                . '</li>'
-            )
-        ],
-    ]);
-    MyNavBar::end();
-    ?>
-    <?php if (Yii::$app->session->hasFlash('success')): ?>
-    <? foreach (Yii::$app->session->getFlash('success') as $flash){?>}
-        <div class="alert alert-success alert-dismissable" style="padding-top:40px;">
-            <div class="container">
-                <button aria-hidden="true" data-dismiss="alert" class="close pr-3" type="button">×</button>
-                <?= $flash ?>
+                ?>
+                <li><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/about"])?>">О нас</a></li>
+                <li><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/contact"])?>">Обратная связь</a></li>
             </div>
         </div>
-    <? } ?>
-    <?php endif; ?>
-
-    <?php if (Yii::$app->session->hasFlash('error')): ?>
-        <div class="alert alert-danger alert-dismissable" style="padding-top:60px;">
-            <div class="container">
-                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                <?= Yii::$app->session->getFlash('error') ?>
-            </div>
-        </div>
-    <?php endif; ?>
-
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-            'navOptions' => ['style'=>'padding-top:10px;'],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <div class="site-index">
-            <div class="container">
-                <div class="row">
-                    <?=$content?>
+        <div class="col-12 col-lg-10" id="main-panel">
+            <?= Breadcrumbs::widget([
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                'navOptions' => ['style'=>'padding-top:10px;'],
+            ]) ?>
+            <?= Alert::widget() ?>
+            <div class="site-index">
+                <div class="container">
+                    <div class="row">
+                        <?=$content?>
+                    </div>
                 </div>
             </div>
         </div>

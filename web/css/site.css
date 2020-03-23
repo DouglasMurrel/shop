@@ -11,7 +11,7 @@ body {
 }
 
 .wrap > .container {
-    padding: 70px 15px 20px;
+    padding: 10px 15px;
 }
 
 .footer {
@@ -165,4 +165,44 @@ a.desc:after {
 [aria-expanded="false"] > .expanded,
 [aria-expanded="true"] > .collapsed {
     display: none;
+}
+#top{
+    height:50px;
+}
+@media (min-width: 960px) {
+    .collapse.dont-collapse-lg {
+        display: block !important;
+        height: auto !important;
+        visibility: visible;
+    }
+}
+@media (max-width: 960px){
+    .collapse.dont-collapse-lg {
+        z-index: 1000;
+        position: absolute;
+    }
+    .collapsing.dont-collapse-lg {
+        z-index: 1000;
+        position: absolute;
+    }
+}
+@media (min-width: 960px) {
+    .dont-show-lg {
+        display: none !important;
+    }
+}
+.gamb-line {
+    width: 36px;
+    height: 5px;
+    background-color: #000;
+    margin: 5px 0;
+    transition: 0.3s;
+}
+
+.main-row{
+    padding-top: 70px;
+}
+
+.main-row li {
+    list-style: none;
 }
