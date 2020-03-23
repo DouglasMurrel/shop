@@ -39,19 +39,19 @@ if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords
 <?php
 if (!empty($products)) {
     ?>
-<div class="row">
+<div class="row mb-2">
 <?
     foreach ($products as $product) {
 ?>
-        <div class="col-sm-4">
+        <div class="col-sm-4 p-0">
             <?= ProductWidget::widget(['product'=>$product]); ?>
         </div>
 <?php
     }
 ?>
 </div>
-    <div>
-        <?= LinkPager::widget(['pagination' => $pages]); /* постраничная навигация */ ?>
+    <div class="ml-n3">
+        <?= LinkPager::widget(['pagination' => $pages,'lastPageLabel'=>true,'firstPageLabel'=>true,'maxButtonCount'=>4]); /* постраничная навигация */ ?>
     </div>
 <?php
 } else {

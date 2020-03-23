@@ -34,7 +34,7 @@ if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords
 
             <div class="col-sm-9">
                 <h1><?= Html::encode($product['name']); ?></h1>
-                <div class="row">
+                <div class="row mb-2">
                     <div class="col-sm-5">
                         <?
                         if(count($images)>0) {
@@ -80,11 +80,12 @@ if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords
                     <?= $product['content']; ?>
                 </div>
                 <?php if (!empty($similar)): /* похожие товары */ ?>
+                    <hr/>
                     <h2>Похожие товары</h2>
-                    <div class="row">
+                    <div class="row mb-2">
                         <?php foreach ($similar as $item): ?>
-                            <div class="col-sm-4">
-                                <div class="product-wrapper text-center">
+                            <div class="col-sm-4 p-0">
+                                <div class="product-wrapper text-center p-1 m-1 border border-primary">
                                     <?
                                     $img = '/images/product/'.$item['image'];
                                     $file = Yii::getAlias('@webroot').$img;
@@ -100,21 +101,21 @@ if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords
                                     <?php
                                     if ($product['new']) { // новинка?
                                         echo Html::tag(
-                                            'span',
+                                            'div',
                                             'Новинка',
                                             ['class' => 'new']
                                         );
                                     }
                                     if ($product['hit']) { // лидер продаж?
                                         echo Html::tag(
-                                            'span',
+                                            'div',
                                             'Лидер продаж',
                                             ['class' => 'hit']
                                         );
                                     }
                                     if ($product['sale']) { // распродажа?
                                         echo Html::tag(
-                                            'span',
+                                            'div',
                                             'Распродажа',
                                             ['class' => 'sale']
                                         );

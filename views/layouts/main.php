@@ -75,6 +75,27 @@ AppAsset::register($this);
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                 'navOptions' => ['style'=>'padding-top:10px;'],
             ]) ?>
+            <?php if (Yii::$app->session->hasFlash('success')): ?>
+                <? foreach (Yii::$app->session->getFlash('success') as $flash){?>
+                    <div class="alert alert-success alert-dismissable" style="padding-top:40px;">
+                        <div class="container">
+                            <button aria-hidden="true" data-dismiss="alert" class="close pr-3" type="button">×</button>
+                            <?= $flash ?>
+                        </div>
+                    </div>
+                <? } ?>
+            <?php endif; ?>
+
+            <?php if (Yii::$app->session->hasFlash('error')): ?>
+                <? foreach (Yii::$app->session->getFlash('error') as $flash){?>
+                    <div class="alert alert-danger alert-dismissable" style="padding-top:40px;">
+                        <div class="container">
+                            <button aria-hidden="true" data-dismiss="alert" class="close pr-3" type="button">×</button>
+                            <?= $flash ?>
+                        </div>
+                    </div>
+                <? } ?>
+            <?php endif; ?>
             <?= Alert::widget() ?>
             <div class="site-index">
                 <div class="container">
@@ -89,9 +110,9 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+        <p class="float-left">&copy; My Company <?= date('Y') ?></p>
 
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <p class="float-right"><?= Yii::powered() ?></p>
     </div>
 </footer>
 

@@ -7,7 +7,7 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 ?>
-<div class="product-wrapper text-center">
+<div class="product-wrapper text-center p-1 m-1 border border-primary">
     <?
         $img = '/images/product/'.$product['image'];
         $file = Yii::getAlias('@webroot').$img;
