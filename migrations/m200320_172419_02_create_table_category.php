@@ -23,7 +23,6 @@ class m200320_172419_02_create_table_category extends Migration
             'depth' => $this->integer()->notNull(),
         ], $tableOptions);
 
-        $this->createIndex('parent', '{{%category}}', 'parent_id');
         $this->createIndex('slug', '{{%category}}', 'slug', true);
     }
 
