@@ -70,6 +70,7 @@ $config = [
                 'basket' => 'basket/index',
                 'basket/remove/<slug>' => 'basket/remove',
                 'checkout' => 'order/checkout',
+                'orders' => 'user/orders',
                 '<slug>' => 'catalog/product',
             ],
         ],

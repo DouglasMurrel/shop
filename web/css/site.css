@@ -206,3 +206,7 @@ a.desc:after {
 .main-row li {
     list-style: none;
 }
+
+.order-item{
+    min-height:50px;
+}

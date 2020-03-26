@@ -2,6 +2,7 @@
 
 namespace app\models\DB;
 
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\Json;
 
@@ -93,6 +94,16 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
      */
     public function getOrders()
     {
-        return $this->hasMany(Order::className(), ['user_id' => 'id'])->inverseOf('user');
+        return $this->hasMany(Order::className(), ['user_id' => 'id'])->orderBy('created desc')->asArray()->inverseOf('user');
+    }
+
+    public function fullOrdersInfo(){
+        $orders = $this->orders;
+        foreach($orders as $k=>$v){
+            $v['items'] = OrderItem::find()->where(['order_id'=>$v['id']])->asArray()->all();
+            unset($v['user']);
+            $orders[$k] = $v;
+        }
+        return $orders;
     }
 }

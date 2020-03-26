@@ -64,7 +64,12 @@ AppAsset::register($this);
                         ['class' => 'btn btn-link logout']
                     )
                     . Html::endForm()
-                )
+                );
+                if(!Yii::$app->user->isGuest){
+                ?>
+                <li><a class="nav-link my-auto text-primary" href="<?=Url::to(["user/orders"])?>">Мои заказы</a></li>
+                <?
+                }
                 ?>
                 <li><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/about"])?>">О нас</a></li>
                 <li><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/contact"])?>">Обратная связь</a></li>
