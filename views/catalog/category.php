@@ -20,9 +20,9 @@ if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords
 <h1><?=$name?></h1>
     <p>
         <?
-        $img = '/images/category/' . $image['image'];
+        $img = '/images/category/' . $image;
         $file = Yii::getAlias('@webroot') . $img;
-        if(file_exists($file) && $image['image']!=''){
+        if(file_exists($file) && $image!=''){
             echo Html::img(
                 $img,
                 ['alt' => $name, 'class' => 'img-responsive', 'style'=>'width:40px;height:40px;']

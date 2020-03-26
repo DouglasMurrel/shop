@@ -29,7 +29,7 @@ use yii\helpers\Url;
 function show_branch($item, $openCategories){
     $show_flag = false;
     if(in_array($item['id'],$openCategories))$show_flag = true;
-    $img = '/images/product/'.$item['image'];
+    $img = '/images/category/'.$item['image'];
     $file = Yii::getAlias('@webroot').$img;
     if(!file_exists($file) || $item['image']=='')$img = '/images/noimage.jpg';
     if (isset($item['nodes'])){
