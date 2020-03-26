@@ -65,6 +65,6 @@ class Image extends \yii\db\ActiveRecord
             ->asArray()
             ->one();
         if(isset($imageArray['image']))return $imageArray['image'];
-        return null;
+        return '';
     }
 }
