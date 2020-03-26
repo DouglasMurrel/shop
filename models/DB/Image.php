@@ -64,6 +64,7 @@ class Image extends \yii\db\ActiveRecord
             ->orderBy('sort ASC')
             ->asArray()
             ->one();
-        return $imageArray['image'];
+        if(isset($imageArray['image']))return $imageArray['image'];
+        return null;
     }
 }
