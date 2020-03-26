@@ -11,7 +11,6 @@ use yii\web\HttpException;
  * @property int $id id
  * @property string $slug Машинное имя
  * @property int|null $category_id Категория
- * @property int|null $brand_id Бренд
  * @property string $name Имя
  * @property string|null $content Описание
  * @property float $price Цена
@@ -20,7 +19,11 @@ use yii\web\HttpException;
  * @property int $hit Лидер продаж
  * @property int $new Новый
  * @property int $sale Распродажа
+ * @property string $code Код
+ * @property string $corpus Корпус
+ * @property string $parameters Параметры
  *
+ * @property OrderItem[] $orderItems
  * @property Category $category
  */
 class Product extends \yii\db\ActiveRecord
@@ -39,12 +42,12 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['slug', 'name'], 'required'],
-            [['category_id', 'brand_id', 'hit', 'new', 'sale'], 'integer'],
+            [['slug', 'name', 'code', 'corpus', 'parameters'], 'required'],
+            [['category_id', 'hit', 'new', 'sale'], 'integer'],
             [['price'], 'number'],
-            [['slug', 'name', 'content', 'keywords', 'description'], 'string', 'max' => 255],
+            [['slug', 'name', 'keywords', 'description', 'code', 'corpus', 'parameters'], 'string', 'max' => 255],
             [['slug'], 'unique'],
-            [['brand_id'], 'exist', 'skipOnError' => true, 'targetClass' => Brand::className(), 'targetAttribute' => ['brand_id' => 'id']],
+            [['name'], 'unique'],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
         ];
     }
@@ -58,16 +61,27 @@ class Product extends \yii\db\ActiveRecord
             'id' => 'id',
             'slug' => 'Машинное имя',
             'category_id' => 'Категория',
-            'brand_id' => 'Бренд',
             'name' => 'Имя',
             'content' => 'Описание',
             'price' => 'Цена',
             'keywords' => 'Мета-тег keywords',
-            'description' => 'Мета-тег description',
             'hit' => 'Лидер продаж',
             'new' => 'Новый',
             'sale' => 'Распродажа',
+            'code' => 'Код',
+            'corpus' => 'Корпус',
+            'parameters' => 'Параметры',
         ];
+    }
+
+    /**
+     * Gets query for [[OrderItems]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrderItems()
+    {
+        return $this->hasMany(OrderItem::className(), ['product_id' => 'id']);
     }
 
     /**

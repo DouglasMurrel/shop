@@ -67,7 +67,8 @@ if (file_exists($file) && $image != '') $img_flag = 1;
                 ?>
             </div>
             <div class="product-descr">
-                <?= $product['content']; ?>
+                <div>Корпус: <?=$product['corpus']?></div>
+                <div>Параметры: <?=$product['parameters']?></div>
             </div>
         </div>
     </div>

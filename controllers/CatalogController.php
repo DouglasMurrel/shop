@@ -2,7 +2,6 @@
 
 namespace app\controllers;
 
-use app\models\DB\Brand;
 use app\models\DB\Category;
 use app\models\DB\Product;
 use app\models\Forms\BasketForm;
