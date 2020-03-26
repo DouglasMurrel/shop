@@ -5,7 +5,6 @@
 
 use app\components\SearchWidget;
 use app\components\TreeWidget;
-use app\components\BrandWidget;
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -16,21 +15,6 @@ if(isset($name) && $name!='')$this->title = $name;
 if(isset($description) && $description!='')$this->registerMetaTag(['name' => 'description','content' => $description],'description');
 if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords','content' => $keywords],'keywords');
 ?>
-
-<?= SearchWidget::widget(); ?>
-<div class="col-sm-3">
-    <div class="left-sidebar">
-        <h2>Каталог</h2>
-        <div class="category-products container pl-0">
-            <?= TreeWidget::widget(); ?>
-        </div>
-
-        <h2><a href="<?= Url::to(['catalog/brands']); ?>" class='text-nowrap'>Бренды</a></h2>
-        <div class="brand-products">
-            <?= BrandWidget::widget(); ?>
-        </div>
-    </div>
-</div>
 
 <div class="col-sm-9">
     <h1>Оформление заказа</h1>

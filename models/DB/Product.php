@@ -21,7 +21,6 @@ use yii\web\HttpException;
  * @property int $new Новый
  * @property int $sale Распродажа
  *
- * @property Brand $brand
  * @property Category $category
  */
 class Product extends \yii\db\ActiveRecord
@@ -69,16 +68,6 @@ class Product extends \yii\db\ActiveRecord
             'new' => 'Новый',
             'sale' => 'Распродажа',
         ];
-    }
-
-    /**
-     * Gets query for [[Brand]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getBrand()
-    {
-        return $this->hasOne(Brand::className(), ['id' => 'brand_id']);
     }
 
     /**
@@ -150,31 +139,10 @@ class Product extends \yii\db\ActiveRecord
     }
 
     /**
-     * Возвращаем похожие товары (из той же категории того же бренда)
+     * Возвращает первое изображение
      */
-    public function getSimilar()
-    {
-        $slug = $this->slug;
-        $category_id = $this->category_id;
-        $brand_id = $this->brand_id;
-        $id = $this->id;
-        $similar = Yii::$app->cache->getOrSet(['similar','slug'=>$slug], function() use ($category_id,$brand_id,$id) {
-            $arrResult = Product::find()
-                ->where([
-                    'category_id' => $category_id,
-                    'brand_id' => $brand_id
-                ])
-                ->andWhere(['NOT IN', 'id', $id])
-                ->limit(3)
-                ->asArray()
-                ->all();
-            foreach ($arrResult as $k => $item) {
-                $item['image'] = Image::getFirst($item['id'], 'product');
-                $arrResult[$k] = $item;
-            }
-            return $arrResult;
-        },60);
-        return $similar;
+    public function getFirstImage(){
+        return Image::getFirst($this->id,'product');
     }
 
     public static function getProductFullData($slug){
@@ -186,7 +154,6 @@ class Product extends \yii\db\ActiveRecord
                     'Запрошенная страница не найдена'
                 );
             }
-            $brand = Brand::getById($product->brand_id);
             $category = Category::getById($product->category_id);
             $parents = $category->getParents();
             $links = [];
@@ -198,8 +165,8 @@ class Product extends \yii\db\ActiveRecord
             }
             $link = ['label'=>$product->name,'url'=>['catalog/product','slug'=>$slug]];
             $links[] = $link;
-            $images = $product->images();
-            return [$product, $brand, $images, $links];
+            $image = $product->getFirstImage();
+            return [$product, $image, $links];
         },60);
         return $data;
     }

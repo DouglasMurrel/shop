@@ -5,27 +5,15 @@
 
 use app\components\SearchWidget;
 use app\components\TreeWidget;
-use app\components\BrandWidget;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
+$this->params['breadcrumbs'] = [['label'=>'']];
+
 ?>
 
-<?= SearchWidget::widget(); ?>
-<div class="col-sm-3">
-    <h2>Каталог</h2>
-    <div class="category-products container pl-0">
-        <?= TreeWidget::widget(); ?>
-    </div>
-
-    <h2>Бренды</h2>
-    <div class="brand-products">
-        <?= BrandWidget::widget(); ?>
-    </div>
-</div>
-
-<div class="col-sm-9">
+<div class="col">
     <h1>Корзина</h1>
         <p class="text-right">
             <a href="<?= Url::to(['basket/clear']); ?>" class="text-danger">
@@ -35,40 +23,32 @@ use yii\widgets\ActiveForm;
     <?
     $form = ActiveForm::begin(['options'=>['id'=>'mainform']]);
     ?>
-        <table class="table table-bordered">
-            <tr>
-                <th>Наименование</th>
-                <th>Количество</th>
-                <th>Цена, руб.</th>
-                <th>Сумма, руб.</th>
-                <th></th>
-            </tr>
-            <?php if (!empty($basket) && !empty($basket['products'])): ?>
+    <div class="container">
+        <?php if (!empty($basket) && !empty($basket['products'])): ?>
             <?php
-                $k = 0;
-                foreach ($basket['products'] as $id=>$item):
-            ?>
-                <tr>
-                    <td><?= $item['name']; ?></td>
-                    <td class="text-right">
+            $k = 0;
+            foreach ($basket['products'] as $id=>$item):
+                ?>
+                <div class="row border border-primary">
+                    <div class="col-lg"><?= $item['name']; ?></div>
+                    <div class="col-lg text-lg-right">
                         <?= $form->field($basketForms[$k], "[$k]count")->textInput(['value'=>$item['count']])->label(false);?>
                         <?= $form->field($basketForms[$k], "[$k]id")->hiddenInput(['value'=>$id])->label(false); ?>
-                    </td>
-                    <td class="text-right"><?= $item['price']; ?></td>
-                    <td class="text-right"><?= $item['price'] * $item['count']; ?></td>
-                    <td class="text-right"><a href="<?= Url::to(['basket/remove','slug'=>$item['slug']]); ?>">Удалить</a></td>
-                </tr>
-            <?php
-                    $k++;
-                endforeach;
+                    </div>
+                    <div class="col-lg text-lg-right">Цена: <?= $item['price']; ?> р.</div>
+                    <div class="col-lg text-lg-right">Сумма: <?= $item['price'] * $item['count']; ?> р.</div>
+                    <div class="col-lg text-lg-right"><a href="<?= Url::to(['basket/remove','slug'=>$item['slug']]); ?>">Удалить</a></div>
+                </div>
+                <?php
+                $k++;
+            endforeach;
             ?>
-            <?php endif; ?>
-            <tr>
-                <td colspan="3" class="text-right">Итого</td>
-                <td class="text-right"><?= $basket['price']; ?></td>
-                <td class="text-right"><a href='' onclick="$('form#mainform').submit();return false;">Пересчитать</a></td>
-            </tr>
-        </table>
+        <?php endif; ?>
+        <tr>
+            <div class="col-lg text-right">Итого: <?= $basket['price']; ?> руб.</div>
+            <div class="col-lg text-right"><a href='' onclick="$('form#mainform').submit();return false;">Пересчитать</a></div>
+        </tr>
+    </div>
     <a href="/checkout" class="float-right">Оформить заказ</a>
     <?
     ActiveForm::end();

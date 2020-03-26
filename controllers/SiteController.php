@@ -242,4 +242,12 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+    function actionPayment(){
+        return $this->render('payment');
+    }
+
+    function actionHowtobuy(){
+        return $this->render('howtobuy');
+    }
 }

@@ -48,6 +48,7 @@ class TreeWidget extends Widget
                 $nodes_array[] = $this->makeTree($newNode);
             }
             $node['nodes'] = $nodes_array;
+            $node['image'] = $nodeObj->getFirstImage();
         }
         return $node;
     }

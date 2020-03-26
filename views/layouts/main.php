@@ -10,7 +10,8 @@ use yii\bootstrap4\NavBar;
 use yii\helpers\Url;
 use yii\bootstrap4\Breadcrumbs;
 use app\assets\AppAsset;
-use \app\components\MyNavBar;
+
+$this->params['breadcrumbs'] = [['label'=>'']];
 
 Yii::$app->assetManager->bundles['yii\bootstrap\BootstrapAsset'] = false;
 Yii::$app->assetManager->bundles['yii\bootstrap\BootstrapPluginAsset'] = false;
@@ -52,7 +53,7 @@ AppAsset::register($this);
         </div>
     </div>
     <div class="row main-row">
-        <div class="col-6 col-lg-2 bg-light dont-collapse-lg collapse" id="left-panel" style="">
+        <div class="col-6 col-lg-3 bg-light dont-collapse-lg collapse" id="left-panel" style="">
             <div class="d-flex flex-column pt-3">
                 <?
                 print Yii::$app->user->isGuest ? (
@@ -72,10 +73,12 @@ AppAsset::register($this);
                 }
                 ?>
                 <li><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/about"])?>">О нас</a></li>
-                <li><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/contact"])?>">Обратная связь</a></li>
+                <li><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/contact"])?>">Контакты</a></li>
+                <li><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/howtobuy"])?>">Как купить</a></li>
+                <li><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/payment"])?>">Доставка и оплата</a></li>
             </div>
         </div>
-        <div class="col-12 col-lg-10" id="main-panel">
+        <div class="col-12 col-lg-9" id="main-panel">
             <?= Breadcrumbs::widget([
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                 'navOptions' => ['style'=>'padding-top:10px;'],

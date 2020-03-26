@@ -29,10 +29,13 @@ use yii\helpers\Url;
 function show_branch($item, $openCategories){
     $show_flag = false;
     if(in_array($item['id'],$openCategories))$show_flag = true;
+    $img = '/images/product/'.$item['image'];
+    $file = Yii::getAlias('@webroot').$img;
+    if(!file_exists($file) || $item['image']=='')$img = '/images/noimage.jpg';
     if (isset($item['nodes'])){
         ?>
         <li>
-        <span style="white-space:nowrap;">
+        <span style="white-space:nowrap;min-width:100%;min-height:40px;">
              <a style="color:#000; text-decoration:none;" data-toggle="collapse" href="#<?=$item['slug']?>" aria-expanded="<?= $show_flag?'true':'false'?>" aria-controls="<?=$item['slug']?>">
                   <i class="collapsed">
                       <i class="fas fa-folder"></i>
@@ -45,7 +48,8 @@ function show_branch($item, $openCategories){
         </span>
             <ul>
                 <div id="<?=$item['slug']?>" class="collapse<?= $show_flag?' show':''?>">
-                    <?php foreach ($item['nodes'] as $item1): ?>
+                    <?php foreach ($item['nodes'] as $item1):
+                        ?>
                         <?php show_branch($item1,$openCategories); ?>
                     <?php endforeach; ?>
                 </div>
@@ -55,9 +59,9 @@ function show_branch($item, $openCategories){
     }else{
         ?>
         <li>
-            <span style="white-space:nowrap;">
+            <span style="min-width:100%;min-height:40px;">
                 <i class="far"></i>
-                <a href="<?=Url::to(['catalog/category','slug'=>$item['slug']])?>"><?=$item['name']?></a>
+                <a class="w-100" href="<?=Url::to(['catalog/category','slug'=>$item['slug']])?>"><?=$item['name']?></a>
             </span>
         </li>
         <?

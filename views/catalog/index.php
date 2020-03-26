@@ -18,48 +18,12 @@ if(isset($description) && $description!='')$this->registerMetaTag(['name' => 'de
 if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords','content' => $keywords],'keywords');
 ?>
 <?= SearchWidget::widget(); ?>
-<div class="col-sm-3">
+<div class="col-12">
     <h2>Каталог</h2>
     <div class="category-products container pl-0">
         <?= TreeWidget::widget(); ?>
     </div>
+</div>
 
-    <h2><a href="<?= Url::to(['catalog/brands']); ?>" class='text-nowrap'>Бренды</a></h2>
-    <div class="brand-products">
-        <?= BrandWidget::widget(); ?>
-    </div>
-</div>
-<div class="col-sm-9">
-    <?php if (!empty($hitProducts)): ?>
-        <h2>Лидеры продаж</h2>
-        <div class="row">
-            <?php foreach ($hitProducts as $item): ?>
-            <div class="col-sm-4">
-                <?= ProductWidget::widget(['product'=>$item]); ?>
-            </div>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
-    <?php if (!empty($newProducts)): ?>
-        <h2>Новинки</h2>
-        <div class="row">
-            <?php foreach ($newProducts as $item): ?>
-                <div class="col-sm-4">
-                    <?= ProductWidget::widget(['product'=>$item]); ?>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
-    <?php if (!empty($saleProducts)): ?>
-        <h2>Распродажа</h2>
-        <div class="row">
-            <?php foreach ($saleProducts as $item): ?>
-                <div class="col-sm-4">
-                    <?= ProductWidget::widget(['product'=>$item]); ?>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
-</div>
 
 

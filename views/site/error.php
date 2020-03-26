@@ -5,25 +5,15 @@
 /* @var $message string */
 /* @var $exception Exception */
 
-use app\components\BrandWidget;
 use app\components\TreeWidget;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
+$this->params['breadcrumbs'] = [['label'=>'']];
+
 $this->title = $name;
 ?>
-<div class="col-sm-3">
-    <h2>Каталог</h2>
-    <div class="category-products">
-        <?= TreeWidget::widget(); ?>
-    </div>
-
-    <h2><a href="<?= Url::to(['catalog/brands']); ?>" class='text-nowrap'>Бренды</a></h2>
-    <div class="brand-products">
-        <?= BrandWidget::widget(); ?>
-    </div>
-</div>
-<div class="col-sm-9">
+<div class="col">
     <div class="site-error">
 
         <h1><?= Html::encode($this->title) ?></h1>

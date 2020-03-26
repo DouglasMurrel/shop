@@ -63,56 +63,17 @@ class CatalogController extends Controller{
     }
 
     /**
-     * Список всех брендов каталога товаров
-     */
-    public function actionBrands() {
-        $brands = Brand::getAllBrands();
-        return $this->render(
-            'brands',
-            [
-                'brands' => $brands,
-                'links'=>[['label'=>'Все бренды','url'=>['catalog/brands']]],
-            ]
-        );
-    }
-
-    /**
-     * Список товаров бренда с идентификатором $slug
-     */
-    public function actionBrand($slug) {
-        $data = Brand::getBrandFullData($slug);
-        list($brand,$products) = $data;
-        return $this->render(
-            'brand',
-            [
-                'products'=>$products['products'],
-                'pages'=>$products['pages'],
-                'name'=>$brand->name,
-                'content'=>$brand->content,
-                'description'=>$brand->description,
-                'keywords'=>$brand->keywords,
-                'image'=>$brand->getFirstImage(),
-                'links'=>[['label'=>$brand->name,'url'=>['catalog/brand','slug'=>$slug]]],
-            ]
-        );
-    }
-
-    /**
      * Страница товара с идентификатором $slug
      */
     public function actionProduct($slug) {
         $data = Product::getProductFullData($slug);
-        list($product, $brand, $images, $links) = $data;
-        // получаем товары, похожие на текущий
-        $similar = $product->getSimilar($slug);
+        list($product, $image, $links) = $data;
         $basketForm = new BasketForm();
         return $this->render(
             'product',
             [
                 'product'=>$product,
-                'brand'=>$brand,
-                'images'=>$images,
-                'similar'=>$similar,
+                'image'=>$image,
                 'links'=>$links,
                 'basketForm'=>$basketForm,
             ]
