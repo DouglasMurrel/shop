@@ -25,6 +25,7 @@ class OrderController extends \yii\web\Controller
         if ($order->load(Yii::$app->request->post())) {
             $validFlag = false;
             if ($order->validate()) {
+                $password = null;
                 if (Yii::$app->user->isGuest) {
                     $user = User::find()->where(['email'=>$order->email])->one();
                     if(!$user) {
