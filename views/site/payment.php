@@ -4,7 +4,7 @@
 
 use yii\helpers\Html;
 
-$this->title = 'About';
+$this->title = 'Оплата и доставка';
 $this->params['breadcrumbs'][] = $this->title;
 
 $this->params['breadcrumbs'] = [['label'=>'']];
