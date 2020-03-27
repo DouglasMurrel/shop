@@ -39,7 +39,7 @@ class OrderController extends \yii\web\Controller
                 } else {
                     $validFlag = true;
                     $password = null;
-                    $user = User::findOne(Yii::$app->user->identity->getId());
+                    $user = Yii::$app->user->identity;
                 }
                 if($validFlag) {
                     $content = Basket::getBasket();
@@ -67,7 +67,7 @@ class OrderController extends \yii\web\Controller
             return $this->redirect(Url::to('/'));
         }
         if(Yii::$app->user->isGuest)$email = '';
-        else $email = User::findOne(Yii::$app->user->identity->getId())->email;
+        else $email = Yii::$app->user->identity->email;
         return $this->render('checkout', [
             'order'=>$order,
             'links'=>[],

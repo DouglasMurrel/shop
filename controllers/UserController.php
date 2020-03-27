@@ -11,7 +11,7 @@ use yii\web\Controller;
 class UserController extends Controller
 {
     function actionOrders(){
-        $user = User::findOne(Yii::$app->user->identity->getId());
+        $user = Yii::$app->user->identity;
         $orders = $user->fullOrdersInfo();
         return $this->render('index',[
             'orders'=>$orders,

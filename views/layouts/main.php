@@ -53,6 +53,8 @@ AppAsset::register($this);
         </div>
     </div>
     <div class="row main-row">
+        <?= Alert::widget(['options'=>['class'=>'w-100']]) ?>
+        <div class="w-100"></div>
         <div class="col-6 col-lg-3 bg-light dont-collapse-lg collapse" id="left-panel" style="">
             <div class="d-flex flex-column pt-3">
                 <?
@@ -83,28 +85,6 @@ AppAsset::register($this);
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                 'navOptions' => ['style'=>'padding-top:10px;'],
             ]) ?>
-            <?php if (Yii::$app->session->hasFlash('success')): ?>
-                <? foreach (Yii::$app->session->getFlash('success') as $flash){?>
-                    <div class="alert alert-success alert-dismissable" style="padding-top:40px;">
-                        <div class="container">
-                            <button aria-hidden="true" data-dismiss="alert" class="close pr-3" type="button">×</button>
-                            <?= $flash ?>
-                        </div>
-                    </div>
-                <? } ?>
-            <?php endif; ?>
-
-            <?php if (Yii::$app->session->hasFlash('error')): ?>
-                <? foreach (Yii::$app->session->getFlash('error') as $flash){?>
-                    <div class="alert alert-danger alert-dismissable" style="padding-top:40px;">
-                        <div class="container">
-                            <button aria-hidden="true" data-dismiss="alert" class="close pr-3" type="button">×</button>
-                            <?= $flash ?>
-                        </div>
-                    </div>
-                <? } ?>
-            <?php endif; ?>
-            <?= Alert::widget() ?>
             <div class="site-index">
                 <div class="container">
                     <div class="row">

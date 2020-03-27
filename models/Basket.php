@@ -109,7 +109,7 @@ class Basket extends Model
         }
         $basket = Basket::getBasket();
         $products = $basket['products'];
-        $user = User::findOne(Yii::$app->user->identity->getId());
+        $user = Yii::$app->user->identity;
         $user->basket = serialize($products);
         $user->save();
         return true;
@@ -123,7 +123,7 @@ class Basket extends Model
         if (Yii::$app->user->isGuest) {
             return false;
         }
-        $user = User::findOne(Yii::$app->user->identity->getId());
+        $user = Yii::$app->user->identity;
         if($basket = unserialize($user->basket)) {
             if(!is_array($basket)){
                 Basket::setBasket(['products' => []]);
