@@ -27,12 +27,15 @@ class TreeWidget extends Widget
                 }
             }
             $root = Category::find()->where(['id'=>1])->asArray()->one();
-            $root = $this->makeTree($root);
-            $tree = $root['nodes'];
-            if ( ! empty($tree)) {
-                $html = $this->render('menu', ['tree' => $tree, 'openCategories'=>$openCategories]);
-            } else {
-                $html = '';
+            $html = '';
+            if($root) {
+                $root = $this->makeTree($root);
+                $tree = $root['nodes'];
+                if (!empty($tree)) {
+                    $html = $this->render('menu', ['tree' => $tree, 'openCategories' => $openCategories]);
+                } else {
+                    $html = '';
+                }
             }
             return $html;
         }, 60);
