@@ -34,53 +34,59 @@ AppAsset::register($this);
 <div class="container wrap">
     <div class="container fixed-top bg-light border-bottom border-dark">
         <div class="row">
-            <div class="col-2 dont-show-lg" id="top">
-                <button class="btn btn-white mt-1 dont-show-lg has_tooltip collapsed" type="button" data-toggle="collapse" data-target="#left-panel" aria-expanded="false" aria-controls="left-panel" title="Меню" data-placement="right">
-                    <div class="gamb-line"></div>
-                    <div class="gamb-line"></div>
-                    <div class="gamb-line"></div>
-                </button>
-            </div>
-            <div class="col-5">
+            <?
+            if(!Yii::$app->user->isGuest){
+                ?>
+            <div class="col-6">
                 <a class="navbar-brand" href="<?=Yii::$app->homeUrl ?>"><?=Yii::$app->name ?></a>
             </div>
-            <div class="col-5 clearfix">
+            <div class="col-1">
                 <?php
                 $basketTitle = isset(Yii::$app->session['basketTitle']) ? Yii::$app->session['basketTitle'] : 'Корзина пуста';
                 ?>
                 <a class="nav-link float-right" href="<?=Url::to(['basket/index'])?>" title="<?=$basketTitle?>">Корзина</a>
             </div>
+                <div class="col-2">
+                    <a class="nav-link my-auto text-primary" href="<?=Url::to(["user/orders"])?>">Мои заказы</a>
+                </div>
+            <div class="col-3">
+                <?=                Html::beginForm(['/site/logout'], 'post', ['class' => 'mt-n1 my-auto'])
+                . Html::submitButton(
+                    'Выход (' . Yii::$app->user->identity->email . ')',
+                    ['class' => 'btn btn-link logout']
+                )
+                . Html::endForm()
+                ?>
+            </div>
+                <?
+            }else{
+                ?>
+                <div class="col-8 col-lg-10">
+                    <a class="navbar-brand" href="<?=Yii::$app->homeUrl ?>"><?=Yii::$app->name ?></a>
+                </div>
+                <div class="col-1">
+                    <?php
+                    $basketTitle = isset(Yii::$app->session['basketTitle']) ? Yii::$app->session['basketTitle'] : 'Корзина пуста';
+                    ?>
+                    <a class="nav-link float-right" href="<?=Url::to(['basket/index'])?>" title="<?=$basketTitle?>">Корзина</a>
+                </div>
+                <div class="col-1">
+                    <a class="nav-link my-auto text-primary" href="<?= Url::to(["site/login"])?>">Вход</a>
+                </div>
+            <?
+            }
+            ?>
         </div>
     </div>
-    <div class="row main-row">
+    <div class="row submenu-row bg-light">
+        <div class="col"><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/about"])?>">О нас</a></div>
+        <div class="col"><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/contact"])?>">Контакты</a></div>
+        <div class="col"><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/howtobuy"])?>">Как купить</a></div>
+        <div class="col"><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/payment"])?>">Доставка и оплата</a></div>
+    </div>
+    <div class="row">
         <?= Alert::widget(['options'=>['class'=>'w-100']]) ?>
-        <div class="w-100"></div>
-        <div class="col-6 col-lg-3 bg-light dont-collapse-lg collapse" id="left-panel" style="">
-            <div class="d-flex flex-column pt-3">
-                <?
-                print Yii::$app->user->isGuest ? (
-                    '<a class="nav-link my-auto text-primary" href="' . Url::to(["site/login"]) . '">Вход</a>'
-                ) : (
-                    Html::beginForm(['/site/logout'], 'post', ['class' => 'mt-n1 my-auto'])
-                    . Html::submitButton(
-                        'Выход (' . Yii::$app->user->identity->email . ')',
-                        ['class' => 'btn btn-link logout']
-                    )
-                    . Html::endForm()
-                );
-                if(!Yii::$app->user->isGuest){
-                ?>
-                <li><a class="nav-link my-auto text-primary" href="<?=Url::to(["user/orders"])?>">Мои заказы</a></li>
-                <?
-                }
-                ?>
-                <li><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/about"])?>">О нас</a></li>
-                <li><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/contact"])?>">Контакты</a></li>
-                <li><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/howtobuy"])?>">Как купить</a></li>
-                <li><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/payment"])?>">Доставка и оплата</a></li>
-            </div>
-        </div>
-        <div class="col-12 col-lg-9" id="main-panel">
+        <div class="col-12" id="main-panel">
             <?= Breadcrumbs::widget([
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                 'navOptions' => ['style'=>'padding-top:10px;'],

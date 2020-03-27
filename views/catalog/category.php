@@ -34,17 +34,15 @@ if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords
 <?php
 if (!empty($products)) {
     ?>
-<div class="row mb-2">
+<table>
 <?
     foreach ($products as $product) {
 ?>
-        <div class="col-sm-4 p-0">
             <?= ProductWidget::widget(['product'=>$product]); ?>
-        </div>
 <?php
     }
 ?>
-</div>
+</table>
     <div class="ml-n3">
         <?= LinkPager::widget(['pagination' => $pages,'lastPageLabel'=>true,'firstPageLabel'=>true,'maxButtonCount'=>4]); /* постраничная навигация */ ?>
     </div>

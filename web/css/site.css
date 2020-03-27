@@ -199,12 +199,8 @@ a.desc:after {
     transition: 0.3s;
 }
 
-.main-row{
+.submenu-row{
     padding-top: 70px;
-}
-
-.main-row li {
-    list-style: none;
 }
 
 .order-item{
