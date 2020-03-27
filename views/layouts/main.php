@@ -37,19 +37,19 @@ AppAsset::register($this);
             <?
             if(!Yii::$app->user->isGuest){
                 ?>
-            <div class="col-6">
+            <div class="dont-show-mobile col-lg-6">
                 <a class="navbar-brand" href="<?=Yii::$app->homeUrl ?>"><?=Yii::$app->name ?></a>
             </div>
-            <div class="col-1">
+            <div class="col-lg-1 col-3 p-0">
                 <?php
                 $basketTitle = isset(Yii::$app->session['basketTitle']) ? Yii::$app->session['basketTitle'] : 'Корзина пуста';
                 ?>
                 <a class="nav-link float-right" href="<?=Url::to(['basket/index'])?>" title="<?=$basketTitle?>">Корзина</a>
             </div>
-                <div class="col-2">
+                <div class="col-lg-2 col-4 p-0">
                     <a class="nav-link my-auto text-primary" href="<?=Url::to(["user/orders"])?>">Мои заказы</a>
                 </div>
-            <div class="col-3">
+            <div class="col-3 p-0">
                 <?=                Html::beginForm(['/site/logout'], 'post', ['class' => 'mt-n1 my-auto'])
                 . Html::submitButton(
                     'Выход (' . Yii::$app->user->identity->email . ')',
@@ -79,10 +79,10 @@ AppAsset::register($this);
         </div>
     </div>
     <div class="row submenu-row bg-light">
-        <div class="col"><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/about"])?>">О нас</a></div>
-        <div class="col"><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/contact"])?>">Контакты</a></div>
-        <div class="col"><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/howtobuy"])?>">Как купить</a></div>
-        <div class="col"><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/payment"])?>">Доставка и оплата</a></div>
+        <div class="col-4 col-lg-3"><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/about"])?>">О нас</a></div>
+        <div class="col-4 col-lg-3"><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/contact"])?>">Контакты</a></div>
+        <div class="col-5 col-lg-3"><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/howtobuy"])?>">Как купить</a></div>
+        <div class="col col-lg-3"><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/payment"])?>">Доставка и оплата</a></div>
     </div>
     <div class="row">
         <?= Alert::widget(['options'=>['class'=>'w-100']]) ?>

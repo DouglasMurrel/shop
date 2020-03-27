@@ -191,6 +191,11 @@ a.desc:after {
         display: none !important;
     }
 }
+@media (max-width: 960px) {
+    .dont-show-mobile {
+        display: none !important;
+    }
+}
 .gamb-line {
     width: 36px;
     height: 5px;
