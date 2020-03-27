@@ -20,6 +20,7 @@ $config = [
     'modules' => [
         'admin' => [
             'class' => 'app\modules\admin\Module',
+            'layout' => 'main',
         ],
     ],
     'components' => [
@@ -76,6 +77,7 @@ $config = [
                 'basket/remove/<slug>' => 'basket/remove',
                 'checkout' => 'order/checkout',
                 'orders' => 'user/orders',
+                'admin' => 'admin/default/index',
                 '<slug>' => 'catalog/product',
             ],
         ],
