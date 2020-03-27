@@ -22,6 +22,7 @@ class Module extends \yii\base\Module
     {
         parent::init();
         Yii::configure($this, [
+            'defaultRoute'=>'order/index',
             'components' => [
                 'errorHandler' => [
                     'class' => ErrorHandler::class,

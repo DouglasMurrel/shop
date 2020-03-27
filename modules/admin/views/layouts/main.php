@@ -27,7 +27,7 @@ AppAsset::register($this);
         <?php
         echo Menu::widget([
             'items' => [
-                ['label' => 'Главная', 'url' => ['index']],
+                ['label' => 'Заказы', 'url' => ['order/index']],
                 [
                     'label' => 'Каталог',
                     'items' => [
@@ -35,7 +35,6 @@ AppAsset::register($this);
                         ['label' => 'Товары', 'url' => ['product/index']],
                     ],
                 ],
-                ['label' => 'Заказы', 'url' => ['order/index']],
 //                ['label' => 'Пользователи', 'url' => ['user/index']],
             ],
             'activeCssClass'=>'active',
