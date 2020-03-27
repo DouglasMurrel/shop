@@ -27,6 +27,7 @@ AppAsset::register($this);
         <?php
         echo Menu::widget([
             'items' => [
+                ['label' => 'Главная', 'url' => ['index']],
                 [
                     'label' => 'Каталог',
                     'items' => [
