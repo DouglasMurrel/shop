@@ -34,6 +34,10 @@ if (file_exists($file) && $image != '') $img_flag = 1;
                     </div>
                 </div>
                 <div class="col-sm-7">
+                    <div class="product-descr">
+                        <div>Корпус: <?=$product['corpus']?></div>
+                        <div>Параметры: <?=$product['parameters']?></div>
+                    </div>
                     <div class="product-info">
                         <p class="product-price">
                             Цена: <span><?= $product['price']; ?></span> руб.
@@ -50,6 +54,10 @@ if (file_exists($file) && $image != '') $img_flag = 1;
                 }else{
                 ?>
                     <div class="col">
+                        <div class="product-descr">
+                            <div>Корпус: <?=$product['corpus']?></div>
+                            <div>Параметры: <?=$product['parameters']?></div>
+                        </div>
                         <div class="product-info">
                             <p class="product-price">
                                 Цена: <span><?= $product['price']; ?></span> руб.
@@ -65,10 +73,6 @@ if (file_exists($file) && $image != '') $img_flag = 1;
                 <?
                 }
                 ?>
-            </div>
-            <div class="product-descr">
-                <div>Корпус: <?=$product['corpus']?></div>
-                <div>Параметры: <?=$product['parameters']?></div>
             </div>
         </div>
     </div>
