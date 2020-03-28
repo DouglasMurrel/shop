@@ -123,6 +123,16 @@ class Category extends \yii\db\ActiveRecord
         return $this->children(1)->all();
     }
 
+    public function getAllChildren() {
+        // связь таблицы БД `category` с таблицей `category`
+        return $this->children()->all();
+    }
+
+    public static function getTree(){
+        $root = Category::findOne(1);
+        return $root->getAllChildren();
+    }
+
     /**
      * Возвращает содержимое по слагу
      * @param string $slug

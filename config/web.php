@@ -79,6 +79,7 @@ $config = [
                 'orders' => 'user/orders',
                 'admin' => 'admin/orders/index',
                 'admin/order/<id:\d+>' => 'admin/orders/order',
+                'admin/category/<id:\d+>' => 'admin/category/category',
                 'admin/category' => 'admin/category/index',
                 'admin/product/<id:\d+>' => 'admin/product/product',
                 'admin/product' => 'admin/product/index',
