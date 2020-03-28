@@ -46,6 +46,7 @@ class CatalogController extends Controller{
         $data = Category::getCategoryFullData($slug);
         list($category,$products,$links) = $data;
         // товары категории
+        $basketForm = new BasketForm();
         return $this->render(
             'category',
             [
@@ -57,6 +58,7 @@ class CatalogController extends Controller{
                 'description'=>$category->description,
                 'keywords'=>$category->keywords,
                 'image'=>$category->getFirstImage(),
+                'basketForm' => $basketForm,
             ]
         );
     }

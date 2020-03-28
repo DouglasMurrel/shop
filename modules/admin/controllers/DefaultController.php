@@ -39,6 +39,7 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        Yii::info('oooo');
+        return $this->redirect('orders/index');
     }
 }

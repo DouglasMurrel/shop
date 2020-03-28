@@ -3,6 +3,7 @@
 namespace app\models\DB;
 
 use Yii;
+use yii\data\Pagination;
 
 /**
  * This is the model class for table "order".
@@ -105,5 +106,22 @@ class Order extends \yii\db\ActiveRecord
             $item->cost = $product['price'] * $product['count'];
             $item->save();
         }
+    }
+
+    public static function orderList(){
+        $query = Order::find();
+        $pages = new Pagination([
+            'totalCount' => $query->count(),
+            'pageSize' => Yii::$app->params['pageSize'], // кол-во товаров на странице
+            'forcePageParam' => false,
+            'pageSizeParam' => false,
+        ]);
+        $arrResult = $query
+            ->orderBy('created desc')
+            ->offset($pages->offset)
+            ->limit($pages->limit)
+            ->asArray()
+            ->all();
+        return ['orders'=>$arrResult,'pages'=>$pages];
     }
 }

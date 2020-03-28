@@ -1,6 +1,7 @@
 <?php
 
 use app\assets\AppAsset;
+use app\modules\admin\AdminAsset;
 use yii\bootstrap4\Html;
 use yii\helpers\Url;
 use yii\widgets\Menu;
@@ -8,6 +9,7 @@ use yii\widgets\Menu;
 Yii::$app->assetManager->bundles['yii\bootstrap\BootstrapAsset'] = false;
 Yii::$app->assetManager->bundles['yii\bootstrap\BootstrapPluginAsset'] = false;
 AppAsset::register($this);
+AdminAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
     <!DOCTYPE html>
@@ -27,7 +29,7 @@ AppAsset::register($this);
         <?php
         echo Menu::widget([
             'items' => [
-                ['label' => 'Заказы', 'url' => ['order/index']],
+                ['label' => 'Заказы', 'url' => ['orders/index']],
                 [
                     'label' => 'Каталог',
                     'items' => [
