@@ -39,7 +39,7 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            ['amount', 'number'],
+            [['amount','status'], 'number'],
             [['created', 'updated'], 'safe'],
             [['name', 'email', 'phone'], 'string', 'max' => 50, 'message' => 'Значение не может быть длиннее 50 символов'],
             [['address', 'comment'], 'string', 'max' => 255, 'message' => 'Значение не может быть длиннее 50 символов'],

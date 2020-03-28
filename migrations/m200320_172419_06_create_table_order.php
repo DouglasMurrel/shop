@@ -20,7 +20,7 @@ class m200320_172419_06_create_table_order extends Migration
             'address' => $this->string()->notNull()->defaultValue('')->comment('Адрес доставки'),
             'comment' => $this->string()->notNull()->defaultValue('')->comment('Комментарий к заказу'),
             'amount' => $this->decimal(10, 2)->notNull()->defaultValue('0.00')->comment('Сумма заказа'),
-            'status' => $this->tinyInteger(1)->notNull()->defaultValue('0')->comment('Статус заказа'),
+            'status' => $this->integer(2)->notNull()->defaultValue('0')->comment('Статус заказа'),
             'created' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP')->comment('Дата и время создания'),
             'updated' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP')->comment('Дата и время обновления'),
         ], $tableOptions);

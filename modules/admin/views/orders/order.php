@@ -12,6 +12,10 @@ if (!empty($orderItems)) {
     <div><?=$order['phone']?></div>
     <div><?=$order['address']?></div>
     <div><?=$order['comment']?></div>
+    <?php
+    $statuses = [0=>'Ожидает',1=>'В обработке',2=>'Выполнен'];
+    ?>
+    <?= $form->field($order, "status")->dropDownList($statuses,['value'=>$order['status'],'style'=>['width'=>'200px;']])->label(false) ?>
     <table>
         <?
         foreach ($orderItems as $k=>$orderItem) {

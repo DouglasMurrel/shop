@@ -33,6 +33,8 @@ class OrdersController extends DefaultController
                 }
                 $order->amount = $sum;
                 $order->updated = date('Y-m-d H:i:s');
+                Yii::info(Yii::$app->request->post());
+                Yii::info($order->status);
                 $order->save();
                 Yii::$app->session->addFlash('success','Заказ успешно сохранен!');
                 return $this->redirect(Url::to(['orders/order','id'=>$order->id]));
