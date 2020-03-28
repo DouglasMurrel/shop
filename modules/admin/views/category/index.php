@@ -3,6 +3,7 @@
 use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
 use yii\helpers\Url;
+use app\modules\admin\components\CategoryWidget;
 
 if($tree){
     ActiveForm::begin(['action' => Url::to(['category/delete']),'id'=>'delform']);
@@ -21,7 +22,7 @@ if($tree){
         }
 ?>
             <?=
-            Html::checkbox('del[]',false,['id'=>"del$k",'value'=>$k]);
+            Html::checkbox('del[]',false,['id'=>"del$k",'value'=>$node->id]);
             ?>
             <a href="<?=Url::to(['category/category','id'=>$id])?>"><?=$name?></a>
         </div>
@@ -30,3 +31,7 @@ if($tree){
     echo Html::button('Удалить выбранное', ['class' => 'btn btn-danger']);
     ActiveForm::end();
 }
+?>
+<h2>Добавить категорию</h2>
+<?php
+echo CategoryWidget::widget(['category'=>$category,'tree'=>$tree]);

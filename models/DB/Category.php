@@ -4,6 +4,7 @@ namespace app\models\DB;
 
 use Yii;
 use yii\data\Pagination;
+use yii\db\Query;
 use yii\helpers\Url;
 use yii\web\HttpException;
 use creocoder\nestedsets\NestedSetsBehavior;
@@ -14,11 +15,12 @@ use app\models\CategoryQuery;
  *
  * @property int $id id
  * @property string $slug Машинное имя
- * @property int $parent_id Родительская категория
  * @property string $name Имя
- * @property string|null $content Описание
  * @property string|null $keywords Мета-тег keywords
  * @property string|null $description Мета-тег description
+ * @property string $lft
+ * @property string $rgt
+ * @property string $depth
  *
  * @property Product[] $products
  */
@@ -130,7 +132,21 @@ class Category extends \yii\db\ActiveRecord
 
     public static function getTree(){
         $root = Category::findOne(1);
-        return $root->getAllChildren();
+        if($root)return $root->getAllChildren();
+        else return null;
+    }
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    public static function del($id){
+        $node = Category::findOne($id);
+        $left = $node->lft;
+        $right = $node->rgt;
+        Yii::$app->db->createCommand("DELETE FROM category WHERE lft >= $left AND rgt <= $right")->execute();
+        Yii::$app->db->createCommand("UPDATE category SET lft = IF(lft > $left, lft - ($right - $left + 1), lft), 
+            rgt = rgt - ($right - $left + 1) WHERE rgt > $right")->execute();
     }
 
     /**
@@ -216,5 +232,9 @@ class Category extends \yii\db\ActiveRecord
             return [$category,$products,$links];
         },60);
         return $data;
+    }
+
+    public function __set(){
+
     }
 }

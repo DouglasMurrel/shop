@@ -9,9 +9,10 @@ function recountOrder(){
     });
     $('#full_amount').html(result);
 }
-$('#delform button').on('click',function(){
-    console.log('aaaa');
-    if (confirm('вы уверены?')){
-        console.log(this);
-    }
-});
+$(function(){
+    $('#delform button').on('click',function(){
+        if (confirm('Вы уверены?')){
+            $('#delform').submit();
+        }
+    });
+})

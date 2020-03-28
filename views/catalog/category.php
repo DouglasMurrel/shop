@@ -1,6 +1,5 @@
 <?php
 
-use app\components\ProductWidget;
 use app\components\SearchWidget;
 use app\components\TreeWidget;
 use yii\helpers\Html;
