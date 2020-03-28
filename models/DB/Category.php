@@ -234,7 +234,7 @@ class Category extends \yii\db\ActiveRecord
         return $data;
     }
 
-    public function __set(){
+    public function __set($name,$value){
 
     }
 }
