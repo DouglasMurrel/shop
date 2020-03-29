@@ -12,9 +12,20 @@ class CategoryController extends DefaultController
     function actionIndex(){
         $tree = Category::getTree();
         $category = new Category();
+
+        if(Yii::$app->request->post()) {
+            if (!isset(Yii::$app->request->post('Category')['id'])) $category = new Category();
+            else $category = Category::findOne(Yii::$app->request->post('Category')['id']);
+            if ($category->load(Yii::$app->request->post()) && $category->validate()) {
+                $category->save();
+                return $this->redirect([Url::to('index')]);
+            }
+        }
+
         return $this->render('index',[
             'tree' => $tree,
             'category'=>$category,
+            'parent_id'=>$category->parent_id,
         ]);
     }
 
@@ -24,15 +35,19 @@ class CategoryController extends DefaultController
             $id = intval($id);
             Category::del($id);
         }
-        return $this->redirect(Url::to(['category/index']));
+        return $this->redirect(Url::to(['index']));
     }
 
-    function actionSave(){
-        if(!Yii::$app->request->post('id'))$category = new Category();
-        else $category = Category::findOne(Yii::$app->request->post('id'));
-        if ($category->load(Yii::$app->request->post()) && $category->validate()) {
-            $category->save();
+    function actionCategory($id){
+        $category = Category::findOne($id);
+        if($category){
+            $tree = Category::getTree();
+            return $this->render('category',[
+                'tree' => $tree,
+                'category'=>$category,
+                'parent_id'=>$category->parent_id,
+            ]);
         }
-        return $this->redirect(Url::to(['category/index']));
+        throw new \yii\web\NotFoundHttpException();
     }
 }
