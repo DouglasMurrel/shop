@@ -3,6 +3,7 @@
 namespace app\models\DB;
 
 use Yii;
+use yii\data\Pagination;
 use yii\web\HttpException;
 
 /**
@@ -42,12 +43,12 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['slug', 'name', 'code', 'corpus', 'parameters'], 'required'],
-            [['category_id', 'hit', 'new', 'sale'], 'integer'],
+            [['slug', 'name', 'code', 'corpus', 'parameters','price'], 'required'],
+            [['category_id'], 'integer'],
             [['price'], 'number'],
             [['slug', 'name', 'keywords', 'description', 'code', 'corpus', 'parameters'], 'string', 'max' => 255],
-            [['slug'], 'unique'],
-            [['name'], 'unique'],
+            [['slug'], 'unique','message'=>'Имя уже используется'],
+            [['name'], 'unique','message'=>'Машинное имя уже используется'],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
         ];
     }
@@ -62,12 +63,9 @@ class Product extends \yii\db\ActiveRecord
             'slug' => 'Машинное имя',
             'category_id' => 'Категория',
             'name' => 'Имя',
-            'content' => 'Описание',
             'price' => 'Цена',
             'keywords' => 'Мета-тег keywords',
-            'hit' => 'Лидер продаж',
-            'new' => 'Новый',
-            'sale' => 'Распродажа',
+            'description' => 'Мета-тег description',
             'code' => 'Код',
             'corpus' => 'Корпус',
             'parameters' => 'Параметры',
@@ -183,5 +181,30 @@ class Product extends \yii\db\ActiveRecord
             return [$product, $image, $links];
         },60);
         return $data;
+    }
+
+    public static function productList(){
+        $query = Product::find();
+        $pages = new Pagination([
+            'totalCount' => $query->count(),
+            'pageSize' => Yii::$app->params['pageSize'], // кол-во товаров на странице
+            'forcePageParam' => false,
+            'pageSizeParam' => false,
+        ]);
+        $arrResult = $query
+            ->orderBy('name')
+            ->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
+        return ['products'=>$arrResult,'pages'=>$pages];
+    }
+
+    /**
+     * @param $id
+     * @return void
+     */
+    public static function del($id){
+        $node = Product::findOne($id);
+        $node->delete();
     }
 }

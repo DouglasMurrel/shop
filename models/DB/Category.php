@@ -139,7 +139,7 @@ class Category extends \yii\db\ActiveRecord
 
     /**
      * @param $id
-     * @return bool
+     * @return void
      */
     public static function del($id){
         $node = Category::findOne($id);
