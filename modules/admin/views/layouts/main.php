@@ -37,7 +37,7 @@ AdminAsset::register($this);
                         ['label' => 'Товары', 'url' => ['product/index']],
                     ],
                 ],
-//                ['label' => 'Пользователи', 'url' => ['user/index']],
+                ['label' => 'Пользователи', 'url' => ['user/index']],
             ],
             'activeCssClass'=>'active',
             'options' => [

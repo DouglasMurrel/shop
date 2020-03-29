@@ -2,6 +2,8 @@
 
 namespace app\models\DB;
 
+use Yii;
+use yii\data\Pagination;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\Json;
@@ -13,7 +15,7 @@ use yii\helpers\Json;
  * @property string $email
  * @property string $password
  * @property string $passwordHash
- * @property json $roles
+ * @property string $roles
  * @property string $basket
  */
 class User extends ActiveRecord implements \yii\web\IdentityInterface
@@ -105,5 +107,44 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
             $orders[$k] = $v;
         }
         return $orders;
+    }
+
+    public static function userList(){
+        $query = User::find();
+        $pages = new Pagination([
+            'totalCount' => $query->count(),
+            'pageSize' => Yii::$app->params['pageSize'], // кол-во товаров на странице
+            'forcePageParam' => false,
+            'pageSizeParam' => false,
+        ]);
+        $arrResult = $query
+            ->orderBy('roles,email')
+            ->offset($pages->offset)
+            ->limit($pages->limit)
+            ->asArray()
+            ->all();
+        return ['users'=>$arrResult,'pages'=>$pages];
+    }
+
+    public function setAdmin($val){
+        if($val==0)$rolesArr = ['user'];
+        if($val==1)$rolesArr = ['user','admin'];
+        $roles = json_encode($rolesArr);
+        $this->roles = $roles;
+        $this->save();
+    }
+
+    public function isAdmin(){
+        $roles = json_decode($this->roles);
+        return in_array('admin', $roles);
+    }
+
+    public static function isAdminById($id){
+        $user = User::findOne($id);
+        if($user) {
+            $roles = json_decode($user->roles);
+            return in_array('admin', $roles);
+        }
+        return 0;
     }
 }

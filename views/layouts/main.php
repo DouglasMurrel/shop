@@ -39,6 +39,13 @@ AppAsset::register($this);
                 ?>
             <div class="dont-show-mobile col-lg-6">
                 <a class="navbar-brand" href="<?=Yii::$app->homeUrl ?>"><?=Yii::$app->name ?></a>
+                <?
+                if(Yii::$app->user->identity->isAdmin()){
+                    ?>
+                    <a class="navbar-brand" target='_blank' href="<?=Url::to('admin')?>">Admin</a>
+                    <?
+                }
+                ?>
             </div>
             <div class="col-lg-1 col-3 p-0">
                 <?php

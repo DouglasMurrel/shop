@@ -22,7 +22,7 @@ class ProductController extends DefaultController
                 $product->save();
                 return $this->redirect([Url::to('index')]);
             }
-            Yii::info($product->getErrors());
+            Yii::$app->cache->flush();
         }
 
         return $this->render('index',[
@@ -38,6 +38,7 @@ class ProductController extends DefaultController
             $id = intval($id);
             Product::del($id);
         }
+        Yii::$app->cache->flush();
         return $this->redirect(Url::to(['index']));
     }
 

@@ -18,6 +18,7 @@ class CategoryController extends DefaultController
             else $category = Category::findOne(Yii::$app->request->post('Category')['id']);
             if ($category->load(Yii::$app->request->post()) && $category->validate()) {
                 $category->save();
+                Yii::$app->cache->flush();
                 return $this->redirect([Url::to('index')]);
             }
         }
@@ -35,6 +36,7 @@ class CategoryController extends DefaultController
             $id = intval($id);
             Category::del($id);
         }
+        Yii::$app->cache->flush();
         return $this->redirect(Url::to(['index']));
     }
 

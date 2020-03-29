@@ -15,4 +15,19 @@ $(function(){
             $('#delform').submit();
         }
     });
+    var csrfParam = $("meta[name=csrf-param]").attr("content");
+    var csrfValue = $("meta[name=csrf-token]").attr("content");
+    $('.admin_checkbox').on('click',function(){
+        var data = {};
+        data['id'] = this.value;
+        data['value'] = this.checked?1:0;
+        data[csrfParam] = csrfValue;
+        $.ajax(
+            'user/admin',
+            {
+                'method':'post',
+                'data':data,
+            }
+        );
+    });
 })

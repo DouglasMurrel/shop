@@ -16,7 +16,7 @@ class m200320_172419_05_create_table_user extends Migration
             'email' => $this->string(180)->notNull(),
             'password' => $this->string(),
             'passwordHash' => $this->string(),
-            'roles' => $this->json(),
+            'roles' => $this->string(),
             'basket' => $this->binary(),
         ], $tableOptions);
 

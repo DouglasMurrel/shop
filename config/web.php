@@ -83,6 +83,8 @@ $config = [
                 'admin/category' => 'admin/category/index',
                 'admin/product/<id:\d+>' => 'admin/product/product',
                 'admin/product' => 'admin/product/index',
+                'admin/user/<id:\d+>' => 'admin/user/user',
+                'admin/user' => 'admin/user/index',
                 '<slug>' => 'catalog/product',
             ],
         ],
