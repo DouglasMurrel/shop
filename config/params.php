@@ -8,4 +8,5 @@ return [
     'defaultKeywords' => '',
     'defaultTitle' => '',
     'pageSize' => 10,
+    'salt'=>'',
 ];
