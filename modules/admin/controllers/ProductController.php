@@ -7,6 +7,7 @@ use app\models\DB\Product;
 use Yii;
 use yii\helpers\Url;
 use yii\web\Controller;
+use yii\web\UploadedFile;
 
 class ProductController extends DefaultController
 {
@@ -20,6 +21,10 @@ class ProductController extends DefaultController
             else $product = Product::findOne(Yii::$app->request->post('Product')['id']);
             if ($product->load(Yii::$app->request->post()) && $product->validate()) {
                 $product->save();
+                $product->imageFile = UploadedFile::getInstance($product,'imageFile');
+                if($product->imageFile){
+                    $product->saveImage();
+                }
                 return $this->redirect([Url::to('index')]);
             }
             Yii::$app->cache->flush();

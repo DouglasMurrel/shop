@@ -3,8 +3,10 @@
 namespace app\models\DB;
 
 use Yii;
+use yii\bootstrap4\ActiveField;
 use yii\data\Pagination;
 use yii\web\HttpException;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "product".
@@ -29,6 +31,8 @@ use yii\web\HttpException;
  */
 class Product extends \yii\db\ActiveRecord
 {
+    public $imageFile;
+
     /**
      * {@inheritdoc}
      */
@@ -50,6 +54,7 @@ class Product extends \yii\db\ActiveRecord
             [['slug'], 'unique','message'=>'Имя уже используется'],
             [['name'], 'unique','message'=>'Машинное имя уже используется'],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
+            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
         ];
     }
 
@@ -206,5 +211,23 @@ class Product extends \yii\db\ActiveRecord
     public static function del($id){
         $node = Product::findOne($id);
         $node->delete();
+    }
+
+    public function saveImage(){
+        if ($this->validate()) {
+            $filename = $this->imageFile->baseName . '.' . $this->imageFile->extension;
+            $this->imageFile->saveAs(Yii::$app->basePath.'/web/images/product/' . $filename);
+            $image = Image::find()->where(['entity_id'=>$this->id,'entity_type'=>'product'])->one();
+            if(!$image){
+                $image = new Image();
+                $image->entity_id = $this->id;
+                $image->entity_type = 'product';
+                $image->sort = 1;
+            }
+            $image->image = $filename;
+            return $image->save();
+        } else {
+            return false;
+        }
     }
 }

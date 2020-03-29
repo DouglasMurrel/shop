@@ -30,7 +30,7 @@ if (file_exists($file) && $image != '') $img_flag = 1;
                 ?>
                 <div class="col-sm-5">
                     <div class="product-image">
-                            <div style="background-image:url('<?= $img ?>');background-size:contain;background-repeat: no-repeat;height:200px;"></div>
+                            <img src="<?= $img ?>" style="width:200px;height:200px;">
                     </div>
                 </div>
                 <div class="col-sm-7">
