@@ -11,7 +11,7 @@ use yii\helpers\Url;
 
 $this->params['breadcrumbs'] = [['label'=>'']];
 
-$this->title = $name;
+$this->title = "Ошибка";
 ?>
 <div class="col">
     <div class="site-error">

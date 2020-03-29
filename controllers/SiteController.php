@@ -17,7 +17,7 @@ use yii\filters\VerbFilter;
 use app\models\Forms\LoginForm;
 use app\models\Forms\ContactForm;
 
-class SiteController extends Controller
+class SiteController extends DefaultController
 {
     /**
      * {@inheritdoc}
@@ -59,14 +59,6 @@ class SiteController extends Controller
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
-    }
-
-    public function beforeAction($event)
-    {
-        Yii::$app->view->title = Yii::$app->params['defaultTitle'];
-        Yii::$app->view->registerMetaTag(['name' => 'description','content' => Yii::$app->params['defaultDescription']],'description');
-        Yii::$app->view->registerMetaTag(['name' => 'keywords','content' => Yii::$app->params['defaultKeywords']],'keywords');
-        return parent::beforeAction($event);
     }
 
     /**

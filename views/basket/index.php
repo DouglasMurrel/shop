@@ -11,6 +11,8 @@ use yii\widgets\ActiveForm;
 
 $this->params['breadcrumbs'] = [['label'=>'']];
 
+$this->title = "Корзина";
+
 ?>
 
 <div class="col">

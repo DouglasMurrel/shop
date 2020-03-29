@@ -8,9 +8,9 @@ use yii\widgets\Pjax;
 
 $this->params['breadcrumbs'] = [['label'=>'']];
 
-if($active=='register')$this->title = 'Вход';
+if($active=='login')$this->title = 'Вход';
 if($active=='register')$this->title = 'Регистрация';
-if($active=='register')$this->title = 'Вспомнить пароль';
+if($active=='recover')$this->title = 'Вспомнить пароль';
 ?>
 <div class="site-index">
 

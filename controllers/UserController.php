@@ -8,7 +8,7 @@ use app\models\DB\User;
 use Yii;
 use yii\web\Controller;
 
-class UserController extends Controller
+class UserController extends DefaultController
 {
     function actionOrders(){
         $user = Yii::$app->user->identity;

@@ -9,7 +9,7 @@ use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 
 $this->title = 'Напишите нам';
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'] = [['label'=>'']];
 ?>
 <div class="site-contact">
     <h1><?= Html::encode($this->title) ?></h1>

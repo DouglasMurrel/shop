@@ -11,6 +11,10 @@ use yii\helpers\Url;
 use yii\bootstrap4\LinkPager;
 
 $this->params['breadcrumbs'] = [['label'=>'']];
+
+if(isset($name) && $name!='')$this->title = "Результаты поиска";
+if(isset($description) && $description!='')$this->registerMetaTag(['name' => 'description','content' => $description],'description');
+if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords','content' => $keywords],'keywords');
 ?>
 
 <?= SearchWidget::widget(); ?>

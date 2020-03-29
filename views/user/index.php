@@ -1,4 +1,6 @@
 <?
+$this->title = "Мои заказы";
+
 foreach ($orders as $order){
     ?>
     <div class="row order-item border border-primary w-100 mb-2">
