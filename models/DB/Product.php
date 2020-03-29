@@ -159,6 +159,15 @@ class Product extends \yii\db\ActiveRecord
     }
 
     /**
+     * Возвращает содержимое по имени
+     * @param string $name
+     */
+    public static function getByName($name)
+    {
+        return Product::find()->where(['name' => $name])->one();
+    }
+
+    /**
      * Возвращает первое изображение
      */
     public function getFirstImage(){
@@ -254,7 +263,8 @@ class Product extends \yii\db\ActiveRecord
             foreach ($cellIterator as $cell) {
                 $row[] = $cell->getValue();
             }
-            $product = new Product();
+            $product = Product::getByName($row[0]);
+            if(!$product)$product = new Product();
             $product->name = $row[0];
             $product->price = $row[1];
             $product->code = $row[2];
