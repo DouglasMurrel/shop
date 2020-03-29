@@ -46,7 +46,6 @@ class CatalogController extends DefaultController{
                 'links'=>$links,
                 'pages'=>$products['pages'],
                 'name'=>$category->name,
-                'content'=>$category->content,
                 'description'=>$category->description,
                 'keywords'=>$category->keywords,
                 'image'=>$category->getFirstImage(),
@@ -81,11 +80,13 @@ class CatalogController extends DefaultController{
         if($modelSearch->load(['SearchForm'=>Yii::$app->request->get()])) {
             $data = $modelSearch->search();
             list($products, $pages) = $data;
+            $basketForm = new BasketForm();
             return $this->render(
                 'search',
                 [
                     'products'=>$products,
                     'pages'=>$pages,
+                    'basketForm' => $basketForm,
                 ]
             );
         }

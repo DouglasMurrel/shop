@@ -66,7 +66,7 @@ class Category extends \yii\db\ActiveRecord
         return [
             [['slug', 'name'], 'required'],
             [['parent_id','id'], 'integer'],
-            [['slug', 'name', 'content', 'keywords', 'description'], 'string', 'max' => 255],
+            [['slug', 'name', 'keywords', 'description'], 'string', 'max' => 255],
             [['slug'], 'unique','message'=>'Машинное имя занято'],
             [['id'], 'unique'],
         ];
@@ -82,7 +82,6 @@ class Category extends \yii\db\ActiveRecord
             'slug' => 'Машинное имя',
             'parent_id' => 'Родительская категория',
             'name' => 'Имя',
-            'content' => 'Описание',
             'keywords' => 'Мета-тег keywords',
             'description' => 'Мета-тег description',
         ];

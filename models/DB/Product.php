@@ -16,7 +16,6 @@ use yii\web\UploadedFile;
  * @property string $slug Машинное имя
  * @property int|null $category_id Категория
  * @property string $name Имя
- * @property string|null $content Описание
  * @property float $price Цена
  * @property string|null $keywords Мета-тег keywords
  * @property string|null $description Мета-тег description

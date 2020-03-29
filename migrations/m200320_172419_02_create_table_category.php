@@ -15,7 +15,6 @@ class m200320_172419_02_create_table_category extends Migration
             'id' => $this->primaryKey()->comment('id'),
             'slug' => $this->string()->notNull()->comment('Машинное имя'),
             'name' => $this->string()->notNull()->comment('Имя'),
-            'content' => $this->text()->comment('Описание'),
             'keywords' => $this->string()->comment('Мета-тег keywords'),
             'description' => $this->string()->comment('Мета-тег description'),
             'lft' => $this->integer()->notNull(),

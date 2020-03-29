@@ -110,12 +110,10 @@ class SearchForm extends Model{
             ->from('product')
             ->join('INNER JOIN', 'category', 'category.id = product.category_id')
             ->where(['like', 'product.name', $words[0]])
-            ->orWhere(['like', 'product.content', $words[0]])
             ->orWhere(['like', 'product.keywords', $words[0]])
             ->orWhere(['like', 'category.name', $words[0]]);
         for ($i = 1; $i < count($words); $i++) {
             $query = $query->orWhere(['like', 'product.name', $words[$i]]);
-            $query = $query->orWhere(['like', 'product.content', $words[$i]]);
             $query = $query->orWhere(['like', 'product.keywords', $words[$i]]);
             $query = $query->orWhere(['like', 'category.name', $words[$i]]);
         }
