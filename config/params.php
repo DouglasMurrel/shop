@@ -8,5 +8,5 @@ return [
     'defaultKeywords' => '',
     'defaultTitle' => '',
     'pageSize' => 10,
-    'salt'=>'',
+    'salt'=>'',//задайте произвольную строку - нужна для шифрования пароля
 ];
