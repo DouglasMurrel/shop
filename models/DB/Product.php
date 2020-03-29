@@ -2,6 +2,7 @@
 
 namespace app\models\DB;
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use Yii;
 use yii\bootstrap4\ActiveField;
 use yii\data\Pagination;
@@ -32,6 +33,7 @@ use yii\web\UploadedFile;
 class Product extends \yii\db\ActiveRecord
 {
     public $imageFile;
+    public $xlsFile;
 
     /**
      * {@inheritdoc}
@@ -55,6 +57,7 @@ class Product extends \yii\db\ActiveRecord
             [['name'], 'unique','message'=>'Машинное имя уже используется'],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
             [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+            [['xlsFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'xls, xlsx'],
         ];
     }
 
@@ -211,6 +214,8 @@ class Product extends \yii\db\ActiveRecord
     public static function del($id){
         $node = Product::findOne($id);
         $node->delete();
+        $images = Image::get($id,'product');
+        foreach($images as $image)Image::findOne($image['id'])->delete();
     }
 
     public function saveImage(){
@@ -229,5 +234,47 @@ class Product extends \yii\db\ActiveRecord
         } else {
             return false;
         }
+    }
+
+    /**
+     * @param UploadedFile $file
+     */
+    public static function loadFromXls($file){
+        $filename = $file->tempName;
+        $inputFileType = IOFactory::identify($filename);
+        $reader = IOFactory::createReader($inputFileType);
+        $reader->setReadDataOnly(true);
+        $spreadsheet = $reader->load($filename);
+        $worksheet = $spreadsheet->getActiveSheet();
+//        Yii::$app->db->createCommand("delete from product")->execute();
+//        Yii::$app->db->createCommand("alter table product AUTO_INCREMENT=1")->execute();
+        foreach ($worksheet->getRowIterator() as $row) {
+            $cellIterator = $row->getCellIterator();
+            $row = [];
+            foreach ($cellIterator as $cell) {
+                $row[] = $cell->getValue();
+            }
+            $product = new Product();
+            $product->name = $row[0];
+            $product->price = $row[1];
+            $product->code = $row[2];
+            $product->corpus = $row[3];
+            $product->parameters = $row[4];
+            $product->slug = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()',$product->name);
+            $category = Category::getbyName($row[5]);
+            if($category)$product->category_id = $category->id;
+            $product->save();
+
+            $image_file = $row[6];
+            if($image_file!=''){
+                $image = new Image();
+                $image->entity_id = $product->id;
+                $image->entity_type = 'product';
+                $image->sort = 1;
+                $image->image = $image_file;
+                $image->save();
+            }
+        }
+        return true;
     }
 }

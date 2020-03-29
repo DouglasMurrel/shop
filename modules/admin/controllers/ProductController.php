@@ -58,4 +58,12 @@ class ProductController extends DefaultController
         }
         throw new \yii\web\NotFoundHttpException();
     }
+
+    function actionLoader(){
+        $file = UploadedFile::getInstanceByName('xlsFile');
+        if($file){
+            Product::loadFromXls($file);
+        }
+        return $this->redirect(Url::to(['index']));
+    }
 }

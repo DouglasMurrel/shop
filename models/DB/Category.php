@@ -159,6 +159,14 @@ class Category extends \yii\db\ActiveRecord
     }
 
     /**
+     * Возвращает содержимое по имени
+     * @param string $slug
+     */
+    public static function getbyName($name){
+        return Category::find()->where(['name' => $name])->one();
+    }
+
+    /**
      * Возвращает содержимое по id
      * @param int $id
      */
