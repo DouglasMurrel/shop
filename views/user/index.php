@@ -6,10 +6,7 @@ foreach ($orders as $order){
     <div class="row order-item border border-primary w-100 mb-2">
         <div class="col">
             <?
-            $order['status'];
-            if($order['status']==0)$status='Ожидает';
-            if($order['status']==1)$status='Выполняется';
-            if($order['status']==2)$status='Выполнен';
+            $status = Yii::$app->params['statuses'][$order['status']];
             ?>
             Заказ <?=$order['id']?>, <?=$order['created']?>, статус: <?=$status?>
         </div>
