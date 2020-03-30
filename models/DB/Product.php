@@ -228,6 +228,7 @@ class Product extends \yii\db\ActiveRecord
 
     public static function truncate(){
         Yii::$app->db->createCommand("delete from product")->execute();
+        Yii::$app->db->createCommand("delete from image where entity_type='product'")->execute();
     }
 
     public function saveImage(){
