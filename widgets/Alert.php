@@ -53,7 +53,6 @@ class Alert extends \yii\bootstrap4\Widget
         $flashes = $session->getAllFlashes();
         $appendClass = isset($this->options['class']) ? ' ' . $this->options['class'] : '';
 
-        Yii::info($flashes);
         foreach ($flashes as $type => $flash) {
             if (!isset($this->alertTypes[$type])) {
                 continue;

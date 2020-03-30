@@ -17,4 +17,3 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 </div>
 <div class="w-100"></div>
-

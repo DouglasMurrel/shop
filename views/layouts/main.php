@@ -11,8 +11,6 @@ use yii\helpers\Url;
 use yii\bootstrap4\Breadcrumbs;
 use app\assets\AppAsset;
 
-$this->params['breadcrumbs'] = [['label'=>'']];
-
 Yii::$app->assetManager->bundles['yii\bootstrap\BootstrapAsset'] = false;
 Yii::$app->assetManager->bundles['yii\bootstrap\BootstrapPluginAsset'] = false;
 AppAsset::register($this);
