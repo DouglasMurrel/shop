@@ -226,6 +226,10 @@ class Product extends \yii\db\ActiveRecord
         foreach($images as $image)Image::findOne($image['id'])->delete();
     }
 
+    public static function truncate(){
+        Yii::$app->db->createCommand("delete from product")->execute();
+    }
+
     public function saveImage(){
         if ($this->validate()) {
             $filename = $this->imageFile->baseName . '.' . $this->imageFile->extension;
@@ -254,8 +258,7 @@ class Product extends \yii\db\ActiveRecord
         $reader->setReadDataOnly(true);
         $spreadsheet = $reader->load($filename);
         $worksheet = $spreadsheet->getActiveSheet();
-//        Yii::$app->db->createCommand("delete from product")->execute();
-//        Yii::$app->db->createCommand("alter table product AUTO_INCREMENT=1")->execute();
+        $used_rows = [];
         foreach ($worksheet->getRowIterator() as $row) {
             $cellIterator = $row->getCellIterator();
             $row = [];
@@ -272,18 +275,23 @@ class Product extends \yii\db\ActiveRecord
             $product->slug = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()',$product->name);
             $category = Category::getbyName($row[5]);
             if($category)$product->category_id = $category->id;
-            $product->save();
+            if($product->save()) {
+                $used_rows[] = $product->id;
 
-            $image_file = $row[6];
-            if($image_file!=''){
-                $image = new Image();
-                $image->entity_id = $product->id;
-                $image->entity_type = 'product';
-                $image->sort = 1;
-                $image->image = $image_file;
-                $image->save();
+                $image_file = $row[6];
+                if ($image_file != '') {
+                    $image = new Image();
+                    $image->entity_id = $product->id;
+                    $image->entity_type = 'product';
+                    $image->sort = 1;
+                    $image->image = $image_file;
+                    $image->save();
+                }
             }
         }
+        $ids = implode(',',$used_rows);
+        Yii::$app->db->createCommand("delete from product where id not in ($ids)")->execute();
+        Yii::$app->db->createCommand("delete from image where entity_id not in ($ids) and entity_type='product'")->execute();
         return true;
     }
 }

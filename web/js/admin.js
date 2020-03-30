@@ -15,6 +15,11 @@ $(function(){
             $('#delform').submit();
         }
     });
+    $('#truncate_form button').on('click',function(){
+        if (confirm('Вы уверены?')){
+            $('#truncate_form').submit();
+        }
+    });
     var csrfParam = $("meta[name=csrf-param]").attr("content");
     var csrfValue = $("meta[name=csrf-token]").attr("content");
     $('.admin_checkbox').on('click',function(){

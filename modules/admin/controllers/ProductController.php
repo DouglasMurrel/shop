@@ -47,6 +47,12 @@ class ProductController extends DefaultController
         return $this->redirect(Url::to(['index']));
     }
 
+    function actionTruncate(){
+        Product::truncate();
+        Yii::$app->cache->flush();
+        return $this->redirect(Url::to(['index']));
+    }
+
     function actionProduct($id){
         $product = Product::findOne($id);
         if($product){

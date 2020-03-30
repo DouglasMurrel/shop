@@ -32,6 +32,9 @@ use app\modules\admin\components\ProductWidget;
             }
             echo Html::button('Удалить выбранное', ['class' => 'btn btn-danger']);
             ActiveForm::end();
+            ActiveForm::begin(['action' => Url::to(['product/truncate']), 'id' => 'truncate_form', "options"=>['class'=>'pt-3']]);
+            echo Html::button('Удалить все', ['class' => 'btn btn-danger']);
+            ActiveForm::end();
             ?>
             <div class="ml-n3 mt-3">
                 <?= LinkPager::widget(['pagination' => $pages, 'lastPageLabel' => true, 'firstPageLabel' => true, 'maxButtonCount' => 4]); /* постраничная навигация */ ?>
