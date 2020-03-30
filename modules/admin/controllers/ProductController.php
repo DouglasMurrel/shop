@@ -62,7 +62,9 @@ class ProductController extends DefaultController
                 'product'=>$product,
             ]);
         }
-        throw new \yii\web\NotFoundHttpException();
+        throw new \yii\web\NotFoundHttpException(
+            404,
+            'Запрошенная страница не найдена');
     }
 
     function actionLoader(){

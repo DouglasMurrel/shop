@@ -6,6 +6,7 @@ use app\models\DB\User;
 use app\models\DB\Order;
 use Yii;
 use yii\helpers\Url;
+use yii\web\HttpException;
 use yii\web\Response;
 
 class UserController extends DefaultController
@@ -21,6 +22,12 @@ class UserController extends DefaultController
 
     function actionUser($id){
         $user = User::findOne($id);
+        if($user===null) {
+            throw new HttpException(
+                404,
+                'Запрошенная страница не найдена'
+            );
+        }
         $orders = $user->orders;
 
         return $this->render('user', [

@@ -6,6 +6,7 @@ use app\models\DB\Order;
 use app\models\DB\OrderItem;
 use Yii;
 use yii\helpers\Url;
+use yii\web\HttpException;
 
 class OrdersController extends DefaultController
 {
@@ -20,6 +21,12 @@ class OrdersController extends DefaultController
 
     function actionOrder($id){
         $order = Order::findOne($id);
+        if($order===null) {
+            throw new HttpException(
+                404,
+                'Запрошенная страница не найдена'
+            );
+        }
         $orderItems = $order->orderItems;
 
         if(OrderItem::loadMultiple($orderItems, Yii::$app->request->post()) && OrderItem::validateMultiple($orderItems)) {

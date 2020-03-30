@@ -50,6 +50,9 @@ class CategoryController extends DefaultController
                 'parent_id'=>$category->parent_id,
             ]);
         }
-        throw new \yii\web\NotFoundHttpException();
+        throw new \yii\web\NotFoundHttpException(
+            404,
+            'Запрошенная страница не найдена'
+        );
     }
 }
