@@ -29,7 +29,6 @@ if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords
         }
         ?>
     </p>
-<p><?=$content?></p>
 <?php
 if (!empty($products)) {
     ?>
