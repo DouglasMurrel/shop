@@ -16,8 +16,6 @@ if (!empty($users)) {
                 <a href="<?= Url::to(['user/user', 'id' => $user['id']]); ?>">
                     <?= Html::encode($user['email']); ?>
                 </a>
-                <?= $user['name']; ?>
-                <?= $user['phone']; ?>
                 <?
                 $admin = User::isAdminById($user['id']);
                 print Html::checkbox('admin[]',$admin,['value'=>$user['id'],'label'=>'Админ','class'=>'admin_checkbox']);
