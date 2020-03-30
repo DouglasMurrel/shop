@@ -90,10 +90,18 @@ class SearchForm extends Model{
         // рассчитываем релевантность для каждого товара
         $relevance = "IF (`product`.`name` LIKE '%" . $words[0] . "%', 3, 0)";
         $relevance .= " + IF (`product`.`keywords` LIKE '%" . $words[0] . "%', 2, 0)";
+        $relevance .= " + IF (`product`.`description` LIKE '%" . $words[0] . "%', 2, 0)";
+        $relevance .= " + IF (`product`.`code` LIKE '%" . $words[0] . "%', 2, 0)";
+        $relevance .= " + IF (`product`.`corpus` LIKE '%" . $words[0] . "%', 2, 0)";
+        $relevance .= " + IF (`product`.`parameters` LIKE '%" . $words[0] . "%', 2, 0)";
         $relevance .= " + IF (`category`.`name` LIKE '%" . $words[0] . "%', 1, 0)";
         for ($i = 1; $i < count($words); $i++) {
             $relevance .= " + IF (`product`.`name` LIKE '%" . $words[$i] . "%', 3, 0)";
             $relevance .= " + IF (`product`.`keywords` LIKE '%" . $words[$i] . "%', 2, 0)";
+            $relevance .= " + IF (`product`.`description` LIKE '%" . $words[$i] . "%', 2, 0)";
+            $relevance .= " + IF (`product`.`code` LIKE '%" . $words[$i] . "%', 2, 0)";
+            $relevance .= " + IF (`product`.`corpus` LIKE '%" . $words[$i] . "%', 2, 0)";
+            $relevance .= " + IF (`product`.`parameters` LIKE '%" . $words[$i] . "%', 2, 0)";
             $relevance .= " + IF (`category`.`name` LIKE '%" . $words[$i] . "%', 1, 0)";
         }
         $query = Product::find()
@@ -102,19 +110,27 @@ class SearchForm extends Model{
                 'name' => 'product.name',
                 'slug' => 'product.slug',
                 'price' => 'product.price',
-                'hit' => 'product.hit',
-                'new' => 'product.new',
-                'sale' => 'product.sale',
+                'corpus' => 'product.corpus',
+                'code' => 'product.code',
+                'parameters' => 'product.parameters',
                 'relevance' => $relevance
             ])
             ->from('product')
             ->join('INNER JOIN', 'category', 'category.id = product.category_id')
             ->where(['like', 'product.name', $words[0]])
             ->orWhere(['like', 'product.keywords', $words[0]])
+            ->orWhere(['like', 'product.description', $words[0]])
+            ->orWhere(['like', 'product.code', $words[0]])
+            ->orWhere(['like', 'product.corpus', $words[0]])
+            ->orWhere(['like', 'product.parameters', $words[0]])
             ->orWhere(['like', 'category.name', $words[0]]);
         for ($i = 1; $i < count($words); $i++) {
             $query = $query->orWhere(['like', 'product.name', $words[$i]]);
             $query = $query->orWhere(['like', 'product.keywords', $words[$i]]);
+            $query = $query->orWhere(['like', 'product.description', $words[0]]);
+            $query = $query->orWhere(['like', 'product.code', $words[0]]);
+            $query = $query->orWhere(['like', 'product.corpus', $words[0]]);
+            $query = $query->orWhere(['like', 'product.parameters', $words[0]]);
             $query = $query->orWhere(['like', 'category.name', $words[$i]]);
         }
         $query = $query->orderBy(['relevance' => SORT_DESC]);
