@@ -18,17 +18,7 @@ class CatalogController extends DefaultController{
      */
     public function actionIndex()
     {
-        // получаем лидеров продаж
-        $hitProducts = Product::hitProducts();
-        // получаем новые товары
-        $newProducts = Product::newProducts();
-        // получаем товары распродажи
-        $saleProducts = Product::saleProducts();
-        return $this->render('index',[
-            'hitProducts'=>$hitProducts,
-            'newProducts'=>$newProducts,
-            'saleProducts'=>$saleProducts,
-        ]);
+        return $this->render('index');
     }
 
     /**
@@ -48,7 +38,6 @@ class CatalogController extends DefaultController{
                 'name'=>$category->name,
                 'description'=>$category->description,
                 'keywords'=>$category->keywords,
-                'image'=>$category->getFirstImage(),
                 'basketForm' => $basketForm,
             ]
         );
@@ -59,13 +48,13 @@ class CatalogController extends DefaultController{
      */
     public function actionProduct($slug) {
         $data = Product::getProductFullData($slug);
-        list($product, $image, $links) = $data;
+        list($product, $images, $links) = $data;
         $basketForm = new BasketForm();
         return $this->render(
             'product',
             [
                 'product'=>$product,
-                'image'=>$image,
+                'images'=>$images,
                 'links'=>$links,
                 'basketForm'=>$basketForm,
             ]

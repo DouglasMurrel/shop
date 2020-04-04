@@ -32,7 +32,7 @@ class Image extends \yii\db\ActiveRecord
             [['entity_id', 'sort'], 'integer'],
             [['entity_type'], 'required'],
             [['image', 'entity_type'], 'string', 'max' => 255],
-            [['entity_id', 'entity_type'], 'unique', 'targetAttribute' => ['entity_id', 'entity_type']],
+            [['entity_id', 'entity_type', 'sort'], 'unique', 'targetAttribute' => ['entity_id', 'entity_type', 'sort']],
         ];
     }
 
@@ -66,5 +66,14 @@ class Image extends \yii\db\ActiveRecord
             ->one();
         if(isset($imageArray['image']))return $imageArray['image'];
         return '';
+    }
+
+    public static function del($id){
+        $image = Image::findOne($id);
+        $entity_type = $image->entity_type;
+        if($entity_type=='product'){
+            unlink(Yii::$app->basePath.'/web/images/product/'.$image->image);
+        }
+        $image->delete();
     }
 }

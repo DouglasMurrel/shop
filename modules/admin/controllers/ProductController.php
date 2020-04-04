@@ -3,6 +3,7 @@
 namespace app\modules\admin\controllers;
 
 use app\models\DB\Category;
+use app\models\DB\Image;
 use app\models\DB\Product;
 use Yii;
 use yii\helpers\Url;
@@ -21,11 +22,11 @@ class ProductController extends DefaultController
             else $product = Product::findOne(Yii::$app->request->post('Product')['id']);
             if ($product->load(Yii::$app->request->post()) && $product->validate()) {
                 $product->save();
-                $product->imageFile = UploadedFile::getInstance($product,'imageFile');
+                $product->imageFile = UploadedFile::getInstances($product,'imageFile');
                 if($product->imageFile){
                     $product->saveImage();
                 }
-                return $this->redirect([Url::to('index')]);
+                return $this->redirect(Url::to(['index']));
             }
             Yii::$app->cache->flush();
         }
@@ -56,6 +57,13 @@ class ProductController extends DefaultController
     function actionProduct($id){
         $product = Product::findOne($id);
         if($product){
+
+            $del_image = intval(Yii::$app->request->get('del_image'));
+            if($del_image>0){
+                Image::del($del_image);
+                return $this->redirect(Url::to(['product/product','id'=>$id]));
+            }
+
             $tree = Category::getTree();
             return $this->render('product',[
                 'tree' => $tree,

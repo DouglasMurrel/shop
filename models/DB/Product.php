@@ -6,6 +6,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use Yii;
 use yii\bootstrap4\ActiveField;
 use yii\data\Pagination;
+use yii\db\Query;
 use yii\web\HttpException;
 use yii\web\UploadedFile;
 
@@ -19,12 +20,7 @@ use yii\web\UploadedFile;
  * @property float $price Цена
  * @property string|null $keywords Мета-тег keywords
  * @property string|null $description Мета-тег description
- * @property int $hit Лидер продаж
- * @property int $new Новый
- * @property int $sale Распродажа
- * @property string $code Код
- * @property string $corpus Корпус
- * @property string $parameters Параметры
+ * @property string|null $content Параметры
  *
  * @property OrderItem[] $orderItems
  * @property Category $category
@@ -48,14 +44,15 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['slug', 'name', 'code', 'corpus', 'parameters','price'], 'required'],
+            [['slug', 'name', 'price'], 'required'],
             [['category_id'], 'integer'],
             [['price'], 'number'],
-            [['slug', 'name', 'keywords', 'description', 'code', 'corpus', 'parameters'], 'string', 'max' => 255],
+            [['slug', 'name', 'keywords', 'description' ], 'string', 'max' => 255],
+            ['content','string'],
             [['slug'], 'unique','message'=>'Имя уже используется'],
             [['name'], 'unique','message'=>'Машинное имя уже используется'],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
-            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'maxFiles' => 0],
             [['xlsFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'xls, xlsx'],
         ];
     }
@@ -73,9 +70,7 @@ class Product extends \yii\db\ActiveRecord
             'price' => 'Цена',
             'keywords' => 'Мета-тег keywords',
             'description' => 'Мета-тег description',
-            'code' => 'Код',
-            'corpus' => 'Корпус',
-            'parameters' => 'Параметры',
+            'content' => 'Описание',
         ];
     }
 
@@ -97,45 +92,6 @@ class Product extends \yii\db\ActiveRecord
     public function getCategory()
     {
         return $this->hasOne(Category::className(), ['id' => 'category_id']);
-    }
-
-    public static function hitProducts()
-    {
-        $arrResult = Yii::$app->cache->getOrSet('hitProducts', function() {
-            $arrResult = Product::find()->where(['hit' => 1])->limit(3)->asArray()->all();
-            foreach ($arrResult as $k => $item) {
-                $item['image'] = Image::getFirst($item['id'], 'product');
-                $arrResult[$k] = $item;
-            }
-            return $arrResult;
-        });
-        return $arrResult;
-    }
-
-    public static function newProducts()
-    {
-        $arrResult = Yii::$app->cache->getOrSet('newProducts', function() {
-            $arrResult = Product::find()->where(['new' => 1])->limit(3)->asArray()->all();
-            foreach ($arrResult as $k => $item) {
-                $item['image'] = Image::getFirst($item['id'], 'product');
-                $arrResult[$k] = $item;
-            }
-            return $arrResult;
-        });
-        return $arrResult;
-    }
-
-    public static function saleProducts()
-    {
-        $arrResult = Yii::$app->cache->getOrSet('saleProducts', function() {
-            $arrResult = Product::find()->where(['sale' => 1])->limit(3)->asArray()->all();
-            foreach ($arrResult as $k => $item) {
-                $item['image'] = Image::getFirst($item['id'], 'product');
-                $arrResult[$k] = $item;
-            }
-            return $arrResult;
-        });
-        return $arrResult;
     }
 
     public function firstImage()
@@ -193,8 +149,8 @@ class Product extends \yii\db\ActiveRecord
             }
             $link = ['label'=>$product->name,'url'=>['catalog/product','slug'=>$slug]];
             $links[] = $link;
-            $image = $product->getFirstImage();
-            return [$product, $image, $links];
+            $images = $product->images();
+            return [$product, $images, $links];
         },60);
         return $data;
     }
@@ -233,17 +189,20 @@ class Product extends \yii\db\ActiveRecord
 
     public function saveImage(){
         if ($this->validate()) {
-            $filename = $this->imageFile->baseName . '.' . $this->imageFile->extension;
-            $this->imageFile->saveAs(Yii::$app->basePath.'/web/images/product/' . $filename);
-            $image = Image::find()->where(['entity_id'=>$this->id,'entity_type'=>'product'])->one();
-            if(!$image){
+            $q = new Query();
+            $maxSort = $q->select("max(sort)")->from("image")->where(['entity_id'=>$this->id,'entity_type'=>'product'])->one();
+            $maxSort = intval($maxSort);
+            foreach ($this->imageFile as $file){
+                $filename = $file->baseName . '.' . $file->extension;
+                $file->saveAs(Yii::$app->basePath.'/web/images/product/' . $filename);
                 $image = new Image();
+                $maxSort++;
                 $image->entity_id = $this->id;
                 $image->entity_type = 'product';
-                $image->sort = 1;
+                $image->sort = $maxSort;
+                $image->image = $filename;
+                $image->save();
             }
-            $image->image = $filename;
-            return $image->save();
         } else {
             return false;
         }
@@ -270,9 +229,6 @@ class Product extends \yii\db\ActiveRecord
             if(!$product)$product = new Product();
             $product->name = $row[0];
             $product->price = $row[1];
-            $product->code = $row[2];
-            $product->corpus = $row[3];
-            $product->parameters = $row[4];
             $product->slug = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()',$product->name);
             $category = Category::getbyName($row[5]);
             if($category)$product->category_id = $category->id;

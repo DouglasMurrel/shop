@@ -2,7 +2,6 @@
 
 /* @var $this yii\web\View */
 
-use app\components\BrandWidget;
 use app\components\ProductWidget;
 use app\components\SearchWidget;
 use app\components\TreeWidget;
