@@ -36,7 +36,7 @@ foreach($images as $image) {
                 if ($img_flag == 1) {
                 ?>
                 <div class="col-sm-5">
-                    <div id="carousel" class="carousel slide" data-ride="carousel" data-interval="false" style="width:200px;">
+                    <div id="carousel" class="carousel slide" data-ride="carousel" data-interval="3000" style="width:200px;">
                         <div class="carousel-inner">
                             <?foreach ($carousel as $i=>$img){?>
                             <div class="carousel-item<?if($i==0){?> active<?}?>">

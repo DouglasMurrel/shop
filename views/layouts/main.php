@@ -31,7 +31,7 @@ AppAsset::register($this);
 
 <div class="container wrap">
     <div class="container fixed-top bg-light border-bottom border-dark">
-        <div class="row">
+        <div class="row top-row">
             <?
             if(!Yii::$app->user->isGuest){
                 ?>
@@ -52,7 +52,7 @@ AppAsset::register($this);
                 <a class="nav-link float-right" href="<?=Url::to(['basket/index'])?>" title="<?=$basketTitle?>">Корзина</a>
             </div>
                 <div class="col-lg-2 col-4 p-0">
-                    <a class="nav-link my-auto text-primary" href="<?=Url::to(["user/orders"])?>">Мои заказы</a>
+                    <a class="nav-link my-auto" href="<?=Url::to(["user/orders"])?>">Мои заказы</a>
                 </div>
             <div class="col-3 p-0">
                 <?=                Html::beginForm(['/site/logout'], 'post', ['class' => 'mt-n1 my-auto'])
@@ -84,10 +84,10 @@ AppAsset::register($this);
         </div>
     </div>
     <div class="row submenu-row bg-light">
-        <div class="col-4 col-lg-3"><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/about"])?>">О нас</a></div>
-        <div class="col-4 col-lg-3"><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/contact"])?>">Контакты</a></div>
-        <div class="col-5 col-lg-3"><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/howtobuy"])?>">Как купить</a></div>
-        <div class="col col-lg-3"><a class="nav-link my-auto text-primary" href="<?=Url::to(["site/payment"])?>">Доставка и оплата</a></div>
+        <div class="col-4 col-lg-3"><a class="nav-link my-auto" href="<?=Url::to(["site/about"])?>">О нас</a></div>
+        <div class="col-4 col-lg-3"><a class="nav-link my-auto" href="<?=Url::to(["site/contact"])?>">Контакты</a></div>
+        <div class="col-5 col-lg-3"><a class="nav-link my-auto" href="<?=Url::to(["site/howtobuy"])?>">Как купить</a></div>
+        <div class="col col-lg-3"><a class="nav-link my-auto" href="<?=Url::to(["site/payment"])?>">Доставка и оплата</a></div>
     </div>
     <div class="row">
         <?= Alert::widget(['options'=>['class'=>'w-100']]) ?>

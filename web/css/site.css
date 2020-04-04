@@ -149,6 +149,16 @@ a.desc:after {
     padding:3px 8px;
     text-decoration:none;
     cursor:pointer;
+    background-color: #303F9F !important;
+}
+.tree li span:hover {
+    background-color: hotpink !important;
+}
+.tree li span a{
+    color:#E8EAF6;
+}
+.tree li span a:hover{
+    color:#FFFFFF;
 }
 .tree>ul>li::before,
 .tree>ul>li::after {
@@ -160,6 +170,9 @@ a.desc:after {
 .tree li span:hover {
     background: hotpink;
     border:2px solid #94a0b4;
+}
+.fa-folder-open::before{
+    color:white;
 }
 
 [aria-expanded="false"] > .expanded,
@@ -207,6 +220,9 @@ a.desc:after {
 .submenu-row{
     padding-top: 70px;
 }
+.submenu-row a{
+    color: #1A237E;
+}
 
 .order-item{
     min-height:50px;
@@ -248,3 +264,30 @@ a.desc:after {
 .menu ul li { float: none; }
 .menu li:hover { background-color: #e0e0e0; }
 .menu ul li:hover { background-color: #666; }
+.top-row{
+    background-image:url('/images/шапка-2.png');
+}
+.top-row a{
+    color:#E8EAF6;
+}
+.top-row a:hover{
+    color:#FFFFFF;
+}
+.top-row button{
+    color:#E8EAF6;
+}
+.top-row button:hover{
+    color:#FFFFFF;
+}
+.breadcrumb{
+    background-color: #1A237E !important;
+}
+.breadcrumb a{
+    color:#E8EAF6;
+}
+.breadcrumb li:before{
+    color:#E8EAF6 !important;
+}
+.breadcrumb a:hover{
+    color:#FFFFFF;
+}

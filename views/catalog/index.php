@@ -17,7 +17,7 @@ if(isset($description) && $description!='')$this->registerMetaTag(['name' => 'de
 if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords','content' => $keywords],'keywords');
 ?>
 <?= SearchWidget::widget(); ?>
-<div class="col-12">
+<div class="col-6">
     <h2>Каталог</h2>
     <div class="category-products container pl-0">
         <?= TreeWidget::widget(); ?>
