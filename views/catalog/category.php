@@ -18,18 +18,7 @@ if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords
 <?= SearchWidget::widget(); ?>
 <div class="col-sm-12">
 <h1><?=$name?></h1>
-    <p>
-        <?
-        $img = '/images/category/' . $image;
-        $file = Yii::getAlias('@webroot') . $img;
-        if(file_exists($file) && $image!=''){
-            echo Html::img(
-                $img,
-                ['alt' => $name, 'class' => 'img-responsive', 'style'=>'width:40px;height:40px;']
-            );
-        }
-        ?>
-    </p>
+<?=$content?>
 <?php
 if (!empty($products)) {
     ?>

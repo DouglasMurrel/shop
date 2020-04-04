@@ -21,6 +21,7 @@ use app\models\CategoryQuery;
  * @property string $lft
  * @property string $rgt
  * @property string $depth
+ * @property string|null $content Описание
  *
  * @property Product[] $products
  */
@@ -67,6 +68,7 @@ class Category extends \yii\db\ActiveRecord
             [['slug', 'name'], 'required'],
             [['parent_id','id'], 'integer'],
             [['slug', 'name', 'keywords', 'description'], 'string', 'max' => 255],
+            ['content','string'],
             [['slug'], 'unique','message'=>'Машинное имя занято'],
             [['id'], 'unique'],
         ];
@@ -84,6 +86,7 @@ class Category extends \yii\db\ActiveRecord
             'name' => 'Имя',
             'keywords' => 'Мета-тег keywords',
             'description' => 'Мета-тег description',
+            'content' => 'Описание',
         ];
     }
 

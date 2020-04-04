@@ -20,7 +20,7 @@ use yii\web\UploadedFile;
  * @property float $price Цена
  * @property string|null $keywords Мета-тег keywords
  * @property string|null $description Мета-тег description
- * @property string|null $content Параметры
+ * @property string|null $content Описание
  *
  * @property OrderItem[] $orderItems
  * @property Category $category

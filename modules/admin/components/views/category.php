@@ -7,6 +7,7 @@ use yii\helpers\Url;
 
 $form = ActiveForm::begin(['action' => Url::to(['category/index']),'id'=>'saveform']);
 echo $form->field($category, 'name',['options'=>['class'=>'w-50']])->textInput(['value' => $category->name]);
+echo $form->field($category, 'content',['options'=>['class'=>'w-50']])->textarea(['value' => $category->content]);
 echo $form->field($category, 'slug',['options'=>['class'=>'w-50']])->textInput(['value' => $category->slug]);
 echo $form->field($category, 'keywords',['options'=>['class'=>'w-50']])->textInput(['value' => $category->keywords]);
 echo $form->field($category, 'description',['options'=>['class'=>'w-50']])->textInput(['value' => $category->description]);

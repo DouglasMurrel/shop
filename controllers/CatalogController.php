@@ -36,6 +36,7 @@ class CatalogController extends DefaultController{
                 'links'=>$links,
                 'pages'=>$products['pages'],
                 'name'=>$category->name,
+                'content'=>$category->content,
                 'description'=>$category->description,
                 'keywords'=>$category->keywords,
                 'basketForm' => $basketForm,
