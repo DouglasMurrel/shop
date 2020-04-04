@@ -13,10 +13,10 @@ use yii\widgets\LinkPager;
         <div class="product-wrapper text-center p-1 m-1 border border-primary">
             <?
             $img = '/images/product/'.$product['image'];
-            $file = Yii::$app->basePath.$img;
+            $file = Yii::getAlias('@webroot').$img;
             if(!file_exists($file) || $product['image']=='')$img = '/images/noimage.jpg';
             ?>
-            <div style="background-image:url('<?=$img?>');background-size:contain;background-repeat: no-repeat;height:100px;"></div>
+            <div style="background-image:url('<?=$img?>');background-size:contain;background-repeat: no-repeat;background-position-x:center;height:100px;"></div>
             <h2><?= $product['price']; ?> руб.</h2>
             <p>
                 <a href="<?= Url::to(['catalog/product', 'slug' => $product['slug']]); ?>">
