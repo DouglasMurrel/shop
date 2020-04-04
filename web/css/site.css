@@ -3,6 +3,10 @@ body {
     height: 100%;
 }
 
+body{
+    background-image: url('/images/background.png');
+}
+
 .wrap {
     min-height: 100%;
     height: auto;
@@ -265,7 +269,7 @@ a.desc:after {
 .menu li:hover { background-color: #e0e0e0; }
 .menu ul li:hover { background-color: #666; }
 .top-row{
-    background-image:url('/images/шапка-2.png');
+    background-image:url('/images/top.png');
 }
 .top-row a{
     color:#E8EAF6;
