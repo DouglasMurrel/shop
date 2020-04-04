@@ -29,8 +29,8 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<div class="container wrap">
-    <div class="container fixed-top bg-light border-bottom border-dark">
+<div class="container wrap" id="main_container">
+    <div class="container fixed-top bg-light border-bottom border-dark p-0">
         <div class="row top-row">
             <?
             if(!Yii::$app->user->isGuest){
@@ -83,7 +83,7 @@ AppAsset::register($this);
             ?>
         </div>
     </div>
-    <div class="row submenu-row bg-light">
+    <div class="row submenu-row">
         <div class="col-4 col-lg-3"><a class="nav-link my-auto" href="<?=Url::to(["site/about"])?>">О нас</a></div>
         <div class="col-4 col-lg-3"><a class="nav-link my-auto" href="<?=Url::to(["site/contact"])?>">Контакты</a></div>
         <div class="col-5 col-lg-3"><a class="nav-link my-auto" href="<?=Url::to(["site/howtobuy"])?>">Как купить</a></div>

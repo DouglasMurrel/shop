@@ -4,7 +4,12 @@ body {
 }
 
 body{
+    background-color: #C5CAE9 !important;
+}
+
+#main_container{
     background-image: url('/images/background.png');
+    background-size: contain;
 }
 
 .wrap {
@@ -223,6 +228,7 @@ a.desc:after {
 
 .submenu-row{
     padding-top: 70px;
+    background-color: #C5CAE9;
 }
 .submenu-row a{
     color: #1A237E;
@@ -270,6 +276,7 @@ a.desc:after {
 .menu ul li:hover { background-color: #666; }
 .top-row{
     background-image:url('/images/top.png');
+    background-size: contain;
 }
 .top-row a{
     color:#E8EAF6;
