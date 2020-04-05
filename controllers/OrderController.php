@@ -19,21 +19,13 @@ class OrderController extends DefaultController
             if ($order->validate()) {
                 $password = null;
                 if (Yii::$app->user->isGuest) {
-                    $user = User::find()->where(['phone'=>$order->phone])->one();
-                    $user1 = User::find()->where(['email'=>$order->email])->one();
-                    if(!$user) {
-                        if($user1)$user = $user1;
-                    }
+                    $user = User::find()->where(['email'=>$order->email])->one();
                     if(!$user){
                         $registerModel = new RegisterForm();
                         $password = $this->rand_string(8);
-                        if(!$user1){
-                            if(filter_var($order->email,FILTER_VALIDATE_EMAIL))$email = $order->email;
-                            else $email = $order->phone.'@phone';
-                        }
+                        if(filter_var($order->email,FILTER_VALIDATE_EMAIL))$email = $order->email;
+                        else $email = $order->phone.'@phone';
                         $user = $registerModel->register_user($email, $password);
-                        $user->phone = $order->phone;
-                        $user->save();
                     }
                     if($user){
                         $validFlag = true;
@@ -42,10 +34,6 @@ class OrderController extends DefaultController
                     $validFlag = true;
                     $password = null;
                     $user = Yii::$app->user->identity;
-                    if($user->phone != $order->phone) {
-                        $user->phone = $order->phone;
-                        $user->save();
-                    }
                 }
                 if($validFlag) {
                     $content = Basket::getBasket();
