@@ -9,7 +9,7 @@ use app\components\TreeWidget;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-$this->params['breadcrumbs'] = [['label'=>'']];
+$this->params['breadcrumbs'] = [['label'=>'','template'=>'']];
 
 $this->title = "Ошибка";
 ?>

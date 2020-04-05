@@ -11,7 +11,7 @@ use yii\helpers\Url;
 use yii\bootstrap4\LinkPager;
 use yii\widgets\ActiveForm;
 
-$this->params['breadcrumbs'] = [['label'=>'']];
+$this->params['breadcrumbs'] = [['label'=>'','template'=>'']];
 
 if(isset($name) && $name!='')$this->title = "Результаты поиска";
 if(isset($description) && $description!='')$this->registerMetaTag(['name' => 'description','content' => $description],'description');

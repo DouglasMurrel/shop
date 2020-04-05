@@ -6,7 +6,7 @@ use yii\helpers\Html;
 
 $this->title = 'Как купить';
 
-$this->params['breadcrumbs'] = [['label'=>'']];
+$this->params['breadcrumbs'] = [['label'=>'','template'=>'']];
 ?>
 <div class="site-about">
     <h1><?= Html::encode($this->title) ?></h1>

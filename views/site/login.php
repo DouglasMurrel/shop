@@ -6,7 +6,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\widgets\Pjax;
 
-$this->params['breadcrumbs'] = [['label'=>'']];
+$this->params['breadcrumbs'] = [['label'=>'','template'=>'']];
 
 if($active=='login')$this->title = 'Вход';
 if($active=='register')$this->title = 'Регистрация';

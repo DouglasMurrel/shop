@@ -7,7 +7,7 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 
-$this->params['breadcrumbs'] = [['label'=>'']];
+$this->params['breadcrumbs'] = [['label'=>'','template'=>'']];
 
 $this->title = 'Сброс пароля';
 ?>
