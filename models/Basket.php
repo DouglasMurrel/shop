@@ -88,7 +88,7 @@ class Basket extends Model
         $session->open();
         $price = 0.0;
         $amount = 0;
-        $basket['products'] = Order::setDiscounts($basket['products']);
+        $basket['products'] = self::setDiscounts($basket['products']);
         foreach ($basket['products'] as $item) {
             $discount = 0;
             if(isset($item['discount']))$discount = $item['discount'];
@@ -101,6 +101,26 @@ class Basket extends Model
         if($amount>0) $session->set('basketTitle', "Товаров в корзине: $amount, цена: $price руб.");
         else $session->remove('basketTitle');
         Basket::setBasketToUser();
+    }
+
+    private static function setDiscounts($products){
+        uasort($products,['self','compareByPrice']);
+        $i = 0;
+        foreach($products as $id=>$product){
+            if($i==0)$product['discount']=0;
+            else if($i==1)$product['discount']=10;
+            else $product['discount']=20;
+            $products[$id] = $product;
+            $i++;
+        }
+        return $products;
+    }
+
+    private static function compareByPrice($a,$b){
+        if ($a['price'] == $b['price']) {
+            return 0;
+        }
+        return ($a['price'] > $b['price']) ? -1 : 1;
     }
 
      /**
