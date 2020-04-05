@@ -30,6 +30,10 @@ $this->title = 'Заказ в магазине № ' . $order->id;
         <td colspan="3" align="right">Итого</td>
         <td align="right"><?= $order['amount']; ?></td>
     </tr>
+    <tr>
+        <td colspan="3" align="right">Со скидкой</td>
+        <td align="right"><?= $order['discount']; ?><br>(самый дорогой товар - без скидки, второй - скидка 10%, остальные - 20%)</td>
+    </tr>
 </table>
 
 <p>Адрес доставки: <?= Html::encode($order->address); ?></p>

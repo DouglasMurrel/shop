@@ -32,6 +32,7 @@ class OrderController extends DefaultController
                     $content = Basket::getBasket();
                     $order->user_id = $user->id;
                     $order->amount = $content['price'];
+                    $order->discount = $content['discount_price'];
                     $order->save();
                     $order->addItems($content);
                     Basket::clearBasket();

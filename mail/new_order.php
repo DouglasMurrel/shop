@@ -30,6 +30,10 @@ use yii\helpers\Html;
         <td colspan="3" align="right">Итого</td>
         <td align="right"><?= $order['amount']; ?></td>
     </tr>
+    <tr>
+        <td colspan="3" align="right">Со скидкой</td>
+        <td align="right"><?= $order['discount']; ?></td>
+    </tr>
 </table>
 
 <p>Адрес доставки: <?= Html::encode($order->address); ?></p>

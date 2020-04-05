@@ -16,6 +16,7 @@ use yii\data\Pagination;
  * @property string $address Адрес доставки
  * @property string $comment Комментарий к заказу
  * @property float $amount Сумма заказа
+ * @property float $discount Сумма заказа со скидкой
  * @property int $status Статус заказа
  * @property string $created Дата и время создания
  * @property string $updated Дата и время обновления
@@ -101,12 +102,9 @@ class Order extends \yii\db\ActiveRecord
             $item->order_id = $this->id;
             $item->product_id = $product_id;
             $item->name = $product['name'];
-            $discount = 0;
-            if(isset($product['discount']))$discount = $product['discount'];
-            $item->discount = $discount;
             $item->price = $product['price'];
             $item->quantity = $product['count'];
-            $item->cost = $product['price'] * $product['count'] * (100 - $discount)/100;
+            $item->cost = $product['price'] * $product['count'];
             $item->save();
         }
     }

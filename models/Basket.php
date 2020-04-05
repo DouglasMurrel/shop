@@ -88,32 +88,37 @@ class Basket extends Model
         $session->open();
         $price = 0.0;
         $amount = 0;
-        $basket['products'] = self::setDiscounts($basket['products']);
         foreach ($basket['products'] as $item) {
-            $discount = 0;
-            if(isset($item['discount']))$discount = $item['discount'];
-            $price = $price + $item['price'] * $item['count'] * (100 - $discount)/100;
+            $price = $price + $item['price'] * $item['count'];
             $amount += 1;
         }
         $basket['amount'] = $amount;
-        $basket['price'] = round($price,2);
+        $basket['price'] = $price;
+        $discount_price = self::discount($basket);
+        $basket['discount_price'] = $discount_price;
         $session->set('basket', $basket);
-        if($amount>0) $session->set('basketTitle', "Товаров в корзине: $amount, цена: $price руб.");
+        if($amount>0) $session->set('basketTitle', "Товаров в корзине: $amount, цена: $discount_price руб.");
         else $session->remove('basketTitle');
         Basket::setBasketToUser();
     }
 
-    private static function setDiscounts($products){
+    private static function discount($basket){
+        $products = $basket['products'];
         uasort($products,['self','compareByPrice']);
         $i = 0;
+        $product1 = [];
         foreach($products as $id=>$product){
-            if($i==0)$product['discount']=0;
-            else if($i==1)$product['discount']=10;
-            else $product['discount']=20;
-            $products[$id] = $product;
-            $i++;
+            for($k=0;$k<$product['count'];$k++){
+                $product1[] = $product;
+            }
         }
-        return $products;
+        $price = 0;
+        foreach($product1 as $i=>$product) {
+            if ($i == 0) $price += $product['price'];
+            else if ($i == 1) $price += $product['price']*0.9;
+            else $price += $product['price']*0.8;
+        }
+        return $price;
     }
 
     private static function compareByPrice($a,$b){

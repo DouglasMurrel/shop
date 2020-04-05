@@ -40,21 +40,10 @@ $this->title = "Корзина";
                     <div class="col-lg text-lg-right">
                         <?
                             $price = $item['price'];
-                            if(isset($item['discount']))$discount = $item['discount'];else $discount = 0;
-                            $real_price = $price;
-                            if($discount>0){
-                                $real_price = $price*(100 - $discount)/100;
                         ?>
-                                Цена: <span class="striked"><?= $price ?> р.</span><span><?= $real_price ?> р.</span>
-                        <?
-                            }else{
-                        ?>
-                                Цена: <?= $price ?> р.
-                        <?
-                            }
-                        ?>
+                            Цена: <?= $price ?> р.
                     </div>
-                    <div class="col-lg text-lg-right">Сумма: <?= $real_price * $item['count']; ?> р.</div>
+                    <div class="col-lg text-lg-right">Сумма: <?= $price * $item['count']; ?> р.</div>
                     <div class="col-lg text-lg-right"><a href="<?= Url::to(['basket/remove','slug'=>$item['slug']]); ?>">Удалить</a></div>
                 </div>
                 <?php
@@ -64,6 +53,8 @@ $this->title = "Корзина";
         <?php endif; ?>
         <tr>
             <div class="col-lg text-right">Итого: <?= $basket['price']; ?> руб.</div>
+            <div class="col-lg text-right">Со скидкой: <?= $basket['discount_price']; ?> руб.</div>
+            <div class="col-lg text-right" style="font-size:x-small">(самый дорогой товар - без скидки, второй - скидка 10%, остальные - 20%)</div>
             <div class="col-lg text-right"><a href='' onclick="$('form#mainform').submit();return false;">Пересчитать</a></div>
         </tr>
     </div>
