@@ -13,7 +13,6 @@ use yii\helpers\Json;
  *
  * @property int $id id
  * @property string $email
- * @property string $phone
  * @property string $password
  * @property string $passwordHash
  * @property string $roles

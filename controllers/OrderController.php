@@ -43,11 +43,13 @@ class OrderController extends DefaultController
                     $order->addItems($content);
                     Basket::clearBasket();
 
-                    Yii::$app->mailer->compose('order',['order' => $order,'password' => $password,'site'=>Url::base(true)])
-                        ->setTo($order->email)
-                        ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
-                        ->setSubject('Ваш заказ')
-                        ->send();
+                    if(!preg_match('/@phone$/',$user->email)) {
+                        Yii::$app->mailer->compose('order', ['order' => $order, 'password' => $password, 'site' => Url::base(true)])
+                            ->setTo($order->email)
+                            ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
+                            ->setSubject('Ваш заказ')
+                            ->send();
+                    }
 
                     Yii::$app->mailer->compose('new_order',['order' => $order])
                         ->setTo(Yii::$app->params['senderEmail'])
