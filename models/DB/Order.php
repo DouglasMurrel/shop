@@ -101,11 +101,34 @@ class Order extends \yii\db\ActiveRecord
             $item->order_id = $this->id;
             $item->product_id = $product_id;
             $item->name = $product['name'];
+            $discount = 0;
+            if(isset($product['discount']))$discount = $product['discount'];
+            $item->discount = $discount;
             $item->price = $product['price'];
             $item->quantity = $product['count'];
-            $item->cost = $product['price'] * $product['count'];
+            $item->cost = $product['price'] * $product['count'] * (100 - $discount)/100;
             $item->save();
         }
+    }
+
+    public static function setDiscounts($products){
+        uasort($products,['self','compareByPrice']);
+        $i = 0;
+        foreach($products as $id=>$product){
+            if($i==0)$product['discount']=0;
+            else if($i==1)$product['discount']=10;
+            else $product['discount']=25;
+            $products[$id] = $product;
+            $i++;
+        }
+        return $products;
+    }
+
+    private static function compareByPrice($a,$b){
+        if ($a['price'] == $b['price']) {
+            return 0;
+        }
+        return ($a['price'] > $b['price']) ? -1 : 1;
     }
 
     public static function orderList(){

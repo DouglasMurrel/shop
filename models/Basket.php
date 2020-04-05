@@ -4,6 +4,7 @@
 namespace app\models;
 
 
+use app\models\DB\Order;
 use app\models\DB\Product;
 use app\models\DB\User;
 use Yii;
@@ -87,12 +88,15 @@ class Basket extends Model
         $session->open();
         $price = 0.0;
         $amount = 0;
+        $basket['products'] = Order::setDiscounts($basket['products']);
         foreach ($basket['products'] as $item) {
-            $price = $price + $item['price'] * $item['count'];
+            $discount = 0;
+            if(isset($item['discount']))$discount = $item['discount'];
+            $price = $price + $item['price'] * $item['count'] * (100 - $discount)/100;
             $amount += 1;
         }
         $basket['amount'] = $amount;
-        $basket['price'] = $price;
+        $basket['price'] = round($price,2);
         $session->set('basket', $basket);
         if($amount>0) $session->set('basketTitle', "Товаров в корзине: $amount, цена: $price руб.");
         else $session->remove('basketTitle');

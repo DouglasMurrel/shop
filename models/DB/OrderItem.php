@@ -12,6 +12,7 @@ use Yii;
  * @property int|null $product_id Идентификатор товара
  * @property string $name Наименование товара
  * @property float $price Цена товара
+ * @property float $discount Скидка
  * @property int $quantity Количество в заказе
  * @property float $cost Стоимость = Цена * Кол-во
  *

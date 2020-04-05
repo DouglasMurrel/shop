@@ -2,6 +2,7 @@
 
 namespace app\models\DB;
 
+use app\models\Forms\RegisterForm;
 use Yii;
 use yii\data\Pagination;
 use yii\db\ActiveQuery;
@@ -146,5 +147,30 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
             return in_array('admin', $roles);
         }
         return 0;
+    }
+
+    public static function registerByPhone($email,$phone,&$password){
+        $user = User::find()->where(['email'=>$email])->one();
+        if(!$user)$user = User::find()->where(['email'=>$phone.'@phone'])->one();//нет пользователя с таким адресом, ищем "телефонный" адрес
+        if(!$user){//и такого пользователя нет - регистрируем
+            $registerModel = new RegisterForm();
+            $password = User::rand_string(8);
+            if(!filter_var($email,FILTER_VALIDATE_EMAIL))$email = $phone.'@phone';//если адрес из параметра невалидный - генерим из телефона
+            $user = $registerModel->register_user($email, $password);
+        }
+        return $user;
+    }
+
+    public function hasEmail(){
+        return !preg_match('/@phone$/',$this->email);
+    }
+
+    private static function rand_string( $length ) {
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        return substr(str_shuffle($chars),0,$length);
+    }
+
+    public function lastOrder(){
+        return Order::find()->where(['user_id'=>$this->id])->orderBy('created desc')->one();
     }
 }

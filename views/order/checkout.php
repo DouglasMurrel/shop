@@ -24,11 +24,15 @@ if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords
             ['id' => 'checkout-form', 'class' => 'form-horizontal']
         );
         ?>
-        <?= $form->field($order, 'name')->textInput(); ?>
-        <?= $form->field($order, 'email',['options'=>['class'=>'form-group field-order-email mb-0']])->input('email',['value'=>$email]); ?>
+        <?= $form->field($order, 'name')->textInput(['value'=>$name]); ?>
+        <?if(Yii::$app->user->isGuest){?>
+            <?= $form->field($order, 'email',['options'=>['class'=>'form-group field-order-email mb-0']])->input('email',['value'=>$email]); ?>
         <div class="mb-1">Если вы укажете email, то будете зарегистрированы на сайте и получите доступ к личному кабинету</div>
+        <?}else{?>
+            <?= $form->field($order, 'email',['options'=>['class'=>'form-group field-order-email']])->input('email',['value'=>$email]); ?>
+        <?}?>
         <?= $form->field($order, 'phone')->textInput(['value'=>$phone]); ?>
-        <?= $form->field($order, 'address')->textarea(['rows' => 2]); ?>
+        <?= $form->field($order, 'address')->textarea(['rows' => 2, 'value'=>$address]); ?>
         <?= $form->field($order, 'comment')->textarea(['rows' => 2]); ?>
         <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']); ?>
         <?php ActiveForm::end(); ?>

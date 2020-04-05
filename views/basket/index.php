@@ -37,8 +37,24 @@ $this->title = "Корзина";
                         <?= $form->field($basketForms[$k], "[$k]count")->textInput(['value'=>$item['count']])->label(false);?>
                         <?= $form->field($basketForms[$k], "[$k]id")->hiddenInput(['value'=>$id])->label(false); ?>
                     </div>
-                    <div class="col-lg text-lg-right">Цена: <?= $item['price']; ?> р.</div>
-                    <div class="col-lg text-lg-right">Сумма: <?= $item['price'] * $item['count']; ?> р.</div>
+                    <div class="col-lg text-lg-right">
+                        <?
+                            $price = $item['price'];
+                            if(isset($item['discount']))$discount = $item['discount'];else $discount = 0;
+                            $real_price = $price;
+                            if($discount>0){
+                                $real_price = $price*(100 - $discount)/100;
+                        ?>
+                                Цена: <span class="striked"><?= $price ?> р.</span><span><?= $real_price ?> р.</span>
+                        <?
+                            }else{
+                        ?>
+                                Цена: <?= $price ?> р.
+                        <?
+                            }
+                        ?>
+                    </div>
+                    <div class="col-lg text-lg-right">Сумма: <?= $real_price * $item['count']; ?> р.</div>
                     <div class="col-lg text-lg-right"><a href="<?= Url::to(['basket/remove','slug'=>$item['slug']]); ?>">Удалить</a></div>
                 </div>
                 <?php

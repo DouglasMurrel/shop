@@ -19,14 +19,7 @@ class OrderController extends DefaultController
             if ($order->validate()) {
                 $password = null;
                 if (Yii::$app->user->isGuest) {
-                    $user = User::find()->where(['email'=>$order->email])->one();
-                    if(!$user){
-                        $registerModel = new RegisterForm();
-                        $password = $this->rand_string(8);
-                        if(filter_var($order->email,FILTER_VALIDATE_EMAIL))$email = $order->email;
-                        else $email = $order->phone.'@phone';
-                        $user = $registerModel->register_user($email, $password);
-                    }
+                    $user = User::registerByPhone($order->email,$order->phone,$password);
                     if($user){
                         $validFlag = true;
                     }
@@ -43,7 +36,7 @@ class OrderController extends DefaultController
                     $order->addItems($content);
                     Basket::clearBasket();
 
-                    if(!preg_match('/@phone$/',$user->email)) {
+                    if($user->hasEmail()) {
                         Yii::$app->mailer->compose('order', ['order' => $order, 'password' => $password, 'site' => Url::base(true)])
                             ->setTo($order->email)
                             ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
@@ -57,7 +50,11 @@ class OrderController extends DefaultController
                         ->setSubject('Новый заказ')
                         ->send();
 
-                    Yii::$app->session->addFlash('success','Заказ успешно оформлен! Сведения о заказе отправлены на вашу электронную почту');
+                    if($user->hasEmail()) {
+                        Yii::$app->session->addFlash('success', 'Заказ успешно оформлен! Сведения о заказе отправлены на вашу электронную почту. Оператор свяжется с вами по телефону');
+                    }else{
+                        Yii::$app->session->addFlash('success', 'Заказ успешно оформлен!  Оператор свяжется с вами по телефону');
+                    }
                 }
             }
             return $this->redirect(Url::to('/'));
@@ -65,21 +62,29 @@ class OrderController extends DefaultController
         if(Yii::$app->user->isGuest){
             $email = '';
             $phone = '';
+            $name = '';
+            $address = '';
         }else{
             $email = Yii::$app->user->identity->email;
-            $phone = Yii::$app->user->identity->phone;
+            $lastOrder = Yii::$app->user->identity->lastOrder();
+            if($lastOrder){
+                $phone = $lastOrder->phone;
+                $name = $lastOrder->name;
+                $address = $lastOrder->address;
+            }else{
+                $phone = '';
+                $name = '';
+                $address = '';
+            }
         }
         return $this->render('checkout', [
             'order'=>$order,
             'links'=>[],
             'email'=>$email,
             'phone'=>$phone,
+            'name'=>$name,
+            'address'=>$address,
         ]);
-    }
-
-    private function rand_string( $length ) {
-        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        return substr(str_shuffle($chars),0,$length);
     }
 
 }

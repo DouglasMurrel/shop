@@ -36,7 +36,7 @@ AppAsset::register($this);
             if(!Yii::$app->user->isGuest){
                 ?>
             <div class="dont-show-mobile col-lg-6">
-                <a class="navbar-brand" href="<?=Yii::$app->homeUrl ?>"><?=Yii::$app->name ?></a>
+                <a class="navbar-brand" href="<?=Yii::$app->homeUrl ?>"><img src="/images/logo.png"></a>
                 <?
                 if(Yii::$app->user->identity->isAdmin()){
                     ?>
@@ -76,7 +76,7 @@ AppAsset::register($this);
                     <a class="nav-link float-right" href="<?=Url::to(['basket/index'])?>" title="<?=$basketTitle?>">Корзина</a>
                 </div>
                 <div class="col-1">
-                    <a class="nav-link my-auto text-primary" href="<?= Url::to(["site/login"])?>">Вход</a>
+                    <a class="nav-link my-auto" href="<?= Url::to(["site/login"])?>">Вход</a>
                 </div>
             <?
             }
