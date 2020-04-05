@@ -19,11 +19,21 @@ class OrderController extends DefaultController
             if ($order->validate()) {
                 $password = null;
                 if (Yii::$app->user->isGuest) {
-                    $user = User::find()->where(['email'=>$order->email])->one();
+                    $user = User::find()->where(['phone'=>$order->phone])->one();
+                    $user1 = User::find()->where(['email'=>$order->email])->one();
                     if(!$user) {
+                        if($user1)$user = $user1;
+                    }
+                    if(!$user){
                         $registerModel = new RegisterForm();
                         $password = $this->rand_string(8);
-                        $user = $registerModel->register_user($order->email, $password);
+                        if(!$user1){
+                            if(filter_var($order->email,FILTER_VALIDATE_EMAIL))$email = $order->email;
+                            else $email = $order->phone.'@phone';
+                        }
+                        $user = $registerModel->register_user($email, $password);
+                        $user->phone = $order->phone;
+                        $user->save();
                     }
                     if($user){
                         $validFlag = true;
@@ -32,6 +42,10 @@ class OrderController extends DefaultController
                     $validFlag = true;
                     $password = null;
                     $user = Yii::$app->user->identity;
+                    if($user->phone != $order->phone) {
+                        $user->phone = $order->phone;
+                        $user->save();
+                    }
                 }
                 if($validFlag) {
                     $content = Basket::getBasket();
@@ -58,12 +72,18 @@ class OrderController extends DefaultController
             }
             return $this->redirect(Url::to('/'));
         }
-        if(Yii::$app->user->isGuest)$email = '';
-        else $email = Yii::$app->user->identity->email;
+        if(Yii::$app->user->isGuest){
+            $email = '';
+            $phone = '';
+        }else{
+            $email = Yii::$app->user->identity->email;
+            $phone = Yii::$app->user->identity->phone;
+        }
         return $this->render('checkout', [
             'order'=>$order,
             'links'=>[],
             'email'=>$email,
+            'phone'=>$phone,
         ]);
     }
 

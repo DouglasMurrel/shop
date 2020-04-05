@@ -304,3 +304,7 @@ a.desc:after {
 .breadcrumb a:hover{
     color:#FFFFFF;
 }
+
+.required label::after{
+    content: ' (*)';
+}
