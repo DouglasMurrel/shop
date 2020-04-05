@@ -30,7 +30,7 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <div class="container wrap" id="main_container">
-    <div class="container fixed-top bg-light border-bottom border-dark p-0">
+    <div class="container fixed-top bg-light border-bottom border-dark pt-0 pb-0">
         <div class="row top-row">
             <?
             if(!Yii::$app->user->isGuest){

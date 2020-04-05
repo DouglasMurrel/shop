@@ -10,7 +10,7 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 
-$this->params['breadcrumbs'] = [['label'=>'']];
+$this->params['breadcrumbs'] = [['label'=>'','template'=>'']];
 
 if(isset($name) && $name!='')$this->title = $name;
 if(isset($description) && $description!='')$this->registerMetaTag(['name' => 'description','content' => $description],'description');

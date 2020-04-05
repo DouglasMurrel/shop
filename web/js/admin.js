@@ -35,4 +35,18 @@ $(function(){
             }
         );
     });
+    tinymce.init({
+        selector: '.tinymce',
+        plugins: [
+            'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+            'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+            'table emoticons template paste help'
+        ],
+        toolbar: 'undo redo | styleselect | link image | bold italic | alignleft aligncenter alignright alignjustify |' +
+            ' bullist numlist outdent indent | print preview media fullpage | ' +
+            'forecolor backcolor emoticons',
+        menubar: 'edit view insert format tools table',
+        content_css: 'css/content.css',
+        language: 'ru'
+    });
 })

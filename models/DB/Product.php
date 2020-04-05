@@ -234,7 +234,7 @@ class Product extends \yii\db\ActiveRecord
             if($category)$product->category_id = $category->id;
             if($product->save()) {
                 $used_rows[] = $product->id;
-
+/*
                 $image_file = $row[6];
                 if ($image_file != '') {
                     $image = new Image();
@@ -244,6 +244,7 @@ class Product extends \yii\db\ActiveRecord
                     $image->image = $image_file;
                     $image->save();
                 }
+*/
             }
         }
         $ids = implode(',',$used_rows);

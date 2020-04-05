@@ -4,12 +4,11 @@ body {
 }
 
 body{
-    background-color: #C5CAE9 !important;
+    background-color: #1A237E !important;
 }
 
 #main_container{
-    background-image: url('/images/background.png');
-    background-size: contain;
+    background-color: #C5CAE9;
 }
 
 .wrap {
@@ -183,6 +182,9 @@ a.desc:after {
 .fa-folder-open::before{
     color:white;
 }
+.fa-folder::before{
+    color:white;
+}
 
 [aria-expanded="false"] > .expanded,
 [aria-expanded="true"] > .collapsed {
@@ -227,7 +229,7 @@ a.desc:after {
 }
 
 .submenu-row{
-    padding-top: 70px;
+    padding-top: 50px;
     background-color: #C5CAE9;
 }
 .submenu-row a{

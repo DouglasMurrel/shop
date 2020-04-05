@@ -21,8 +21,9 @@ AdminAsset::register($this);
         <?php $this->registerCsrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
+        <script src="https://cdn.tiny.cloud/1/mm8sxuca1unhwjbzucera77k30tsoylpbofhe614slgx7unz/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     </head>
-    <body>
+    <body style="background-color: white !important;">
     <?php $this->beginBody() ?>
     <header>
         <div class="container">
