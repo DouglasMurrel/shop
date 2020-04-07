@@ -17,7 +17,7 @@ use yii\helpers\Url;
                 <div id="Web" class="collapse show">
                     <ul>
                         <?php foreach ($tree as $item): ?>
-                            <?php show_branch($item, $openCategories)?>
+                            <?php show_branch($item, $openCategories, $slug)?>
                         <?php endforeach; ?>
                     </ul>
                 </div>
@@ -26,7 +26,7 @@ use yii\helpers\Url;
     </div>
 
 <?php
-function show_branch($item, $openCategories){
+function show_branch($item, $openCategories, $slug){
     $show_flag = false;
     if(in_array($item['id'],$openCategories))$show_flag = true;
     $img = '/images/category/'.$item['image'];
@@ -34,7 +34,7 @@ function show_branch($item, $openCategories){
     if(!file_exists($file) || $item['image']=='')$img = '/images/noimage.jpg';
     if (isset($item['nodes'])){
         ?>
-        <li>
+        <li<?if($item['slug']==$slug){?> class="leaf_current"<?}?>>
         <span style="white-space:nowrap;min-width:100%;min-height:40px;">
              <a style="color:#000; text-decoration:none;" data-toggle="collapse" href="#<?=$item['slug']?>" aria-expanded="<?= $show_flag?'true':'false'?>" aria-controls="<?=$item['slug']?>">
                   <i class="collapsed">
@@ -50,7 +50,7 @@ function show_branch($item, $openCategories){
                 <div id="<?=$item['slug']?>" class="collapse<?= $show_flag?' show':''?>">
                     <?php foreach ($item['nodes'] as $item1):
                         ?>
-                        <?php show_branch($item1,$openCategories); ?>
+                        <?php show_branch($item1,$openCategories,$slug); ?>
                     <?php endforeach; ?>
                 </div>
             </ul>
@@ -58,7 +58,7 @@ function show_branch($item, $openCategories){
         <?
     }else{
         ?>
-        <li>
+        <li<?if($item['slug']==$slug){?> class="leaf_current"<?}?>>
             <span style="min-width:100%;min-height:40px;">
                 <i class="far"></i>
                 <a class="w-100" href="<?=Url::to(['catalog/category','slug'=>$item['slug']])?>"><?=$item['name']?></a>

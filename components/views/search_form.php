@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
             ->label(false) ?>
         <div class="input-group-btn">
             <button class="btn btn-default" type="submit">
-                <span class="glyphicon glyphicon-search"></span>
+                <span class="fa fa-search"></span>
             </button>
         </div>
     </div>

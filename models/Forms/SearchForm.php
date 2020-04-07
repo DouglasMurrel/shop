@@ -93,12 +93,14 @@ class SearchForm extends Model{
         $relevance .= " + IF (`product`.`description` LIKE '%" . $words[0] . "%', 2, 0)";
         $relevance .= " + IF (`product`.`content` LIKE '%" . $words[0] . "%', 2, 0)";
         $relevance .= " + IF (`category`.`name` LIKE '%" . $words[0] . "%', 1, 0)";
+        $relevance .= " + IF (`category`.`content` LIKE '%" . $words[0] . "%', 1, 0)";
         for ($i = 1; $i < count($words); $i++) {
             $relevance .= " + IF (`product`.`name` LIKE '%" . $words[$i] . "%', 3, 0)";
             $relevance .= " + IF (`product`.`keywords` LIKE '%" . $words[$i] . "%', 2, 0)";
             $relevance .= " + IF (`product`.`description` LIKE '%" . $words[$i] . "%', 2, 0)";
             $relevance .= " + IF (`product`.`content` LIKE '%" . $words[$i] . "%', 2, 0)";
             $relevance .= " + IF (`category`.`name` LIKE '%" . $words[$i] . "%', 1, 0)";
+            $relevance .= " + IF (`category`.`content` LIKE '%" . $words[$i] . "%', 1, 0)";
         }
         $query = Product::find()
             ->select([
@@ -115,13 +117,15 @@ class SearchForm extends Model{
             ->orWhere(['like', 'product.keywords', $words[0]])
             ->orWhere(['like', 'product.description', $words[0]])
             ->orWhere(['like', 'product.content', $words[0]])
-            ->orWhere(['like', 'category.name', $words[0]]);
+            ->orWhere(['like', 'category.name', $words[0]])
+            ->orWhere(['like', 'category.content', $words[0]]);
         for ($i = 1; $i < count($words); $i++) {
             $query = $query->orWhere(['like', 'product.name', $words[$i]]);
             $query = $query->orWhere(['like', 'product.keywords', $words[$i]]);
             $query = $query->orWhere(['like', 'product.description', $words[0]]);
             $query = $query->orWhere(['like', 'product.content', $words[0]]);
             $query = $query->orWhere(['like', 'category.name', $words[$i]]);
+            $query = $query->orWhere(['like', 'category.content', $words[$i]]);
         }
         $query = $query->orderBy(['relevance' => SORT_DESC]);
 

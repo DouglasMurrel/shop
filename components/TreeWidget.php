@@ -32,7 +32,7 @@ class TreeWidget extends Widget
                 $root = $this->makeTree($root);
                 $tree = $root['nodes'];
                 if (!empty($tree)) {
-                    $html = $this->render('menu', ['tree' => $tree, 'openCategories' => $openCategories]);
+                    $html = $this->render('menu', ['tree' => $tree, 'openCategories' => $openCategories, 'slug'=>$slug]);
                 } else {
                     $html = '';
                 }

@@ -160,7 +160,7 @@ a.desc:after {
     padding:3px 8px;
     text-decoration:none;
     cursor:pointer;
-    background-color: #303F9F !important;
+    background-color: #303F9F;
 }
 .tree li span:hover {
     background-color: hotpink !important;
@@ -187,6 +187,9 @@ a.desc:after {
 }
 .fa-folder::before{
     color:white;
+}
+.leaf_current>span{
+    background-color: green !important;
 }
 
 [aria-expanded="false"] > .expanded,

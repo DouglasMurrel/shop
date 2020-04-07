@@ -16,16 +16,24 @@ if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords
 
 ?>
 <?= SearchWidget::widget(); ?>
-<div class="col-sm-12">
-<h1><?=$name?></h1>
-<?=$content?>
-<?php
-if (!empty($products)) {
+<div class="col-12">
+    <h1><?=$name?></h1>
+    <?=$content?>
+</div>
+<div class="w-100"></div>
+<div class="col-lg-4">
+    <div class="category-products container pl-0">
+        <?= TreeWidget::widget(); ?>
+    </div>
+</div>
+<div class="col-lg-8 pt-lg-50">
+    <?
+    if (!empty($products)) {
+        ?>
+        <?= ProductWidget::widget(['products'=>$products,'basketForm'=>$basketForm]); ?>
+        <?php
+    }else{
+        echo '<p>Нет товаров в этой категории</p>';
+    }
     ?>
-    <?= ProductWidget::widget(['products'=>$products,'pages'=>$pages,'basketForm'=>$basketForm]); ?>
-<?php
-} else {
-    echo '<p>Нет товаров в этой категории</p>';
-}
-?>
 </div>
