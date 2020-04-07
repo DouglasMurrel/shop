@@ -12,9 +12,11 @@ use yii\widgets\LinkPager;
         ?>
         <div class="product-wrapper text-center p-1 m-1 border border-primary">
             <?
-            $img = '/images/product/'.$product['image'];
-            $file = Yii::getAlias('@webroot').$img;
-            if(!file_exists($file) || $product['image']=='')$img = '/images/noimage.jpg';
+            if(isset($product['image'])) {
+                $img = '/images/product/' . $product['image'];
+                $file = Yii::getAlias('@webroot') . $img;
+                if (!file_exists($file) || $product['image'] == '') $img = '/images/noimage.jpg';
+            }else $img = '/images/noimage.jpg';
             ?>
             <div style="background-image:url('<?=$img?>');background-size:contain;background-repeat: no-repeat;background-position-x:center;height:100px;"></div>
             <h2><?= $product['price']; ?> руб.</h2>
