@@ -264,7 +264,7 @@ class Product extends \yii\db\ActiveRecord
                 $products[$i] = $product;
             }
             return $products;
-        });
+        },60);
         shuffle($data);
         return $data;
     }
