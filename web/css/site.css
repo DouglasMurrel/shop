@@ -125,8 +125,11 @@ a.desc:after {
 .tree li {
     list-style-type:none;
     margin:0;
-    padding:10px 5px 0 5px;
+    padding:10px 0 0 5px;
     position:relative
+}
+.tree>ul>li{
+    padding:10px 15px 0 5px;
 }
 .tree li::before,
 .tree li::after {
@@ -309,4 +312,10 @@ a.desc:after {
 }
 .striked {
     text-decoration: line-through;
+}
+
+@media (min-width: 960px) {
+    .pt-lg-50{
+        padding-top:50px;
+    }
 }

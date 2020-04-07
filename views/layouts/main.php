@@ -40,7 +40,7 @@ AppAsset::register($this);
                 <?
                 if(Yii::$app->user->identity->isAdmin()){
                     ?>
-                    <a class="navbar-brand" target='_blank' href="<?=Url::to('admin')?>">Admin</a>
+                    <a class="navbar-brand" target='_blank' href="/admin">Admin</a>
                     <?
                 }
                 ?>

@@ -18,12 +18,11 @@ if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords
 ?>
 <?= SearchWidget::widget(); ?>
 <div class="col-lg-4">
-    <h2>Каталог</h2>
     <div class="category-products container pl-0">
         <?= TreeWidget::widget(); ?>
     </div>
 </div>
-<div class="col-lg-8">
+<div class="col-lg-8 pt-lg-50">
     <?
     if (!empty($products)) {
     ?>
