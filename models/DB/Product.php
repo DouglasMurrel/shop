@@ -257,7 +257,13 @@ class Product extends \yii\db\ActiveRecord
 
     public static function firstPageProducts(){
         $data = Yii::$app->cache->getOrSet(['firstPageProducts'], function() {
-            return Product::find()->where(['firstpage' => 1])->asArray()->all();
+            $products = Product::find()->where(['firstpage' => 1])->asArray()->all();
+            foreach($products as $i=>$product){
+                $image = Image::getFirst($product['id'],'product');
+                $product['image'] = $image;
+                $products[$i] = $product;
+            }
+            return $products;
         });
         return $data;
     }
