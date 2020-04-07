@@ -18,7 +18,14 @@ class CatalogController extends DefaultController{
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $products = Product::firstPageProducts();
+        $basketForm = new BasketForm();
+        return $this->render('index',
+            [
+                'products'=>$products,
+                'basketForm' => $basketForm,
+            ]
+        );
     }
 
     /**

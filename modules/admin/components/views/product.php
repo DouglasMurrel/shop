@@ -12,6 +12,7 @@ echo $form->field($product, 'price')->textInput(['value' => $product->price]);
 echo $form->field($product, 'content')->textarea(['value' => $product->content, 'class'=>'form-control tinymce']);
 echo $form->field($product, 'keywords')->textInput(['value' => $product->keywords]);
 echo $form->field($product, 'description')->textInput(['value' => $product->description]);
+echo $form->field($product, 'firstpage')->checkbox(['value' => 1]);
 $tree = ArrayHelper::map($tree,'id','name');
 echo $form->field($product,'category_id')->dropDownList($tree,['value'=>$product->category_id]);
 if($product->id){

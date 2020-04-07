@@ -34,6 +34,8 @@ use yii\widgets\LinkPager;
 
 ?>
 </div>
+<?if($pages){?>}
 <div class="ml-n3">
     <?= LinkPager::widget(['pagination' => $pages,'lastPageLabel'=>true,'firstPageLabel'=>true,'maxButtonCount'=>4]); /* постраничная навигация */ ?>
 </div>
+<?}?>

@@ -54,6 +54,7 @@ class Product extends \yii\db\ActiveRecord
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
             [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'maxFiles' => 0],
             [['xlsFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'xls, xlsx'],
+            ['firstpage', 'boolean'],
         ];
     }
 
@@ -71,6 +72,7 @@ class Product extends \yii\db\ActiveRecord
             'keywords' => 'Мета-тег keywords',
             'description' => 'Мета-тег description',
             'content' => 'Описание',
+            'firstpage' => 'Показывать на главной',
         ];
     }
 
@@ -183,8 +185,8 @@ class Product extends \yii\db\ActiveRecord
     }
 
     public static function truncate(){
-        Yii::$app->db->createCommand("delete from product")->execute();
-        Yii::$app->db->createCommand("delete from image where entity_type='product'")->execute();
+        Product::deleteAll();
+        Image::deleteAll(['entity_type'=>'product']);
     }
 
     public function saveImage(){
@@ -248,8 +250,15 @@ class Product extends \yii\db\ActiveRecord
             }
         }
         $ids = implode(',',$used_rows);
-        Yii::$app->db->createCommand("delete from product where id not in ($ids)")->execute();
-        Yii::$app->db->createCommand("delete from image where entity_id not in ($ids) and entity_type='product'")->execute();
+        Product::deleteAll(['not in','id',$ids]);
+        Image::deleteAll(['and',['not in','entity_id',$ids],"entity_type='product'"]);
         return true;
+    }
+
+    public static function firstPageProducts(){
+        $data = Yii::$app->cache->getOrSet(['firstPageProducts'], function() {
+            return Product::find()->where(['firstpage' => 1])->asArray()->all();
+        });
+        return $data;
     }
 }
