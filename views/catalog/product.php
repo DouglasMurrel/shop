@@ -63,9 +63,19 @@ foreach($images as $image) {
                             Цена: <span><?= $product['price']; ?></span> руб.
                         </p>
                         <?php $form = ActiveForm::begin(['action'=>Url::to(['basket/add']),'options'=>['id'=>'product'.$product['id']]]); ?>
-                        <?= $form->field($basketForm, 'count',['options'=>['class'=>'w-100 d-inline-block']])->textInput(['value'=>1])->label(false) ?>
+                        <?
+                        ob_start();
+                        ?>
+                        <a href="" onclick="$('form#product<?=$product['id']?>').submit();return false;" style="white-space:nowrap;"><img src="/images/basket.png" alt="Добавить в корзину" title="Добавить в корзину"></a>
+                        <?
+                        $basketButton = ob_get_contents();
+                        ob_end_clean();
+                        ?>
+                        <?= $form->field($basketForm, 'count',[
+                            'options'=>['class'=>'w-100 d-inline-block'],
+                            'template'=>"{label}{input}$basketButton{hint}{error}",
+                        ])->textInput(['value'=>1,'style'=>'display:inline;width:90%;'])->label(false) ?>
                         <?= $form->field($basketForm, 'id')->hiddenInput(['value'=>$product['id']])->label(false) ?>
-                        <a href='' onclick="$('form#product<?=$product['id']?>').submit();return false;" style="white-space:nowrap;">Добавить в корзину</a>
                         <?php ActiveForm::end(); ?>
 
                     </div>
@@ -82,9 +92,19 @@ foreach($images as $image) {
                                 Цена: <span><?= $product['price']; ?></span> руб.
                             </p>
                             <?php $form = ActiveForm::begin(['action'=>Url::to(['basket/add']),'options'=>['id'=>'product'.$product['id']]]); ?>
-                            <?= $form->field($basketForm, 'count',['options'=>['class'=>'w-lg-25 d-inline-block']])->textInput(['value'=>1])->label(false) ?>
+                            <?
+                            ob_start();
+                            ?>
+                            <a href="" onclick="$('form#product<?=$product['id']?>').submit();return false;" style="white-space:nowrap;"><img src="/images/basket.png" alt="Добавить в корзину" title="Добавить в корзину"></a>
+                            <?
+                            $basketButton = ob_get_contents();
+                            ob_end_clean();
+                            ?>
+                            <?= $form->field($basketForm, 'count',[
+                                    'options'=>['class'=>'w-lg-25 d-inline-block'],
+                                    'template'=>"{label}{input}$basketButton{hint}{error}",
+                            ])->textInput(['value'=>1])->label(false) ?>
                             <?= $form->field($basketForm, 'id')->hiddenInput(['value'=>$product['id']])->label(false) ?>
-                            <a href='' onclick="$('form#product<?=$product['id']?>').submit();return false;" style="white-space:nowrap;">Добавить в корзину</a>
                             <?php ActiveForm::end(); ?>
 
                         </div>
