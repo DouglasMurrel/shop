@@ -14,7 +14,7 @@ foreach ($orders as $order){
         </div>
         <div class="w-100"></div>
         <div class="col">
-            <?=$order['name']?>,
+            <?=$order['name']?> <?=$order['oname']?> <?=$order['lastname']?>
         </div>
         <div class="col">
             <?=$order['phone']?>
@@ -24,7 +24,7 @@ foreach ($orders as $order){
         </div>
         <div class="w-100"></div>
         <div class="col-12">
-            <?=$order['address']?>
+            <?=$order['zipcode']?> <?=$order['area']?> <?=$order['city']?> <?=$order['address']?>
         </div>
         <div class="w-100"></div>
         <div class="col-12">

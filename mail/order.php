@@ -6,7 +6,7 @@ $this->title = 'Заказ в магазине № ' . $order->id;
 <h1><?= Html::encode($this->title); ?></h1>
 
 <ul>
-    <li>Покупатель: <?= Html::encode($order->name); ?></li>
+    <li>Покупатель: <?= Html::encode($order->name); ?> <?= Html::encode($order->oname); ?> <?= Html::encode($order->lastname); ?></li>
     <li>E-mail: <?= Html::encode($order->email); ?></li>
     <li>Телефон: <?= Html::encode($order->phone); ?></li>
 </ul>
@@ -36,7 +36,7 @@ $this->title = 'Заказ в магазине № ' . $order->id;
     </tr>
 </table>
 
-<p>Адрес доставки: <?= Html::encode($order->address); ?></p>
+<p>Адрес доставки: <?= Html::encode($order['zipcode']); ?> <?= Html::encode($order['area']); ?> <?= Html::encode($order['city']); ?> <?= Html::encode($order['address']); ?></p>
 
 <p>Комментарий: <?= Html::encode($order->comment); ?></p>
 

@@ -6,7 +6,7 @@ use yii\helpers\Html;
 <h1>Поступил новый заказ № <?=$order->id?></h1>
 
 <ul>
-    <li>Покупатель: <?= Html::encode($order->name); ?></li>
+    <li>Покупатель: <?= Html::encode($order->name); ?> <?= Html::encode($order->oname); ?> <?= Html::encode($order->lastname); ?></li>
     <li>E-mail: <?= Html::encode($order->email); ?></li>
     <li>Телефон: <?= Html::encode($order->phone); ?></li>
 </ul>
@@ -36,6 +36,6 @@ use yii\helpers\Html;
     </tr>
 </table>
 
-<p>Адрес доставки: <?= Html::encode($order->address); ?></p>
+<p>Адрес доставки: <?= Html::encode($order['zipcode']); ?> <?= Html::encode($order['area']); ?> <?= Html::encode($order['city']); ?> <?= Html::encode($order['address']); ?></p>
 
 <p>Комментарий: <?= Html::encode($order->comment); ?></p>

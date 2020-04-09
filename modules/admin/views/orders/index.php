@@ -15,7 +15,7 @@ if (!empty($orders)) {
                 <a href="<?= Url::to(['orders/order', 'id' => $order['id']]); ?>">
                     <?= Html::encode($order['created']); ?>
                 </a>
-                <?= $order['name']; ?>
+                <?= $order['name'] ?> <?=$order['oname']?> <?=$order['lastname']?>
                 <?= $order['email']; ?>
                 <?= $order['phone']; ?>
             </p>

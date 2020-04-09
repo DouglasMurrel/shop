@@ -8,9 +8,9 @@ if (!empty($orderItems)) {
     $form = ActiveForm::begin(['action' => Url::to(['orders/order','id'=>$order['id']])]);
     ?>
     <div><?=$order['created']?></div>
-    <div><?=$order['name']?></div>
+    <div><?= $order['name'] ?> <?=$order['oname']?> <?=$order['lastname']?></div>
     <div><?=$order['phone']?></div>
-    <div><?=$order['address']?></div>
+    <div><?=$order['zipcode']?> <?=$order['area']?> <?=$order['city']?> <?=$order['address']?></div>
     <div><?=$order['comment']?></div>
     <?= $form->field($order, "status")->dropDownList(Yii::$app->params['statuses'],['value'=>$order['status'],'style'=>['width'=>'200px;']])->label(false) ?>
     <table>
