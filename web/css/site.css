@@ -322,3 +322,6 @@ a.desc:after {
         padding-top:50px;
     }
 }
+.has-error div.help-block {
+    color: red !important;
+}

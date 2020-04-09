@@ -1,6 +1,8 @@
 <?
 $this->title = "Мои заказы";
 
+$this->params['breadcrumbs'] = [['label'=>'','template'=>'']];
+
 foreach ($orders as $order){
     ?>
     <div class="row order-item border border-primary w-100 mb-2">

@@ -26,11 +26,11 @@ use yii\widgets\LinkPager;
                 </a>
             </p>
             <? if(!$indexFlag){?>
-            <?php $form = ActiveForm::begin(['action'=>Url::to(['basket/add']),'options'=>['id'=>'product'.$product['id']]]); ?>
+            <?php $form = ActiveForm::begin(['action'=>Url::to(['basket/add']),'options'=>['id'=>'product'.$product['id'],'style'=>'min-width:226px;']]); ?>
                 <p>
                     <?= $form->field($basketForm, 'id')->hiddenInput(['value'=>$product['id']])->label(false) ?>
-                    <?= $form->field($basketForm, 'count',['options'=>['class'=>'w-auto d-inline-block']])->textInput(['value'=>1,'style'=>'max-width:180px;'])->label(false) ?>
-                    <a href='' onclick="$('form#product<?=$product['id']?>').submit();return false;" style="white-space:nowrap;"><img src="/images/basket.png" alt="Добавить в корзину" title="Добавить в корзину"></a>
+                    <?= $form->field($basketForm, 'count',['options'=>['class'=>'w-auto d-inline-block']])->textInput(['value'=>1,'style'=>'max-width:100px;'])->label(false) ?>
+                    <a href='' onclick="$('form#product<?=$product['id']?>').submit();return false;" style="white-space:nowrap;padding-left:15px;"><img src="/images/basket.png" alt="Добавить в корзину" title="Добавить в корзину"></a>
                 </p>
             <?php ActiveForm::end(); ?>
             <?}else{?>

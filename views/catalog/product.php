@@ -103,7 +103,7 @@ foreach($images as $image) {
                             <?= $form->field($basketForm, 'count',[
                                     'options'=>['class'=>'w-lg-25 d-inline-block'],
                                     'template'=>"{label}{input}$basketButton{hint}{error}",
-                            ])->textInput(['value'=>1])->label(false) ?>
+                            ])->textInput(['value'=>1,'style'=>'display:inline;width:80%;'])->label(false) ?>
                             <?= $form->field($basketForm, 'id')->hiddenInput(['value'=>$product['id']])->label(false) ?>
                             <?php ActiveForm::end(); ?>
 

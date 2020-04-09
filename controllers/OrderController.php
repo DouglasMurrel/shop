@@ -14,7 +14,9 @@ class OrderController extends DefaultController
     public function actionCheckout()
     {
         $order = new Order();
+        $postFlag = false;
         if ($order->load(Yii::$app->request->post())) {
+            $postFlag = true;
             $validFlag = false;
             if ($order->validate()) {
                 $password = null;
@@ -57,25 +59,49 @@ class OrderController extends DefaultController
                         Yii::$app->session->addFlash('success', 'Заказ успешно оформлен!  Оператор свяжется с вами по телефону');
                     }
                 }
+                return $this->redirect(Url::to('/'));
             }
-            return $this->redirect(Url::to('/'));
         }
         if(Yii::$app->user->isGuest){
             $email = '';
             $phone = '';
             $name = '';
             $address = '';
+            $lastname = '';
+            $oname = '';
+            $area = '';
+            $city = '';
+            $zipcode = '';
         }else{
             $email = Yii::$app->user->identity->email;
             $lastOrder = Yii::$app->user->identity->lastOrder();
-            if($lastOrder){
+            if(!$postFlag && $lastOrder) {
                 $phone = $lastOrder->phone;
                 $name = $lastOrder->name;
+                $lastname = $lastOrder->lastname;
+                $oname = $lastOrder->oname;
+                $area = $lastOrder->area;
+                $city = $lastOrder->city;
+                $zipcode = $lastOrder->zipcode;
                 $address = $lastOrder->address;
+            }else if($postFlag){
+                $phone = $order->phone;
+                $name = $order->name;
+                $lastname = $order->lastname;
+                $oname = $order->oname;
+                $area = $order->area;
+                $city = $order->city;
+                $zipcode = $order->zipcode;
+                $address = $order->address;
             }else{
                 $phone = '';
                 $name = '';
                 $address = '';
+                $lastname = '';
+                $oname = '';
+                $area = '';
+                $city = '';
+                $zipcode = '';
             }
         }
         return $this->render('checkout', [
@@ -85,6 +111,11 @@ class OrderController extends DefaultController
             'phone'=>$phone,
             'name'=>$name,
             'address'=>$address,
+            'lastname'=> $lastname,
+            'oname'=>$oname,
+            'area'=>$area,
+            'city'=>$city,
+            'zipcode'=>$zipcode,
         ]);
     }
 
