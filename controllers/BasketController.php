@@ -15,7 +15,7 @@ class BasketController extends DefaultController{
     public function actionIndex() {
         $basket = Basket::getBasket();
         $basketForms = [];
-        $cnt = count($basket['products']);
+        if(isset($basket['products']))$cnt = count($basket['products']);else $cnt=0;
         for($i=0;$i<$cnt;$i++)$basketForms[] = new BasketForm();
 
         if(BasketForm::loadMultiple($basketForms, Yii::$app->request->post()) && BasketForm::validateMultiple($basketForms)) {
