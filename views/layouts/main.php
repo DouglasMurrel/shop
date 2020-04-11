@@ -89,7 +89,7 @@ AppAsset::register($this);
         <div class="col-5 col-lg-3"><a class="nav-link my-auto" href="<?=Url::to(["site/howtobuy"])?>">Как купить</a></div>
         <div class="col col-lg-3"><a class="nav-link my-auto" href="<?=Url::to(["site/payment"])?>">Доставка и оплата</a></div>
     </div>
-    <div class="row">
+    <div class="row mb-3">
         <?= Alert::widget(['options'=>['class'=>'w-100']]) ?>
         <div class="col-12" id="main-panel">
             <?= Breadcrumbs::widget([
