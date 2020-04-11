@@ -131,9 +131,12 @@ a.desc:after {
 .tree>ul>li{
     padding:10px 15px 0 5px;
 }
+.root-tree > ul{
+    padding-left:0;
+}
 .tree li::before,
 .tree li::after {
-    content:'';
+/*    content:'';*/
     left:-20px;
     position:absolute;
     right:auto
@@ -318,10 +321,14 @@ a.desc:after {
 }
 
 @media (min-width: 960px) {
-    .pt-lg-50{
-        padding-top:50px;
+    .pt-lg-15{
+        padding-top:15px;
     }
 }
 .has-error div.help-block {
     color: red !important;
+}
+
+input[type=text]::placeholder {
+    color:    #909;
 }

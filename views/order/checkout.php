@@ -36,8 +36,8 @@ if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords
         <?= $form->field($order, 'phone')->textInput(['value'=>$phone,'placeholder'=>'+7(xxx)xxx-xxxx']); ?>
         <?= $form->field($order, 'zipcode')->textInput(['value'=>$zipcode]); ?>
         <?= $form->field($order, 'area')->textInput(['value'=>$area,'placeholder'=>'Например, Московская обл., Серпуховской р-н']); ?>
-        <?= $form->field($order, 'city')->textInput(['value'=>$city]); ?>
-        <?= $form->field($order, 'address')->textInput(['value'=>$address]); ?>
+        <?= $form->field($order, 'city')->textInput(['value'=>$city,'placeholder'=>'Например, Серпухов']); ?>
+        <?= $form->field($order, 'address')->textInput(['value'=>$address,'placeholder'=>'Например, улица Пушкина 1']); ?>
         <?= $form->field($order, 'comment')->textarea(['rows' => 2]); ?>
         <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']); ?>
         <?php ActiveForm::end(); ?>

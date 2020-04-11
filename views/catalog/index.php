@@ -22,7 +22,7 @@ if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords
         <?= TreeWidget::widget(); ?>
     </div>
 </div>
-<div class="col-lg-8 pt-lg-50">
+<div class="col-lg-8 pt-lg-15">
     <?
     if (!empty($products)) {
     ?>

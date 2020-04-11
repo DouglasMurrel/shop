@@ -7,14 +7,7 @@ use yii\helpers\Url;
     <div class="tree">
         <ul class="pl-0">
             <li>
-                <span class="p-0" style="cursor:default;">
-                    <span class="border-0" style="cursor:default;">
-                        <i class="expanded">
-                            <i class="far fa-folder-open"></i>
-                        </i>
-                    </span>
-                </span>
-                <div id="Web" class="collapse show">
+                <div id="Web" class="collapse show root-tree">
                     <ul>
                         <?php foreach ($tree as $item): ?>
                             <?php show_branch($item, $openCategories, $slug)?>

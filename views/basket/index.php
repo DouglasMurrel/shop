@@ -55,10 +55,12 @@ $this->title = "Корзина";
             <div class="col-lg text-right">Итого: <?= $basket['price']; ?> руб.</div>
             <div class="col-lg text-right">Со скидкой: <?= $basket['discount_price']; ?> руб.</div>
             <div class="col-lg text-right" style="font-size:x-small">(самый дорогой товар - без скидки, второй - скидка 10%, остальные - 20%)</div>
-            <div class="col-lg text-right"><a href='' onclick="$('form#mainform').submit();return false;">Пересчитать</a></div>
+            <div class="col-lg text-right"><a href='' onclick="$('form#mainform').submit();return false;">Пересчитать общую сумму</a></div>
         </tr>
     </div>
-    <a href="/checkout" class="float-right">Оформить заказ</a>
+    <div style="padding-right:30px;">
+        <a href="/checkout" class="float-right">Оформить заказ</a>
+    </div>
     <?
     ActiveForm::end();
     ?>
