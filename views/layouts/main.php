@@ -67,7 +67,7 @@ AppAsset::register($this);
             }else{
                 ?>
                 <div class="col-8 col-lg-10">
-                    <a class="navbar-brand" href="<?=Yii::$app->homeUrl ?>"><?=Yii::$app->name ?></a>
+                    <a class="navbar-brand" href="<?=Yii::$app->homeUrl ?>"><img src="/images/logo.png"></a>
                 </div>
                 <div class="col-1">
                     <?php
