@@ -16,6 +16,7 @@ if(isset($name) && $name!='')$this->title = $name;
 if(isset($description) && $description!='')$this->registerMetaTag(['name' => 'description','content' => $description],'description');
 if(isset($keywords) && $keywords!='')$this->registerMetaTag(['name' => 'keywords','content' => $keywords],'keywords');
 $carousel = [];
+$img_flag = 0;
 foreach($images as $image) {
     $img = '/images/product/' . $image['image'];
     $file = Yii::getAlias('@webroot') . $img;
