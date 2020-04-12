@@ -133,7 +133,7 @@ class Basket extends Model
      * @return bool
      */
     private static function setBasketToUser(){
-        if (Yii::$app->user->isGuest) {
+        if (Yii::$app->user->getIsGuest()) {
             return false;
         }
         $basket = Basket::getBasket();
@@ -149,7 +149,7 @@ class Basket extends Model
      * @return bool
      */
     public static function getBasketFromUser(){
-        if (Yii::$app->user->isGuest) {
+        if (Yii::$app->user->getIsGuest()) {
             return false;
         }
         $user = Yii::$app->user->identity;
