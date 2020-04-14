@@ -37,22 +37,12 @@ foreach($images as $image) {
                 if ($img_flag == 1) {
                 ?>
                 <div class="col-sm-5">
-                    <div id="carousel" class="carousel slide" data-ride="carousel" data-interval="3000" style="width:200px;">
-                        <div class="carousel-inner">
-                            <?foreach ($carousel as $i=>$img){?>
-                            <div class="carousel-item<?if($i==0){?> active<?}?>">
-                                <img src="<?=$img?>" class="d-block" style="width:200px;height:200px;">
-                            </div>
-                            <?}?>
+                    <div class="row">
+                    <?foreach ($carousel as $i=>$img){?>
+                        <div class="p-2" style="'width:200px;">
+                            <img src="<?=$img?>" class="d-block" style="width:200px;height:200px;">
                         </div>
-                        <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Назад</span>
-                        </a>
-                        <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Вперед</span>
-                        </a>
+                    <?}?>
                     </div>
                 </div>
                 <div class="col-sm-7">
