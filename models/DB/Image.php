@@ -72,7 +72,8 @@ class Image extends \yii\db\ActiveRecord
         $image = Image::findOne($id);
         $entity_type = $image->entity_type;
         if($entity_type=='product'){
-            unlink(Yii::$app->basePath.'/web/images/product/'.$image->image);
+            $filename = Yii::$app->basePath.'/web/images/product/'.$image->image;
+            if(file_exists($filename))unlink($filename);
         }
         $image->delete();
     }
