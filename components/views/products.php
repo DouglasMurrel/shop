@@ -21,7 +21,7 @@ use yii\widgets\LinkPager;
             <div style="background-image:url('<?=$img?>');background-size:contain;background-repeat: no-repeat;background-position-x:center;height:100px;"></div>
             <h2><?= $product['price']; ?> руб.</h2>
             <p>
-                <a href="<?= Url::to(['catalog/product', 'slug' => $product['slug']]); ?>">
+                <a href="<?= Url::to(['catalog/product', 'slug' => $product['slug']]); ?>" style='max-width:226px;display:inline-block;'>
                     <?= Html::encode($product['name']); ?>
                 </a>
             </p>
