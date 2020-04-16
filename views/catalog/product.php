@@ -38,9 +38,9 @@ foreach($images as $image) {
                 ?>
                 <div class="col-sm-5">
                     <div class="row">
-                    <?foreach ($carousel as $i=>$img){?>
+                    <?foreach ($images as $i=>$img){?>
                         <div class="p-2" style="'width:200px;">
-                            <img src="<?=$img?>" class="d-block" style="width:200px;height:200px;">
+                            <img src="/images/product/<?=$img['image']?>" class="d-block" style="width:200px;height:200px;">
                         </div>
                     <?}?>
                     </div>
