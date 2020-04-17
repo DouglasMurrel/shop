@@ -4,6 +4,7 @@
 namespace app\models;
 
 
+use app\models\DB\Color;
 use app\models\DB\Order;
 use app\models\DB\Product;
 use app\models\DB\User;
@@ -17,7 +18,7 @@ class Basket extends Model
     /**
      * Метод добавляет товар в корзину
      */
-    public static function addToBasket($id, $count)
+    public static function addToBasket($id, $count, $color_id)
     {
         $basket = Basket::getBasket();
         $product = Product::findOne($id);
@@ -26,7 +27,10 @@ class Basket extends Model
             $basket['products'][$product->id]['count'] = $count_current;
         } else { // такого товара еще нет
             $basket['products'][$product->id]['slug'] = $product->slug;
-            $basket['products'][$product->id]['name'] = $product->name;
+            $color_name = Color::colorById($color_id);
+            $name = $product->name;
+            if($color_name)$name .= ' ('.mb_strtolower($color_name,"utf8").')';
+            $basket['products'][$product->id]['name'] = $name;
             $basket['products'][$product->id]['price'] = $product->price;
             $basket['products'][$product->id]['count'] = $count;
         }

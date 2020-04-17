@@ -6,6 +6,7 @@
 use app\components\TreeWidget;
 use app\components\SearchWidget;
 use yii\bootstrap4\Carousel;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -61,6 +62,12 @@ foreach($images as $image) {
                         <?
                         $basketButton = ob_get_contents();
                         ob_end_clean();
+                        $colors = $product['colors'];
+                        if (count($colors)>0) {
+                            print $form->field($basketForm, 'color_id')->dropDownList(ArrayHelper::map($colors, 'id', 'name'))->label(false);
+                        }else{
+                            print $form->field($basketForm, 'color_id')->hiddenInput(['value'=>0])->label(false);
+                        }
                         ?>
                         <?= $form->field($basketForm, 'count',[
                             'options'=>['class'=>'w-100 d-inline-block'],

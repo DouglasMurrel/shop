@@ -24,6 +24,8 @@ use yii\web\UploadedFile;
  *
  * @property OrderItem[] $orderItems
  * @property Category $category
+ *
+ * @property array $colors Возможные цвета
  */
 class Product extends \yii\db\ActiveRecord
 {
@@ -267,5 +269,33 @@ class Product extends \yii\db\ActiveRecord
         },60);
         shuffle($data);
         return $data;
+    }
+
+    public function getColors()
+    {
+        return $this->hasMany(Color::className(), ['id' => 'color_id'])
+            ->viaTable('product_color_rel', ['product_id' => 'id']);
+    }
+
+    public function getColorsAsArray(){
+        $result = [];
+        $colorsObj = $this->colors;
+        foreach($colorsObj as $color){
+            $result[] = ['id'=>$color->id,'name'=>$color->name];
+        }
+        return $result;
+    }
+
+    /**
+     * @param array $colors
+     */
+    public function linkColors($colors){
+        $colors_arr = [];
+        foreach($colors as $color)$colors_arr[] = $color['name'];
+        $colors = array_unique(array_values($colors_arr));
+        $this->unlinkAll("colors",true);
+        foreach($colors as $color) {
+            if($color>0)$this->link('colors',Color::findOne($color));
+        }
     }
 }

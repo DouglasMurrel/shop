@@ -29,7 +29,25 @@ foreach ($images as $img){
     <?php
 }
 ?>
-    <div class="pt-3">
+    <div class="row">
+<?
+$color_arr = [];
+foreach($colors as $color)$color_arr[] = $color->id;
+foreach($allColors as $i=>$cur_color){
+    $checked_flag = in_array($cur_color->id,$color_arr);
+    ?>
+        <div class="col-4">
+    <?=$form->field($color,'['.$i.']name')->checkbox([
+        'value'=>$cur_color->id,
+        'id'=>'color-name'.$cur_color->id,
+        'checked'=>$checked_flag]
+    )->label($cur_color->name)?>
+        </div>
+    <?php
+}
+?>
+    </div>
+    <div class="pt-3 pb-3">
         <?
         echo Html::submitButton($product->id?"Сохранить":"Добавить", ['class' => 'btn btn-primary']);
         ?>

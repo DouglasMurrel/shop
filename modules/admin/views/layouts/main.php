@@ -39,6 +39,7 @@ AdminAsset::register($this);
                     ],
                 ],
                 ['label' => 'Пользователи', 'url' => ['user/index']],
+                ['label' => 'Цвета', 'url' => ['color/index']],
             ],
             'activeCssClass'=>'active',
             'options' => [

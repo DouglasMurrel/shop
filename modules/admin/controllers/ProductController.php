@@ -3,6 +3,7 @@
 namespace app\modules\admin\controllers;
 
 use app\models\DB\Category;
+use app\models\DB\Color;
 use app\models\DB\Image;
 use app\models\DB\Product;
 use Yii;
@@ -26,9 +27,12 @@ class ProductController extends DefaultController
                 if($product->imageFile){
                     $product->saveImage();
                 }
-                return $this->redirect(Url::to(['index']));
+                $colors = Yii::$app->request->post('Color');
+                $product->linkColors($colors);
+                Yii::$app->cache->flush();
+                if($product->isNewRecord)return $this->redirect(Url::to(['index']));
+                else return $this->redirect(Url::to(['product','id'=>$product->id]));
             }
-            Yii::$app->cache->flush();
         }
 
         return $this->render('index',[

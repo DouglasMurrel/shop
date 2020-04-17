@@ -204,6 +204,7 @@ class Category extends \yii\db\ActiveRecord
                     ->all();
         foreach($arrResult as $k=>$item){
             $item['image'] = Image::getFirst($item['id'],'product');
+            $item['colors'] = Product::findOne($item['id'])->getColorsAsArray();
             $arrResult[$k] = $item;
         }
         return ['products'=>$arrResult,'pages'=>$pages];

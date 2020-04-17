@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -27,6 +28,16 @@ use yii\widgets\LinkPager;
             </p>
             <? if(!$indexFlag){?>
             <?php $form = ActiveForm::begin(['action'=>Url::to(['basket/add']),'options'=>['id'=>'product'.$product['id'],'style'=>'min-width:226px;']]); ?>
+                <p>
+                    <?
+                        $colors = $product['colors'];
+                        if (count($colors)>0) {
+                            print $form->field($basketForm, 'color_id')->dropDownList(ArrayHelper::map($colors, 'id', 'name'))->label(false);
+                        }else{
+                            print $form->field($basketForm, 'color_id')->hiddenInput(['value'=>0])->label(false);
+                        }
+                    ?>
+                </p>
                 <p>
                     <?= $form->field($basketForm, 'id')->hiddenInput(['value'=>$product['id']])->label(false) ?>
                     <?= $form->field($basketForm, 'count',['options'=>['class'=>'w-auto d-inline-block']])->textInput(['value'=>1,'style'=>'max-width:100px;'])->label(false) ?>

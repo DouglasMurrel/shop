@@ -44,7 +44,7 @@ class BasketController extends DefaultController{
 
             // добавляем товар в корзину и перенаправляем покупателя
             // на страницу корзины
-            Basket::addToBasket($basket->id,$basket->count);
+            Basket::addToBasket($basket->id,$basket->count,$basket->color_id);
             Yii::$app->session->addFlash('success','Товар успешно добавлен в корзину');
         }
         return $this->redirect(Yii::$app->request->referrer);
